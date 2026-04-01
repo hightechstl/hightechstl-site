@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FlowSlot — a dynamic visual time management app by High-Tech STL. Shape your schedule in real time." />
+  <title>FlowSlot — Take control of your day. Visually.</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────── -->
+  <nav aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-brand">High-Tech STL</a>
+      <a href="#signup" class="nav-cta">Get Early Access</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="container">
+      <span class="hero-label">Introducing FlowSlot</span>
+      <h1>Take control of your day. <span>Visually.</span></h1>
+      <p class="hero-sub">
+        FlowSlot lets you shape your schedule in real time by redistributing
+        your time like a sliding timeline.
+      </p>
+      <a href="#signup" class="btn-primary">Get Early Access</a>
+    </div>
+  </section>
+
+  <!-- ── Demo ────────────────────────────────────────── -->
+  <section id="demo" aria-labelledby="demo-heading">
+    <div class="container">
+      <div class="demo-placeholder" role="img" aria-label="Product demo placeholder">
+        <div class="demo-icon" aria-hidden="true">🎬</div>
+        <p id="demo-heading">Live demo coming soon</p>
+        <small>A visual walkthrough of FlowSlot will appear here.</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How It Works ────────────────────────────────── -->
+  <section id="how-it-works" aria-labelledby="how-heading">
+    <div class="container">
+      <p class="section-label">How it works</p>
+      <h2 class="section-title" id="how-heading">Three steps to a fluid day</h2>
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number" aria-hidden="true">1</div>
+          <h3>Plan your day</h3>
+          <p>Add your tasks and time blocks to build a clear picture of your day from the start.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number" aria-hidden="true">2</div>
+          <h3>Adjust on the fly</h3>
+          <p>Drag boundaries to rebalance your time instantly as priorities shift throughout the day.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number" aria-hidden="true">3</div>
+          <h3>Stay in flow</h3>
+          <p>Adapt your day without friction — no juggling apps, no missed commitments.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Why Different ───────────────────────────────── -->
+  <section id="why-different" aria-labelledby="why-heading">
+    <div class="container">
+      <p class="section-label">Why FlowSlot</p>
+      <h2 class="section-title" id="why-heading">Built different, by design</h2>
+      <ul class="why-list">
+        <li><span class="why-bullet" aria-hidden="true">×</span>Not a to-do list.</li>
+        <li><span class="why-bullet" aria-hidden="true">×</span>Not a calendar.</li>
+      </ul>
+      <p class="why-highlight">
+        A <span>dynamic system</span> for controlling your time.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Signup ──────────────────────────────────────── -->
+  <section id="signup" aria-labelledby="signup-heading">
+    <div class="container">
+      <div class="signup-box">
+        <p class="section-label">Early access</p>
+        <h2 id="signup-heading">Be first to try it</h2>
+        <p>Join the waitlist and get notified when FlowSlot launches.</p>
+        <form class="signup-form" action="#signup" method="post" novalidate>
+          <label for="email" class="sr-only">Email address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+          <button type="submit" class="btn-signup">Join Waitlist</button>
+        </form>
+        <p class="signup-disclaimer">No spam. Just updates and early access.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <p class="footer-brand">High-Tech STL</p>
+      <p>Built by Joshua Hancock</p>
+    </div>
+  </footer>
+
+  <!-- Waitlist form handler -->
+  <script>
+    document.querySelector('.signup-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('email').value.trim();
+      if (!email) return;
+      var btn = this.querySelector('.btn-signup');
+      btn.textContent = '✓ You\'re on the list!';
+      btn.disabled = true;
+      btn.style.background = '#3a8a5c';
+      document.getElementById('email').disabled = true;
+    });
+  </script>
+
+</body>
+</html>
