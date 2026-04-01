@@ -16,7 +16,7 @@
   <nav aria-label="Main navigation">
     <div class="nav-inner">
       <a href="#hero" class="nav-brand">High-Tech STL</a>
-      <a href="#signup" class="nav-cta">Get Early Access</a>
+      <a href="#how-it-works" class="nav-cta">Explore FlowSlot</a>
     </div>
   </nav>
 
@@ -26,10 +26,9 @@
       <span class="hero-label">Introducing FlowSlot</span>
       <h1>Take control of your day. <span>Visually.</span></h1>
       <p class="hero-sub">
-        FlowSlot lets you shape your schedule in real time by redistributing
-        your time like a sliding timeline.
+        FlowSlot is a visual time management application by High-Tech STL that helps you shape your schedule in real time by redistributing your time like a sliding timeline.
       </p>
-      <a href="#signup" class="btn-primary">Get Early Access</a>
+      <a href="#how-it-works" class="btn-primary">Explore FlowSlot</a>
     </div>
   </section>
 
@@ -84,26 +83,25 @@
     </div>
   </section>
 
-  <!-- ── Signup ──────────────────────────────────────── -->
-  <section id="signup" aria-labelledby="signup-heading">
+  <!-- ── Built by High-Tech STL ─────────────────────────────── -->
+  <section id="company" aria-labelledby="company-heading">
     <div class="container">
-      <div class="signup-box">
-        <p class="section-label">Early access</p>
-        <h2 id="signup-heading">Be first to try it</h2>
-        <p>Join the waitlist and get notified when FlowSlot launches.</p>
-        <form class="signup-form" action="#signup" method="post" novalidate>
-          <label for="email" class="sr-only">Email address</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          />
-          <button type="submit" class="btn-signup">Join Waitlist</button>
-        </form>
-        <p class="signup-disclaimer">No spam. Just updates and early access.</p>
+      <div class="company-box">
+        <p class="section-label">About the company</p>
+        <h2 id="company-heading">Built by High-Tech STL</h2>
+        <p>High-Tech STL is a growing technology company focused on building practical digital tools, software, and tech solutions. FlowSlot is our first featured product, with more to come.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section id="cta" aria-labelledby="cta-heading">
+    <div class="container">
+      <div class="cta-box">
+        <p class="section-label">In development</p>
+        <h2 id="cta-heading">FlowSlot is in active development</h2>
+        <p>We're focused on building FlowSlot into a polished, ready-to-use product. Check back soon for updates as High-Tech STL continues to grow.</p>
+        <a href="#hero" class="btn-primary">Back to Top</a>
       </div>
     </div>
   </section>
@@ -113,22 +111,9 @@
     <div class="container">
       <p class="footer-brand">High-Tech STL</p>
       <p>Built by Joshua Hancock</p>
+      <p><a href="mailto:contact@hightechstl.com" class="footer-email">contact@hightechstl.com</a></p>
     </div>
   </footer>
-
-  <!-- Waitlist form handler -->
-  <script>
-    document.querySelector('.signup-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var email = document.getElementById('email').value.trim();
-      if (!email) return;
-      var btn = this.querySelector('.btn-signup');
-      btn.textContent = '✓ You\'re on the list!';
-      btn.disabled = true;
-      btn.style.background = '#3a8a5c';
-      document.getElementById('email').disabled = true;
-    });
-  </script>
 
 </body>
 </html>
