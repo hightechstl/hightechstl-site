@@ -51978,9 +51978,10 @@ p=m.CW
 if(p!=null)q.push(A.aH(r*0.44,new A.a0O(p,r,l),l,l,l,l,l,l))
 p=r*0.16
 q.push(A.aH(l,new A.XT(k.b,j,i,r,l),l,l,l,l,p,l))
-q.push(A.aH(l,new A.XR(k.c,i,r,l),l,l,l,l,r*0.11,l))
-k=m.Q
-if(k!=null)q.push(A.aH(l,new A.XU(k,r,l),l,l,l,l,r*0.08,l))
+o=m.Q
+n=o==null
+if(n&&m.y==null)q.push(A.aH(l,new A.XR(k.c,i,r,l),l,l,l,l,r*0.11,l))
+if(!n)q.push(A.aH(l,new A.XU(o,r,l),l,l,l,l,r*0.08,l))
 else{k=m.y
 if(k!=null)q.push(A.aH(l,new A.Yu(k,r,l),l,l,l,l,r*0.055,l))}k=m.at
 if(k!=null)q.push(A.aH(r*0.27,new A.a2F(k,r,l),l,l,l,r*0.05,l,l))
