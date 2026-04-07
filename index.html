@@ -32,13 +32,169 @@
     </div>
   </section>
 
-  <!-- ── Demo ────────────────────────────────────────── -->
+  <!-- ── Walkthrough ─────────────────────────────────── -->
   <section id="demo" aria-labelledby="demo-heading">
     <div class="container">
-      <div class="demo-placeholder" role="img" aria-label="Product demo placeholder">
-        <div class="demo-icon" aria-hidden="true">🎬</div>
-        <p id="demo-heading">Live demo coming soon</p>
-        <small>A visual walkthrough of FlowSlot will appear here.</small>
+      <p class="section-label">Visual walkthrough</p>
+      <h2 class="section-title" id="demo-heading">See the full FlowSlot loop from sign-in to momentum</h2>
+      <p class="walkthrough-lead">
+        This walkthrough is based on the current product screens: account creation, daily planning,
+        live redistribution, and the profile and avatar systems that keep the experience personal.
+      </p>
+
+      <div class="walkthrough-grid">
+        <article class="walkthrough-card">
+          <div class="walkthrough-meta">Step 1</div>
+          <h3>Sign in and get straight into the planner</h3>
+          <p>The first screen is intentionally minimal: sign in, reset your password, or create a new account without any clutter.</p>
+          <div class="screen-frame login-frame" role="img" aria-label="FlowSlot login screen walkthrough preview">
+            <div class="screen-header centered">⏱ FlowSlot</div>
+            <div class="screen-subtitle">Welcome back</div>
+            <div class="version-chip">Version 1.0.3</div>
+            <div class="field-row"></div>
+            <div class="field-row"></div>
+            <div class="screen-link">Forgot password?</div>
+            <div class="cta-pill full">Sign In</div>
+          </div>
+        </article>
+
+        <article class="walkthrough-card">
+          <div class="walkthrough-meta">Step 2</div>
+          <h3>Create an account in one pass</h3>
+          <p>New users can register with a straightforward form, then move directly into building their day instead of navigating a complicated setup flow.</p>
+          <div class="screen-frame register-frame" role="img" aria-label="FlowSlot create account walkthrough preview">
+            <div class="appbar">Create Account</div>
+            <div class="field-row"></div>
+            <div class="field-row"></div>
+            <div class="field-row"></div>
+            <div class="helper-line short"></div>
+            <div class="field-row"></div>
+            <div class="cta-pill full">Create Account</div>
+          </div>
+        </article>
+
+        <article class="walkthrough-card wide">
+          <div class="walkthrough-meta">Step 3</div>
+          <h3>Start the day with a clean workday view</h3>
+          <p>The home planner shows progress, redistribution mode, and a horizontal timeline so the whole day stays visible at once.</p>
+          <div class="screen-frame planner-frame" role="img" aria-label="FlowSlot planner home walkthrough preview">
+            <div class="planner-bar">
+              <span>FlowSlot</span>
+              <span>Today 2026-04-07</span>
+              <span>Workday • Voice • History</span>
+            </div>
+            <div class="vip-pill">VIP</div>
+            <div class="progress-card">
+              <strong>Today's Progress</strong>
+              <div class="progress-track"></div>
+              <div class="progress-label">Allocated: 0m / 7h</div>
+            </div>
+            <div class="mode-row">
+              <span class="mode-chip active">Equal</span>
+              <span class="mode-chip">Priority-Based</span>
+              <span class="mode-chip">Manual Review</span>
+            </div>
+            <div class="empty-state">
+              <div class="empty-icon">✓+</div>
+              <div class="empty-title">No tasks yet</div>
+              <div class="empty-copy">Tap Add Task to plan your day.</div>
+            </div>
+            <div class="bottom-actions">
+              <span class="ghost-pill">Reset Day</span>
+              <span class="ghost-pill">Add Task</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="walkthrough-card">
+          <div class="walkthrough-meta">Step 4</div>
+          <h3>Add tasks with fast duration and priority controls</h3>
+          <p>Task entry is designed to be quick: name it, pick a duration, choose a priority, and place it on the day without interrupting flow.</p>
+          <div class="screen-frame modal-frame" role="img" aria-label="FlowSlot add task walkthrough preview">
+            <div class="dialog-card">
+              <div class="dialog-title">Add Task</div>
+              <div class="field-row"></div>
+              <div class="chip-row tight">
+                <span class="mini-chip">15m</span>
+                <span class="mini-chip active">30m</span>
+                <span class="mini-chip">45m</span>
+                <span class="mini-chip">1h</span>
+              </div>
+              <div class="time-row">
+                <span class="square-chip">−</span>
+                <span class="time-box">0:30</span>
+                <span class="square-chip">+</span>
+              </div>
+              <div class="chip-row tight">
+                <span class="priority-chip">High</span>
+                <span class="priority-chip medium active">Medium</span>
+                <span class="priority-chip">Low</span>
+              </div>
+              <div class="dialog-actions">
+                <span class="screen-link">Cancel</span>
+                <span class="cta-pill">Add Task</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="walkthrough-card">
+          <div class="walkthrough-meta">Step 5</div>
+          <h3>Redistribute time visually instead of rebuilding the day</h3>
+          <p>Once tasks exist, FlowSlot turns the plan into a visible sequence of blocks and free time so users can rebalance the day in context.</p>
+          <div class="screen-frame timeline-frame" role="img" aria-label="FlowSlot filled timeline walkthrough preview">
+            <div class="planner-bar compact">
+              <span>FlowSlot</span>
+              <span>Today</span>
+            </div>
+            <div class="timeline-progress"></div>
+            <div class="timeline-strip">
+              <span class="task-block sync">Sync</span>
+              <span class="task-block deploy">Deploy</span>
+              <span class="task-block test">Test</span>
+              <span class="task-block lunch">Lunch</span>
+              <span class="task-block free">Free Time</span>
+            </div>
+            <div class="bottom-actions single">
+              <span class="ghost-pill">Reset Day</span>
+              <span class="ghost-pill">Add Task</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="walkthrough-card wide">
+          <div class="walkthrough-meta">Step 6</div>
+          <h3>Profile, VIP access, avatar editing, and the reward loop stay connected</h3>
+          <p>The product extends beyond task blocks: users can manage billing, track free time, customize their character, and spend earned points in the shop.</p>
+          <div class="screen-collage" role="img" aria-label="FlowSlot profile, avatar editor, and shop walkthrough preview">
+            <div class="mini-screen profile-mini">
+              <div class="mini-bar">My Profile</div>
+              <div class="profile-head"></div>
+              <div class="mini-panel"></div>
+              <div class="mini-panel short"></div>
+              <div class="mini-panel vip"></div>
+            </div>
+            <div class="mini-screen avatar-mini">
+              <div class="mini-bar light">Edit Character</div>
+              <div class="avatar-card"></div>
+              <div class="mini-panel"></div>
+              <div class="mini-panel"></div>
+            </div>
+            <div class="mini-screen shop-mini">
+              <div class="mini-bar">Shop</div>
+              <div class="chip-row shop-tabs">
+                <span class="mini-chip active">Hat</span>
+                <span class="mini-chip">Outfit</span>
+                <span class="mini-chip">Badge</span>
+              </div>
+              <div class="shop-grid">
+                <span class="shop-card on"></span>
+                <span class="shop-card"></span>
+                <span class="shop-card faint"></span>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
