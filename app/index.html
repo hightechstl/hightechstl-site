@@ -1,46 +1,345 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="/app/">
-
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FlowSlot is a dynamic day-planning app from High-Tech STL. Explore the product and launch the live app from here.">
+  <title>FlowSlot | Plan the Day You Actually Have</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root {
+      --ink: #122033;
+      --muted: #5f6d7a;
+      --panel: rgba(255, 255, 255, 0.84);
+      --line: rgba(18, 32, 51, 0.12);
+      --accent: #0e7c86;
+      --accent-strong: #09565d;
+      --shadow: 0 24px 70px rgba(18, 32, 51, 0.14);
+    }
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="flowslot">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    * { box-sizing: border-box; }
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    body {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(244, 184, 96, 0.28), transparent 34%),
+        radial-gradient(circle at right center, rgba(14, 124, 134, 0.20), transparent 28%),
+        linear-gradient(180deg, #f8f4ea 0%, #eef5f6 100%);
+    }
 
-  <title>flowslot</title>
-  <link rel="manifest" href="manifest.json">
+    a { color: inherit; }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 64px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+      padding-top: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-copy,
+    .hero-card,
+    .section,
+    .cta {
+      padding: 32px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(14, 124, 134, 0.10);
+      color: var(--accent-strong);
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 16px;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 28px 0 20px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+
+    .button-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 14px 30px rgba(14, 124, 134, 0.24);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .micro { font-size: 14px; }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 460px;
+      background: linear-gradient(160deg, rgba(14, 124, 134, 0.94), rgba(9, 86, 93, 0.96));
+      color: white;
+    }
+
+    .hero-card::before,
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .hero-card::before {
+      width: 240px;
+      height: 240px;
+      top: -60px;
+      right: -40px;
+    }
+
+    .hero-card::after {
+      width: 160px;
+      height: 160px;
+      bottom: -24px;
+      left: -24px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .phone {
+      position: relative;
+      z-index: 1;
+      width: min(310px, 100%);
+      margin: 24px auto 0;
+      padding: 18px 16px 20px;
+      border-radius: 32px;
+      background: rgba(248, 250, 251, 0.95);
+      color: var(--ink);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+    }
+
+    .phone-bar {
+      width: 42%;
+      height: 6px;
+      margin: 0 auto 18px;
+      border-radius: 999px;
+      background: rgba(18, 32, 51, 0.18);
+    }
+
+    .task {
+      padding: 14px;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid rgba(18, 32, 51, 0.08);
+      margin-bottom: 12px;
+    }
+
+    .task strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .section { margin-top: 28px; }
+
+    .section h2,
+    .cta h2 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4vw, 42px);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .feature {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .feature p { font-size: 15px; }
+
+    .cta {
+      margin-top: 28px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(18, 32, 51, 0.98), rgba(40, 59, 82, 0.94));
+      color: white;
+    }
+
+    .cta p {
+      color: rgba(255,255,255,0.78);
+      max-width: 52ch;
+      margin: 12px auto 0;
+    }
+
+    footer {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+  <div class="shell">
+    <section class="hero">
+      <div class="panel hero-copy">
+        <div class="eyebrow">FlowSlot is live on the web</div>
+        <h1>Plan the day you actually have.</h1>
+        <p>
+          FlowSlot helps people build a realistic day plan, adapt when work shifts, and keep momentum without
+          rewriting the whole schedule by hand.
+        </p>
+        <p>
+          This page is the marketing layer for hightechstl.com/app while the live application runs on its own
+          dedicated domain.
+        </p>
+        <div class="actions">
+          <a class="button button-primary" href="https://flowslot.hightechstl.com">Try FlowSlot Now</a>
+          <a class="button button-secondary" href="#features">See Features</a>
+        </div>
+        <p class="micro">The live production app runs at flowslot.hightechstl.com.</p>
+      </div>
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
+      <div class="panel hero-card">
+        <div class="pill-row">
+          <span class="pill">Dynamic planning</span>
+          <span class="pill">VIP voice tools</span>
+          <span class="pill">Web available now</span>
+        </div>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <div class="task">
+            <strong>Adaptive workday timeline</strong>
+            Plan the day, see it visually, and adjust without losing track of what matters.
+          </div>
+          <div class="task">
+            <strong>Automatic redistribution</strong>
+            Finish early and FlowSlot reallocates free time across the remaining work.
+          </div>
+          <div class="task">
+            <strong>VIP voice scheduling</strong>
+            Stripe-backed VIP unlocks voice tools and billing management in the live app.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="panel section">
+      <h2>What FlowSlot does</h2>
+      <p>
+        Use this page as the marketing layer for hightechstl.com/app while the real application stays on the
+        dedicated FlowSlot domain.
+      </p>
+      <div class="grid">
+        <div class="feature">
+          <h3>Daily clarity</h3>
+          <p>See your plan laid out across the workday instead of buried in a generic task list.</p>
+        </div>
+        <div class="feature">
+          <h3>Progress and free-time insights</h3>
+          <p>Track recent reclaimed time and overall momentum from inside the app profile.</p>
+        </div>
+        <div class="feature">
+          <h3>Flexible upgrade path</h3>
+          <p>Upgrade to VIP for voice scheduling and manage billing through Stripe without leaving the experience behind.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel cta">
+      <h2>Ready to test the live app?</h2>
+      <p>
+        Send testers into the real FlowSlot build from here. This button remains the primary call to action.
+      </p>
+      <div class="actions" style="justify-content: center; margin-top: 24px;">
+        <a class="button button-primary" href="https://flowslot.hightechstl.com">Open FlowSlot</a>
+      </div>
+    </section>
+
+    <footer>FlowSlot marketing page for hightechstl.com/app.</footer>
+  </div>
 </body>
 </html>
