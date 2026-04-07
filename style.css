@@ -207,6 +207,20 @@ nav {
   margin-bottom: 1.2rem;
 }
 
+.walkthrough-grid.real-shots {
+  align-items: start;
+}
+
+.walkthrough-shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid #dbe2f0;
+  background: #f7f9fd;
+  box-shadow: 0 10px 28px rgba(38, 52, 84, 0.10);
+}
+
 .screen-frame,
 .mini-screen {
   position: relative;
