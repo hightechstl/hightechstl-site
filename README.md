@@ -8,7 +8,7 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `services.html` - Managed IT and consulting services
 - `pricing.html` - Monthly support plans and project pricing
 - `industries.html` - Industry-specific technology challenges and outcomes
-- `about.html` - Joshua Hancock's Amazon IT leadership background
+- `about.html` - Joshua Hancock's IT operations and leadership background
 - `contact.html` - Free technology assessment form
 - `flowslot.html` - Standalone FlowSlot Innovation Lab project page
 - `app/` - Existing compiled FlowSlot web application, preserved at `/app`
