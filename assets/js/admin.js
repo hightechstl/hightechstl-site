@@ -204,6 +204,11 @@
   }
 
   function openTicketDialog(ticket = null, clientId = '') {
+    if (!ticket && clients.length === 0) {
+      showMessage('Create a client before opening a trouble ticket.', true);
+      openClientDialog();
+      return;
+    }
     elements['ticket-form'].reset();
     elements['ticket-id'].value = ticket?.id || '';
     elements['ticket-dialog-title'].textContent = ticket ? 'Edit Ticket' : 'New Ticket';
@@ -399,6 +404,8 @@
       }
       currentUser = user;
       elements['signed-in-email'].textContent = user.email || user.uid;
+      elements['login-form'].reset();
+      elements['login-message'].textContent = '';
       elements['login-view'].hidden = true;
       elements['app-view'].hidden = false;
       setView('dashboard');

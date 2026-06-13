@@ -1,4 +1,5 @@
 :root { --admin-sidebar: 250px; --danger: #a43131; --warning: #a45a16; }
+[hidden] { display: none !important; }
 .admin-body { min-height: 100vh; background: var(--cloud); }
 .admin-body button, .admin-body input, .admin-body textarea, .admin-body select { font: inherit; }
 .admin-login { display: grid; min-height: 100vh; padding: 2rem; place-items: center; background: linear-gradient(145deg, var(--navy), #1769aa); }
