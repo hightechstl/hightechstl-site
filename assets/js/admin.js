@@ -197,7 +197,11 @@
     elements['client-contact'].value = client?.primaryContact || '';
     elements['client-email'].value = client?.email || '';
     elements['client-phone'].value = client?.phone || '';
-    elements['client-plan'].value = client?.servicePlan || '';
+    const servicePlan = client?.servicePlan || '';
+    if (servicePlan && ![...elements['client-plan'].options].some((option) => option.value === servicePlan)) {
+      elements['client-plan'].add(new Option(servicePlan, servicePlan));
+    }
+    elements['client-plan'].value = servicePlan;
     elements['client-address'].value = client?.address || '';
     elements['client-notes'].value = client?.notes || '';
     elements['client-dialog'].showModal();
