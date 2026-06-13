@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Service Desk | High Tech STL</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+  <a class="skip-link" href="#admin-main">Skip to dashboard</a>
+
+  <section class="admin-login" id="login-view">
+    <div class="admin-login-card">
+      <a class="brand" href="index.html"><span class="brand-mark">HT</span><span>High Tech STL</span></a>
+      <p class="eyebrow">Private workspace</p>
+      <h1>Service Desk</h1>
+      <p>Sign in with an authorized High Tech STL administrator account.</p>
+      <form id="login-form">
+        <div class="field"><label for="login-email">Email</label><input id="login-email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="login-password">Password</label><input id="login-password" type="password" autocomplete="current-password" required></div>
+        <button class="button button-blue admin-full-button" type="submit">Sign In</button>
+        <p class="admin-message" id="login-message" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <div class="admin-app" id="app-view" hidden>
+    <aside class="admin-sidebar">
+      <a class="brand admin-brand" href="index.html"><span class="brand-mark">HT</span><span>High Tech STL</span></a>
+      <p class="admin-sidebar-label">Service Desk</p>
+      <nav class="admin-nav" aria-label="Service desk navigation">
+        <button class="active" type="button" data-view="dashboard">Overview</button>
+        <button type="button" data-view="tickets">Tickets</button>
+        <button type="button" data-view="clients">Clients</button>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <span id="signed-in-email"></span>
+        <button class="admin-link-button" id="sign-out-button" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="admin-main" id="admin-main">
+      <header class="admin-toolbar">
+        <div><p class="eyebrow" id="view-eyebrow">Service desk</p><h1 id="view-title">Overview</h1></div>
+        <div class="admin-toolbar-actions">
+          <button class="button button-secondary" id="new-client-button" type="button">New Client</button>
+          <button class="button button-primary" id="new-ticket-button" type="button">New Ticket</button>
+        </div>
+      </header>
+
+      <div class="admin-alert" id="app-message" role="status" hidden></div>
+
+      <section class="admin-view" id="dashboard-view">
+        <div class="admin-metrics">
+          <article><span>Open tickets</span><strong id="metric-open">0</strong></article>
+          <article><span>Urgent / high</span><strong id="metric-priority">0</strong></article>
+          <article><span>Waiting on client</span><strong id="metric-waiting">0</strong></article>
+          <article><span>Active clients</span><strong id="metric-clients">0</strong></article>
+        </div>
+        <div class="admin-grid">
+          <section class="admin-panel"><div class="admin-panel-heading"><div><p class="eyebrow">Work queue</p><h2>Recent tickets</h2></div><button class="admin-link-button" type="button" data-go-view="tickets">View all</button></div><div id="recent-ticket-list" class="admin-list"></div></section>
+          <section class="admin-panel"><div class="admin-panel-heading"><div><p class="eyebrow">Accounts</p><h2>Recent clients</h2></div><button class="admin-link-button" type="button" data-go-view="clients">View all</button></div><div id="recent-client-list" class="admin-list"></div></section>
+        </div>
+      </section>
+
+      <section class="admin-view" id="tickets-view" hidden>
+        <div class="admin-filters">
+          <label class="admin-search"><span class="sr-only">Search tickets</span><input id="ticket-search" type="search" placeholder="Search tickets, clients, or contacts"></label>
+          <select id="ticket-status-filter" aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="open">Open</option><option value="in_progress">In progress</option><option value="waiting_client">Waiting on client</option><option value="resolved">Resolved</option><option value="closed">Closed</option></select>
+          <select id="ticket-priority-filter" aria-label="Filter by priority"><option value="">All priorities</option><option value="urgent">Urgent</option><option value="high">High</option><option value="normal">Normal</option><option value="low">Low</option></select>
+        </div>
+        <section class="admin-panel"><div id="ticket-list" class="admin-list admin-list-roomy"></div></section>
+      </section>
+
+      <section class="admin-view" id="clients-view" hidden>
+        <div class="admin-filters"><label class="admin-search"><span class="sr-only">Search clients</span><input id="client-search" type="search" placeholder="Search company, contact, email, or phone"></label></div>
+        <section class="admin-panel"><div id="client-list" class="admin-list admin-list-roomy"></div></section>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="admin-dialog" id="client-dialog">
+    <form method="dialog" id="client-form">
+      <div class="admin-dialog-heading"><div><p class="eyebrow">Client record</p><h2 id="client-dialog-title">New Client</h2></div><button class="admin-dialog-close" type="button" data-close-dialog="client-dialog" aria-label="Close">×</button></div>
+      <input id="client-id" type="hidden">
+      <div class="field-grid"><div class="field"><label for="client-company">Company</label><input id="client-company" required></div><div class="field"><label for="client-status">Status</label><select id="client-status"><option value="lead">Lead</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div></div>
+      <div class="field-grid"><div class="field"><label for="client-contact">Primary contact</label><input id="client-contact"></div><div class="field"><label for="client-email">Email</label><input id="client-email" type="email"></div></div>
+      <div class="field-grid"><div class="field"><label for="client-phone">Phone</label><input id="client-phone" type="tel"></div><div class="field"><label for="client-plan">Service plan</label><input id="client-plan" placeholder="Managed IT, project, consulting..."></div></div>
+      <div class="field"><label for="client-address">Address</label><input id="client-address"></div>
+      <div class="field"><label for="client-notes">Environment notes</label><textarea id="client-notes" placeholder="Locations, systems, vendors, recurring concerns, access notes..."></textarea></div>
+      <div class="admin-dialog-actions"><button class="button button-secondary" value="cancel" type="button" data-close-dialog="client-dialog">Cancel</button><button class="button button-blue" id="save-client-button" type="submit">Save Client</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="admin-dialog" id="ticket-dialog">
+    <form method="dialog" id="ticket-form">
+      <div class="admin-dialog-heading"><div><p class="eyebrow">Trouble ticket</p><h2 id="ticket-dialog-title">New Ticket</h2></div><button class="admin-dialog-close" type="button" data-close-dialog="ticket-dialog" aria-label="Close">×</button></div>
+      <input id="ticket-id" type="hidden">
+      <div class="field"><label for="ticket-title">Subject</label><input id="ticket-title" required></div>
+      <div class="field-grid"><div class="field"><label for="ticket-client">Client</label><select id="ticket-client" required></select></div><div class="field"><label for="ticket-contact">Reported by</label><input id="ticket-contact"></div></div>
+      <div class="field-grid"><div class="field"><label for="ticket-status">Status</label><select id="ticket-status"><option value="new">New</option><option value="open">Open</option><option value="in_progress">In progress</option><option value="waiting_client">Waiting on client</option><option value="resolved">Resolved</option><option value="closed">Closed</option></select></div><div class="field"><label for="ticket-priority">Priority</label><select id="ticket-priority"><option value="normal">Normal</option><option value="low">Low</option><option value="high">High</option><option value="urgent">Urgent</option></select></div></div>
+      <div class="field-grid"><div class="field"><label for="ticket-category">Category</label><select id="ticket-category"><option>General support</option><option>Account / access</option><option>Device</option><option>Email</option><option>Network / WiFi</option><option>Printer</option><option>Security</option><option>Backup</option><option>Software</option><option>Project</option></select></div><div class="field"><label for="ticket-due">Target date</label><input id="ticket-due" type="date"></div></div>
+      <div class="field"><label for="ticket-description">Issue description</label><textarea id="ticket-description" required></textarea></div>
+      <div class="admin-dialog-actions"><button class="button button-secondary" value="cancel" type="button" data-close-dialog="ticket-dialog">Cancel</button><button class="button button-primary" id="save-ticket-button" type="submit">Save Ticket</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="admin-dialog admin-ticket-detail" id="ticket-detail-dialog">
+    <div class="admin-dialog-heading"><div><p class="eyebrow">Ticket detail</p><h2 id="detail-title">Ticket</h2></div><button class="admin-dialog-close" type="button" data-close-dialog="ticket-detail-dialog" aria-label="Close">×</button></div>
+    <div id="ticket-detail-content"></div>
+    <section class="admin-activity"><h3>Activity</h3><form id="activity-form"><input id="activity-ticket-id" type="hidden"><div class="field"><label for="activity-note">Add note</label><textarea id="activity-note" required placeholder="Work performed, client update, next step..."></textarea></div><button class="button button-blue" type="submit">Add Note</button></form><div id="activity-list" class="admin-timeline"></div></section>
+  </dialog>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

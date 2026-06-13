@@ -16,6 +16,9 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `assets/css/styles.css` - Shared responsive design system
 - `assets/js/main.js` - Mobile navigation and dynamic copyright year
 - `assets/img/favicon.svg` - Brand favicon
+- `admin.html` - Private Firebase-backed client and trouble-ticket dashboard
+- `assets/js/admin.js`, `assets/css/admin.css` - Service desk application
+- `firestore.rules`, `firestore.indexes.json` - Service desk data security
 - `robots.txt`, `sitemap.xml`, `.nojekyll` - GitHub Pages and SEO support
 
 ## Local Preview
@@ -31,6 +34,13 @@ Then open `http://localhost:8000`.
 ## Contact Form
 
 The static form uses FormSubmit and routes requests to `contact@hightechstl.com`. FormSubmit requires a one-time email activation after the first submission. Before launch, submit and verify the form or replace the endpoint with the preferred CRM/form service.
+
+## Service Desk
+
+The private dashboard at `/admin.html` tracks clients, trouble tickets, and
+ticket activity using Firebase Authentication and Firestore. Follow
+`docs/service-desk-setup.md` before using it. A separate Firebase project from
+FlowSlot is recommended.
 
 ## SEO Recommendations
 
