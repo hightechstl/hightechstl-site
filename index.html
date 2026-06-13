@@ -1,192 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="FlowSlot — a dynamic visual time management app by High-Tech STL. Shape your schedule in real time." />
-  <title>FlowSlot — Take control of your day. Visually.</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Managed IT Services in St. Louis | High Tech STL</title>
+  <meta name="description" content="Enterprise-level managed IT services, network support, and technology consulting for growing businesses in the St. Louis metro area.">
+  <link rel="canonical" href="https://hightechstl.com/">
+  <meta property="og:title" content="High Tech STL | Enterprise-Level IT Support">
+  <meta property="og:description" content="Managed IT services and technology leadership for St. Louis businesses, led by a former Amazon IT Manager.">
+  <meta property="og:type" content="website"><meta property="og:url" content="https://hightechstl.com/">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"High Tech STL","url":"https://hightechstl.com","email":"contact@hightechstl.com","areaServed":["St. Louis Metropolitan Area","Missouri","Illinois"],"founder":{"@type":"Person","name":"Joshua Hancock"},"description":"Managed IT services, technology consulting, and network support for small and medium-sized businesses."}</script>
 </head>
 <body>
-
-  <!-- ── Navigation ──────────────────────────────────── -->
-  <nav aria-label="Main navigation">
-    <div class="nav-inner">
-      <a href="#hero" class="nav-brand">High-Tech STL</a>
-      <a href="/app" class="nav-cta">Explore FlowSlot</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="topbar"><div class="container"><span>Serving businesses across the St. Louis metro area</span><a href="mailto:contact@hightechstl.com">contact@hightechstl.com</a></div></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="High Tech STL home"><span class="brand-mark">HT</span><span>High Tech STL</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="services.html">Services</a><a href="pricing.html">Pricing</a><a href="industries.html">Industries</a><a href="about.html">About</a><a href="flowslot.html">Innovation Lab</a><a href="contact.html" class="nav-cta">Free Assessment</a>
+      </nav>
     </div>
-  </nav>
-
-  <!-- ── Hero ────────────────────────────────────────── -->
-  <section id="hero">
-    <div class="container">
-      <span class="hero-label">Introducing FlowSlot</span>
-      <h1>Take control of your day. <span>Visually.</span></h1>
-      <p class="hero-sub">
-        FlowSlot is a visual time management application by High-Tech STL that helps you shape your schedule in real time by redistributing your time like a sliding timeline.
-      </p>
-      <a href="/app" class="btn-primary">Explore FlowSlot</a>
-    </div>
-  </section>
-
-  <!-- ── Walkthrough ─────────────────────────────────── -->
-  <section id="demo" aria-labelledby="demo-heading">
-    <div class="container">
-      <p class="section-label">Visual walkthrough</p>
-      <h2 class="section-title" id="demo-heading">See the full FlowSlot loop from sign-in to momentum</h2>
-      <p class="walkthrough-lead">
-        This walkthrough is based on the current product screens: account creation, daily planning,
-        live redistribution, and the profile and avatar systems that keep the experience personal.
-      </p>
-
-      <div class="walkthrough-grid real-shots">
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 1</div>
-          <h3>Sign in</h3>
-          <p>Users land on a clean login screen with email, password reset, and account creation immediately available.</p>
-          <img class="walkthrough-shot" src="images/flowslot/01-login.png" alt="FlowSlot login screen">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 2</div>
-          <h3>Create an account</h3>
-          <p>The registration flow is direct and lightweight, so onboarding stays fast.</p>
-          <img class="walkthrough-shot" src="images/flowslot/02-create-account.png" alt="FlowSlot create account screen">
-        </article>
-
-        <article class="walkthrough-card wide">
-          <div class="walkthrough-meta">Step 3</div>
-          <h3>Open the planner</h3>
-          <p>The empty day view makes the workday, redistribution mode, and action areas obvious before any tasks are added.</p>
-          <img class="walkthrough-shot" src="images/flowslot/03-empty-planner.png" alt="FlowSlot empty planner screen">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 4</div>
-          <h3>Add a task</h3>
-          <p>Task creation exposes duration, timing, and priority controls in one focused dialog.</p>
-          <img class="walkthrough-shot" src="images/flowslot/04-add-task.png" alt="FlowSlot add task dialog">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 5</div>
-          <h3>See the timeline fill out</h3>
-          <p>Once tasks are planned, the day becomes a visual timeline with work blocks and free time in context.</p>
-          <img class="walkthrough-shot" src="images/flowslot/05-filled-timeline.png" alt="FlowSlot filled task timeline">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 6</div>
-          <h3>Open the character screen</h3>
-          <p>Gamification stays tied to progress with a dedicated character view, level tracking, and equipped items.</p>
-          <img class="walkthrough-shot" src="images/flowslot/06-character-screen.png" alt="FlowSlot character screen">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 7</div>
-          <h3>Edit the avatar</h3>
-          <p>Players can tune appearance, class, and name from the edit character flow.</p>
-          <img class="walkthrough-shot" src="images/flowslot/07-edit-character.png" alt="FlowSlot edit character screen">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 8</div>
-          <h3>Spend points in the shop</h3>
-          <p>The shop uses earned points to unlock cosmetic items across hats, outfits, backgrounds, and badges.</p>
-          <img class="walkthrough-shot" src="images/flowslot/08-shop.png" alt="FlowSlot shop screen">
-        </article>
-
-        <article class="walkthrough-card">
-          <div class="walkthrough-meta">Step 9</div>
-          <h3>Use the profile menu</h3>
-          <p>Quick account actions like editing the avatar, submitting bugs, getting help, and signing out sit behind the profile menu.</p>
-          <img class="walkthrough-shot" src="images/flowslot/09-profile-menu.png" alt="FlowSlot profile menu screen">
-        </article>
-
-        <article class="walkthrough-card wide">
-          <div class="walkthrough-meta">Step 10</div>
-          <h3>Review profile, VIP, and free-time progress</h3>
-          <p>The profile pulls together VIP status, points, billing controls, and the free-time report into one overview.</p>
-          <img class="walkthrough-shot" src="images/flowslot/10-profile-overview.png" alt="FlowSlot profile overview screen">
-        </article>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Managed IT Services · St. Louis</p>
+          <h1>Enterprise-Level IT Support for Growing Businesses</h1>
+          <p class="lead">Managed IT services, technology consulting, and network support from a former Amazon IT Manager. Get the experience of an enterprise IT department without the cost of hiring one.</p>
+          <div class="button-row"><a class="button button-primary" href="contact.html">Schedule a Free Technology Assessment</a><a class="button button-secondary" href="services.html">View Services</a></div>
+          <div class="trust-line"><span>Local St. Louis support</span><span>8+ years at Amazon</span><span>Plans from $299/month</span></div>
+        </div>
+        <div class="hero-panel" aria-label="Technology health overview illustration">
+          <div class="status-card"><div class="status-label">Business technology health <i class="status-dot"></i></div><div class="status-number">Reliable. Secure. Ready.</div><div class="bar-set" aria-hidden="true"><i style="--h:42%"></i><i style="--h:58%"></i><i style="--h:51%"></i><i style="--h:75%"></i><i style="--h:88%"></i><i style="--h:96%"></i></div></div>
+          <div class="mini-grid"><div class="status-card"><div class="status-label">Network</div><div class="status-number">Online</div></div><div class="status-card"><div class="status-label">Backups</div><div class="status-number">Verified</div></div></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── How It Works ────────────────────────────────── -->
-  <section id="how-it-works" aria-labelledby="how-heading">
-    <div class="container">
-      <p class="section-label">How it works</p>
-      <h2 class="section-title" id="how-heading">Three steps to a fluid day</h2>
-      <div class="steps-grid">
-        <article class="step-card">
-          <div class="step-number" aria-hidden="true">1</div>
-          <h3>Plan your day</h3>
-          <p>Add your tasks and time blocks to build a clear picture of your day from the start.</p>
-        </article>
-        <article class="step-card">
-          <div class="step-number" aria-hidden="true">2</div>
-          <h3>Adjust on the fly</h3>
-          <p>Drag boundaries to rebalance your time instantly as priorities shift throughout the day.</p>
-        </article>
-        <article class="step-card">
-          <div class="step-number" aria-hidden="true">3</div>
-          <h3>Stay in flow</h3>
-          <p>Adapt your day without friction — no juggling apps, no missed commitments.</p>
-        </article>
+    <section class="section-sm section-dark" aria-label="Key business outcomes"><div class="container grid-4"><div class="metric"><strong>Less downtime</strong><span>Proactive support keeps work moving.</span></div><div class="metric"><strong>Clear decisions</strong><span>Practical guidance without jargon.</span></div><div class="metric"><strong>Better protection</strong><span>Planning for backups and continuity.</span></div><div class="metric"><strong>One partner</strong><span>Coordination across your vendors.</span></div></div></section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Why High Tech STL</p><h2>Big-company discipline, built for local business.</h2></div><p>Your technology should help your team serve customers, not create another full-time problem. We bring structure, ownership, and practical planning to businesses without an internal IT department.</p></div>
+        <div class="grid-3">
+          <article class="card"><div class="icon">01</div><h3>Enterprise experience</h3><p>More than eight years of Amazon IT leadership experience applied to the realities and budgets of growing local businesses.</p></article>
+          <article class="card"><div class="icon">02</div><h3>Business-first advice</h3><p>Recommendations tied to reliability, productivity, risk, and your actual operating goals rather than unnecessary technology.</p></article>
+          <article class="card"><div class="icon">03</div><h3>Accountable support</h3><p>A local technology partner who learns your environment, documents what matters, and coordinates issues through resolution.</p></article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── Why Different ───────────────────────────────── -->
-  <section id="why-different" aria-labelledby="why-heading">
-    <div class="container">
-      <p class="section-label">Why FlowSlot</p>
-      <h2 class="section-title" id="why-heading">Built different, by design</h2>
-      <ul class="why-list">
-        <li><span class="why-bullet" aria-hidden="true">×</span>Not a to-do list.</li>
-        <li><span class="why-bullet" aria-hidden="true">×</span>Not a calendar.</li>
-      </ul>
-      <p class="why-highlight">
-        A <span>dynamic system</span> for controlling your time.
-      </p>
-    </div>
-  </section>
-
-  <!-- ── Built by High-Tech STL ─────────────────────────────── -->
-  <section id="company" aria-labelledby="company-heading">
-    <div class="container">
-      <div class="company-box">
-        <p class="section-label">About the company</p>
-        <h2 id="company-heading">Built by High-Tech STL</h2>
-        <p>High-Tech STL is a growing technology company focused on building practical digital tools, software, and tech solutions. FlowSlot is our first featured product, with more to come.</p>
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Core Services</p><h2>Practical support across your technology.</h2></div><a class="button button-secondary" href="services.html">Explore all services</a></div>
+        <div class="grid-3">
+          <article class="card"><div class="icon">IT</div><h3>Managed IT Support</h3><p>Responsive remote and on-site support, documentation, device guidance, and ongoing technology reviews.</p><a class="card-link" href="services.html#managed-it">Learn more →</a></article>
+          <article class="card"><div class="icon">Wi</div><h3>Network &amp; WiFi</h3><p>Reliable wired and wireless networks designed around your space, staff, devices, and customer needs.</p><a class="card-link" href="services.html#network">Learn more →</a></article>
+          <article class="card"><div class="icon">BC</div><h3>Backup &amp; Continuity</h3><p>Planning and verification that help protect critical data and keep the business prepared for disruption.</p><a class="card-link" href="services.html#backup">Learn more →</a></article>
+          <article class="card"><div class="icon">TC</div><h3>Technology Consulting</h3><p>Clear assessments, roadmaps, purchasing guidance, and project leadership grounded in business value.</p><a class="card-link" href="services.html#consulting">Learn more →</a></article>
+          <article class="card"><div class="icon">FM</div><h3>Fractional IT Management</h3><p>Strategic technology leadership and vendor accountability without adding a full-time management role.</p><a class="card-link" href="services.html#fractional">Learn more →</a></article>
+          <article class="card"><div class="icon">PS</div><h3>Project Services</h3><p>Focused help for office moves, equipment rollouts, network upgrades, and other defined technology projects.</p><a class="card-link" href="services.html#projects">Learn more →</a></article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── CTA ────────────────────────────────────────────────── -->
-  <section id="cta" aria-labelledby="cta-heading">
-    <div class="container">
-      <div class="cta-box">
-        <p class="section-label">In development</p>
-        <h2 id="cta-heading">FlowSlot is in active development</h2>
-        <p>We're focused on building FlowSlot into a polished, ready-to-use product. Check back soon for updates as High-Tech STL continues to grow.</p>
-        <a href="#hero" class="btn-primary">Back to Top</a>
+    <section class="section">
+      <div class="container split">
+        <div class="portrait-card"><p class="eyebrow">Meet the founder</p><h3>Technology leadership shaped inside some of the world's most demanding operations.</h3><p>Joshua Hancock<br>Founder, High Tech STL</p><div class="portrait-initials" aria-hidden="true">JH</div></div>
+        <div><p class="eyebrow">A different level of perspective</p><h2>Former Amazon IT leadership, now focused on your business.</h2><p class="lead">Joshua spent more than eight years at Amazon leading IT operations across fulfillment centers, distribution centers, delivery stations, and pharmacy operations.</p><p>That experience included network infrastructure, multi-site operations, technical teams, vendors, projects, and business continuity. High Tech STL was created to bring those disciplined practices to organizations that need serious technology leadership without enterprise overhead.</p><div class="button-row"><a class="button button-blue" href="about.html">Read Joshua's story</a></div></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── Footer ──────────────────────────────────────── -->
-  <footer>
-    <div class="container">
-      <p class="footer-brand">High-Tech STL</p>
-      <p>Built by Joshua Hancock</p>
-      <p><a href="mailto:contact@hightechstl.com" class="footer-email">contact@hightechstl.com</a></p>
-    </div>
-  </footer>
+    <section class="section section-alt">
+      <div class="container"><div class="section-heading"><div><p class="eyebrow">Industries Served</p><h2>Support informed by how you work.</h2></div><p>We help organizations where uptime, customer service, connected equipment, and data access directly affect the day.</p></div>
+        <ul class="tag-list" aria-label="Industries served"><li>Printing &amp; Sign Shops</li><li>Funeral Homes</li><li>Specialty Retail</li><li>Medical Offices</li><li>Law Firms</li><li>Construction</li><li>Real Estate</li><li>Professional Offices</li></ul>
+        <div class="button-row"><a class="button button-secondary" href="industries.html">See industry solutions</a></div>
+      </div>
+    </section>
 
+    <section class="section">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Straightforward Pricing</p><h2>Start with the support level you need.</h2></div><p>Managed plans begin at $299 per month. The free assessment helps identify the right fit before you make a commitment.</p></div>
+        <div class="grid-3"><article class="card"><h3>Essential Support</h3><div class="price">$299<small>/month</small></div><p>Core remote support and regular technology guidance.</p></article><article class="card" style="border:2px solid var(--blue)"><p class="eyebrow">Recommended</p><h3>Business Technology Partner</h3><div class="price">$499<small>/month</small></div><p>Priority support, on-site help, reviews, documentation, and vendor coordination.</p></article><article class="card"><h3>Fully Managed IT</h3><div class="price">$899<small>/month</small></div><p>Comprehensive support, planning, monitoring, and management.</p></article></div>
+        <div class="button-row"><a class="button button-blue" href="pricing.html">Compare all plans</a></div>
+      </div>
+    </section>
+
+    <section class="section-sm"><div class="container"><div class="quote"><p>“High Tech STL took the time to understand our operation, explain the priorities clearly, and give us a technology plan we could act on.”</p><footer>Client testimonial placeholder · Replace with a verified customer quote</footer></div></div></section>
+
+    <section class="section section-alt"><div class="container split"><div><p class="eyebrow">Innovation Lab</p><h2>Building better ways to work.</h2><p>High Tech STL also develops software tools and technology projects, including FlowSlot, a visual time-blocking and productivity platform currently in development.</p><a class="button button-secondary" href="flowslot.html">Learn About FlowSlot</a></div><div class="schedule-demo" style="min-height:280px;background:#32245f"><div class="time-axis"><span>8 AM</span><span>10 AM</span><span>12 PM</span><span>2 PM</span></div><div class="blocks"><div class="flow-block">Plan the day</div><div class="flow-block">Focused project work</div><div class="flow-block">Client follow-up</div></div></div></div></section>
+
+    <section class="section"><div class="container cta-band"><p class="eyebrow">Free Technology Assessment</p><h2>Know what is working, what is risky, and what to do next.</h2><p>Start with a practical conversation about your business, current technology, and biggest frustrations. No jargon. No hard sell.</p><div class="button-row"><a class="button button-primary" href="contact.html">Schedule Your Free Assessment</a><a class="button button-secondary" href="mailto:contact@hightechstl.com">Email High Tech STL</a></div></div></section>
+  </main>
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html" style="color:white"><span class="brand-mark">HT</span><span>High Tech STL</span></a><p>Enterprise-level IT support and technology leadership for growing businesses across the St. Louis metro area.</p></div><div><h3>Company</h3><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="industries.html">Industries</a></li><li><a href="flowslot.html">Innovation Lab</a></li></ul></div><div><h3>Services</h3><ul class="footer-links"><li><a href="services.html">Managed IT</a></li><li><a href="services.html#network">Network Support</a></li><li><a href="pricing.html">Pricing</a></li></ul></div><div><h3>Start a Conversation</h3><ul class="footer-links"><li><a href="contact.html">Free Technology Assessment</a></li><li><a href="mailto:contact@hightechstl.com">contact@hightechstl.com</a></li><li>Missouri &amp; Illinois</li></ul></div></div><div class="footer-bottom"><span>© <span data-year></span> High Tech STL. All rights reserved.</span><span>St. Louis, Missouri</span></div></div></footer>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
