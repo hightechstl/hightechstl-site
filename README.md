@@ -18,7 +18,7 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `assets/img/favicon.svg` - Brand favicon
 - `admin.html` - Private Firebase-backed client and trouble-ticket dashboard
 - `assets/js/admin.js`, `assets/css/admin.css` - Service desk application
-- `firestore.rules`, `firestore.indexes.json` - Service desk data security
+- `firestore.rules`, `firestore.indexes.json`, `functions/` - Service desk data security and owner-only account creation
 - `robots.txt`, `sitemap.xml`, `.nojekyll` - GitHub Pages and SEO support
 
 ## Local Preview

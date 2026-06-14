@@ -7,6 +7,7 @@ Firebase Authentication and Cloud Firestore. It manages:
 - trouble tickets with status, priority, category, and target date
 - chronological ticket notes and status-change activity
 - dashboard counts and searchable client/ticket lists
+- owner-only creation and review of service desk user accounts
 
 Use a dedicated Firebase project for High Tech STL operations rather than the
 FlowSlot project. This keeps customer support data, permissions, billing, and
@@ -29,7 +30,8 @@ provided by Authentication and `firestore.rules`.
 3. Open the Authentication users screen and create your administrator account.
 4. Copy that user's Firebase UID.
 
-Do not enable public account registration. The dashboard has sign-in only.
+Do not enable public account registration. The dashboard has sign-in only;
+additional accounts are created by the owner from the protected Users screen.
 
 ## 3. Create Firestore and authorize the first admin
 
@@ -46,11 +48,16 @@ Do not enable public account registration. The dashboard has sign-in only.
 }
 ```
 
-Admin documents cannot be created or changed from the website. Add, disable,
-or remove administrators through Firebase Console or a future privileged server
-function.
+The first administrator still needs to be created manually. After the Cloud
+Functions deployment below, the owner account can create additional service
+desk accounts from the Users screen. That screen and its server functions are
+restricted to UID `uVQ66cTpvAVzA35wueFRgGckfCF3`.
 
-## 4. Deploy Firestore security
+## 4. Deploy Firebase security and account functions
+
+Cloud Functions deployment requires the Firebase project to use the Blaze
+plan. The functions only run when the owner opens the Users screen or creates
+an account, but Firebase requires billing to be enabled before deployment.
 
 Install and authenticate the Firebase CLI, then select the operations project:
 
@@ -58,7 +65,7 @@ Install and authenticate the Firebase CLI, then select the operations project:
 npm install -g firebase-tools
 firebase login
 firebase use --add
-firebase deploy --only firestore:rules,firestore:indexes
+firebase deploy --only firestore:rules,firestore:indexes,functions
 ```
 
 The included rules:
@@ -68,6 +75,14 @@ The included rules:
 - prevent browser-side deletion of clients and tickets
 - make ticket activity append-only
 - deny access to every unspecified collection
+
+The callable functions:
+
+- verify the caller is signed in, is an active administrator, and has the
+  exact owner UID
+- create the Firebase Authentication user and matching `admins/{uid}` record
+- roll back the Authentication user if the Firestore record cannot be created
+- never store the temporary password in Firestore
 
 ## 5. Publish and test
 

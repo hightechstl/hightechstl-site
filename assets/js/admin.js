@@ -16,11 +16,14 @@
   firebase.initializeApp(config);
   const auth = firebase.auth();
   const db = firebase.firestore();
+  const functions = firebase.app().functions('us-central1');
   const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
+  const accountManagerUid = 'uVQ66cTpvAVzA35wueFRgGckfCF3';
 
   let currentUser = null;
   let clients = [];
   let tickets = [];
+  let serviceDeskUsers = [];
   let unsubClients = null;
   let unsubTickets = null;
   let unsubActivity = null;
@@ -44,7 +47,8 @@
   const viewMeta = {
     dashboard: ['Service desk', 'Overview'],
     tickets: ['Support operations', 'Tickets'],
-    clients: ['Account records', 'Clients']
+    clients: ['Account records', 'Clients'],
+    users: ['Access control', 'Users']
   };
 
   const normalize = (value) => String(value || '').trim().toLowerCase();
@@ -74,13 +78,17 @@
 
   function readableError(error) {
     console.error(error);
-    if (error?.code === 'permission-denied') return 'You do not have permission to perform that action.';
+    if (['permission-denied', 'functions/permission-denied'].includes(error?.code)) return 'You do not have permission to perform that action.';
+    if (['already-exists', 'functions/already-exists'].includes(error?.code)) return 'An account with that email already exists.';
+    if (['invalid-argument', 'functions/invalid-argument'].includes(error?.code)) return error?.message || 'Check the account details and try again.';
+    if (['unauthenticated', 'functions/unauthenticated'].includes(error?.code)) return 'Your session expired. Sign in and try again.';
     if (error?.code === 'auth/invalid-credential') return 'The email or password is incorrect.';
     if (error?.code === 'auth/too-many-requests') return 'Too many attempts. Wait a moment and try again.';
     return error?.message || 'Something went wrong. Please try again.';
   }
 
   function setView(viewName) {
+    if (viewName === 'users' && currentUser?.uid !== accountManagerUid) return;
     document.querySelectorAll('.admin-view').forEach((view) => {
       view.hidden = view.id !== `${viewName}-view`;
     });
@@ -90,6 +98,9 @@
     const [eyebrow, title] = viewMeta[viewName];
     elements['view-eyebrow'].textContent = eyebrow;
     elements['view-title'].textContent = title;
+    elements['new-client-button'].hidden = viewName === 'users';
+    elements['new-ticket-button'].hidden = viewName === 'users';
+    if (viewName === 'users') loadServiceDeskUsers();
   }
 
   function clientById(id) {
@@ -181,6 +192,33 @@
       : '<p class="admin-empty">No clients match this search.</p>';
   }
 
+  function renderServiceDeskUsers() {
+    elements['user-list'].innerHTML = serviceDeskUsers.length
+      ? serviceDeskUsers.map((user) => `
+        <article class="admin-list-item admin-list-item-static">
+          <div>
+            <h3>${escapeHtml(user.displayName || user.email)}</h3>
+            <p>${escapeHtml(user.email)} · Created ${escapeHtml(formatDate(user.createdAt))}${user.lastSignInAt ? ` · Last sign-in ${escapeHtml(formatDate(user.lastSignInAt, true))}` : ''}</p>
+          </div>
+          <div class="admin-list-actions">
+            <span class="admin-badge ${user.active && !user.disabled ? 'active' : 'inactive'}">${user.active && !user.disabled ? 'Active' : 'Inactive'}</span>
+          </div>
+        </article>`).join('')
+      : '<p class="admin-empty">No service desk accounts found.</p>';
+  }
+
+  async function loadServiceDeskUsers() {
+    if (currentUser?.uid !== accountManagerUid) return;
+    elements['user-list'].innerHTML = '<p class="admin-empty">Loading accounts...</p>';
+    try {
+      const result = await functions.httpsCallable('getServiceDeskUsers')();
+      serviceDeskUsers = result.data?.users || [];
+      renderServiceDeskUsers();
+    } catch (error) {
+      elements['user-list'].innerHTML = `<p class="admin-empty">${escapeHtml(readableError(error))}</p>`;
+    }
+  }
+
   function renderAll() {
     renderClientOptions(elements['ticket-client'].value);
     renderDashboard();
@@ -205,6 +243,13 @@
     elements['client-address'].value = client?.address || '';
     elements['client-notes'].value = client?.notes || '';
     elements['client-dialog'].showModal();
+  }
+
+  function openUserDialog() {
+    if (currentUser?.uid !== accountManagerUid) return;
+    elements['user-form'].reset();
+    elements['user-active'].checked = true;
+    elements['user-dialog'].showModal();
   }
 
   function openTicketDialog(ticket = null, clientId = '') {
@@ -359,6 +404,30 @@
     }
   }
 
+  async function createServiceDeskUser(event) {
+    event.preventDefault();
+    const button = elements['create-user-button'];
+    button.disabled = true;
+    button.textContent = 'Creating...';
+    try {
+      await functions.httpsCallable('createServiceDeskUser')({
+        displayName: elements['user-name'].value.trim(),
+        email: elements['user-email'].value.trim(),
+        password: elements['user-password'].value,
+        active: elements['user-active'].checked
+      });
+      elements['user-dialog'].close();
+      elements['user-form'].reset();
+      showMessage('Service desk account created.');
+      await loadServiceDeskUsers();
+    } catch (error) {
+      showMessage(readableError(error), true);
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Create Account';
+    }
+  }
+
   function subscribeToData() {
     unsubClients = db.collection('clients').orderBy('company').onSnapshot((snapshot) => {
       clients = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -393,6 +462,7 @@
     stopSubscriptions();
     currentUser = null;
     if (!user) {
+      elements['users-nav-button'].hidden = true;
       elements['app-view'].hidden = true;
       elements['login-view'].hidden = false;
       elements['login-message'].textContent = '';
@@ -407,6 +477,7 @@
         return;
       }
       currentUser = user;
+      elements['users-nav-button'].hidden = user.uid !== accountManagerUid;
       elements['signed-in-email'].textContent = user.email || user.uid;
       elements['login-form'].reset();
       elements['login-message'].textContent = '';
@@ -423,9 +494,11 @@
   elements['sign-out-button'].addEventListener('click', () => auth.signOut());
   elements['new-client-button'].addEventListener('click', () => openClientDialog());
   elements['new-ticket-button'].addEventListener('click', () => openTicketDialog());
+  elements['new-user-button'].addEventListener('click', openUserDialog);
   elements['client-form'].addEventListener('submit', saveClient);
   elements['ticket-form'].addEventListener('submit', saveTicket);
   elements['activity-form'].addEventListener('submit', addActivity);
+  elements['user-form'].addEventListener('submit', createServiceDeskUser);
 
   document.querySelectorAll('[data-view]').forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));
   document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventListener('click', () => setView(button.dataset.goView)));

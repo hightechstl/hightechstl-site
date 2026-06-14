@@ -32,10 +32,13 @@
 .admin-panel { padding: 1.25rem; background: white; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 7px 25px rgba(11,35,65,.04); }
 .admin-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
 .admin-panel-heading h2 { margin: 0; font-size: 1.5rem; }
+.admin-panel-copy { margin: -.35rem 0 1rem; color: var(--muted); font-size: .9rem; }
 .admin-list { display: grid; }
 .admin-list-item { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 1rem; padding: 1rem .25rem; border-top: 1px solid var(--line); cursor: pointer; }
+.admin-list-item-static { cursor: default; }
 .admin-list-item:first-child { border-top: 0; }
 .admin-list-item:hover h3 { color: var(--blue); }
+.admin-list-item-static:hover h3 { color: inherit; }
 .admin-list-item h3 { margin: 0 0 .25rem; font-family: Inter,sans-serif; font-size: 1rem; }
 .admin-list-item p { margin: 0; color: var(--muted); font-size: .84rem; }
 .admin-list-roomy .admin-list-item { padding: 1.15rem .5rem; }
@@ -50,12 +53,17 @@
 .admin-filters input, .admin-filters select { min-height: 44px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 .admin-dialog { width: min(760px, calc(100% - 2rem)); max-height: calc(100vh - 2rem); padding: 0; overflow: auto; background: white; border: 0; border-radius: 18px; box-shadow: 0 30px 90px rgba(0,0,0,.3); }
+.admin-dialog-compact { width: min(560px, calc(100% - 2rem)); }
 .admin-dialog::backdrop { background: rgba(7,26,48,.65); backdrop-filter: blur(3px); }
 .admin-dialog > form, .admin-ticket-detail { padding: 1.6rem; }
 .admin-dialog-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
 .admin-dialog-heading h2 { margin: 0; font-size: 2rem; }
 .admin-dialog-close { width: 38px; height: 38px; padding: 0; color: var(--navy); background: var(--cloud); border: 0; border-radius: 50%; font-size: 1.6rem; cursor: pointer; }
 .admin-dialog-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.5rem; }
+.admin-field-help { display: block; margin-top: .4rem; color: var(--muted); font-size: .78rem; }
+.admin-checkbox { display: flex; align-items: center; gap: .65rem; }
+.admin-checkbox input { width: 18px; height: 18px; margin: 0; }
+.admin-checkbox label { margin: 0; }
 .admin-ticket-detail { padding: 1.6rem; }
 .admin-detail-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; margin: 1rem 0; }
 .admin-detail-grid div { padding: .9rem; background: var(--cloud); border-radius: 10px; }

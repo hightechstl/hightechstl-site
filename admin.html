@@ -35,6 +35,7 @@
         <button class="active" type="button" data-view="dashboard">Overview</button>
         <button type="button" data-view="tickets">Tickets</button>
         <button type="button" data-view="clients">Clients</button>
+        <button id="users-nav-button" type="button" data-view="users" hidden>Users</button>
       </nav>
       <div class="admin-sidebar-footer">
         <span id="signed-in-email"></span>
@@ -79,6 +80,17 @@
         <div class="admin-filters"><label class="admin-search"><span class="sr-only">Search clients</span><input id="client-search" type="search" placeholder="Search company, contact, email, or phone"></label></div>
         <section class="admin-panel"><div id="client-list" class="admin-list admin-list-roomy"></div></section>
       </section>
+
+      <section class="admin-view" id="users-view" hidden>
+        <section class="admin-panel">
+          <div class="admin-panel-heading">
+            <div><p class="eyebrow">Access control</p><h2>Service desk accounts</h2></div>
+            <button class="button button-primary" id="new-user-button" type="button">Create Account</button>
+          </div>
+          <p class="admin-panel-copy">Accounts created here can sign in to this service desk and manage clients and tickets.</p>
+          <div id="user-list" class="admin-list admin-list-roomy"><p class="admin-empty">Loading accounts...</p></div>
+        </section>
+      </section>
     </main>
   </div>
 
@@ -114,9 +126,21 @@
     <section class="admin-activity"><h3>Activity</h3><form id="activity-form"><input id="activity-ticket-id" type="hidden"><div class="field"><label for="activity-note">Add note</label><textarea id="activity-note" required placeholder="Work performed, client update, next step..."></textarea></div><button class="button button-blue" type="submit">Add Note</button></form><div id="activity-list" class="admin-timeline"></div></section>
   </dialog>
 
+  <dialog class="admin-dialog admin-dialog-compact" id="user-dialog">
+    <form method="dialog" id="user-form">
+      <div class="admin-dialog-heading"><div><p class="eyebrow">Access control</p><h2>Create Account</h2></div><button class="admin-dialog-close" type="button" data-close-dialog="user-dialog" aria-label="Close">×</button></div>
+      <div class="field"><label for="user-name">Name</label><input id="user-name" autocomplete="name" maxlength="100" required></div>
+      <div class="field"><label for="user-email">Email</label><input id="user-email" type="email" autocomplete="off" maxlength="254" required></div>
+      <div class="field"><label for="user-password">Temporary password</label><input id="user-password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required><small class="admin-field-help">Use at least 12 characters and share it securely. Passwords are not stored in the service desk database.</small></div>
+      <div class="field admin-checkbox"><input id="user-active" type="checkbox" checked><label for="user-active">Allow service desk access immediately</label></div>
+      <div class="admin-dialog-actions"><button class="button button-secondary" value="cancel" type="button" data-close-dialog="user-dialog">Cancel</button><button class="button button-primary" id="create-user-button" type="submit">Create Account</button></div>
+    </form>
+  </dialog>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
   <script src="assets/js/firebase-config.js"></script>
   <script src="assets/js/admin.js" defer></script>
 </body>
