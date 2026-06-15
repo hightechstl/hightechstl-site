@@ -33,7 +33,7 @@ Then open `http://localhost:8000`.
 
 ## Contact Form
 
-The static form uses FormSubmit and routes requests to `contact@hightechstl.com`. FormSubmit requires a one-time email activation after the first submission. Before launch, submit and verify the form or replace the endpoint with the preferred CRM/form service.
+The static form uses FormSubmit and routes requests to `contact@j2crafts.com`. FormSubmit requires a one-time email activation after the first submission. Before launch, submit and verify the form or replace the endpoint with the preferred CRM/form service.
 
 ## Service Desk
 
