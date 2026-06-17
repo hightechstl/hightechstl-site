@@ -161,6 +161,55 @@ if (adventureApp) {
       ]
     },
     {
+      id: 'lanterns-below-marrow-hill',
+      title: 'Lanterns Below Marrow Hill',
+      type: 'Mystery / Light Fantasy',
+      time: '55 min',
+      purchased: false,
+      invite: 'https://hightechstl.com/play/lanterns-below-marrow-hill?seat=2',
+      summary: 'Two companions enter an old hill shrine to recover a vanished village lantern before the road goes dark for good.',
+      kit: {
+        theme: 'hill-lantern',
+        mapTitle: 'Marrow Hill Shrine',
+        mapDesc: 'A compact underground shrine with six connected areas: entry stair, candle hall, oath room, mirror pool, root vault, and lantern heart. The right side is reserved for story cards.',
+        palette: {paper: '#F6EEDC', grid: '#D7C8A6', stroke: '#3D3428', room: '#E8D6AA', route: '#7A5C32', accent: '#D9822B'},
+        rooms: [
+          [48, 64, 130, 76, 'Entry Stair'],
+          [220, 58, 150, 88, 'Candle Hall'],
+          [402, 72, 104, 74, 'Oath Room'],
+          [82, 230, 132, 86, 'Mirror Pool'],
+          [260, 218, 138, 92, 'Root Vault'],
+          [418, 268, 94, 88, 'Lantern Heart']
+        ],
+        routes: ['M178 102h42', 'M370 102h32', 'M142 140v90', 'M214 272h46', 'M398 264h20'],
+        tokens: [
+          {x: 112, y: 102, color: '#2F5D62', label: 'A'},
+          {x: 144, y: 102, color: '#8A3FFC', label: 'B'}
+        ],
+        clues: [
+          {x: 300, y: 102, type: 'lantern'},
+          {x: 454, y: 112, type: 'seal'},
+          {x: 466, y: 312, type: 'key'}
+        ],
+        cards: [
+          'The stair opens after both players name what they fear losing.',
+          'Lantern symbols and oath carvings reveal different truths.',
+          'Restore the road, free the keeper, or split the flame.'
+        ],
+        resources: {
+          MAP: ['Marrow Hill Shrine Map', 'Six connected shrine areas and marked clue points'],
+          TOK: ['Two Lantern Seeker Tokens', 'Color-coded cutouts for quick mobile reference'],
+          STY: ['Lanterns Below Storyboard', 'Scene guide with timing and final outcomes'],
+          CLU: ['Lantern, Seal, and Key Clue Deck', 'Split clues that encourage shared deduction']
+        }
+      },
+      beats: [
+        'Both players arrive at Marrow Hill as the village lantern flickers out and the sealed stair opens beneath it.',
+        'Each player receives a different clue trail: one follows old lantern symbols while the other deciphers hidden vows carved into stone.',
+        'Together, the players choose whether to restore the lantern’s light, free the spirit bound inside it, or split the power between both.'
+      ]
+    },
+    {
       id: 'last-table-at-ember-house',
       title: 'Last Table at Ember House',
       type: 'Cozy heist',
@@ -355,6 +404,30 @@ if (adventureApp) {
     return `<path d="M${clue.x - 20} ${clue.y - 14}h40v28h-40z" fill="${fill}"/><path d="M${clue.x - 12} ${clue.y}h24" stroke="#fff6dc" stroke-width="4" stroke-linecap="round"/>`;
   };
 
+  const cardTextLines = (text, maxLength = 19, maxLines = 3) => {
+    const words = String(text).split(/\s+/).filter(Boolean);
+    const lines = [];
+
+    words.forEach((word) => {
+      if (lines.length === 0) {
+        lines.push(word);
+        return;
+      }
+
+      const current = lines[lines.length - 1] || '';
+      const next = current ? `${current} ${word}` : word;
+      if (next.length <= maxLength) {
+        lines[lines.length - 1] = next;
+      } else if (lines.length < maxLines) {
+        lines.push(word);
+      } else {
+        lines[lines.length - 1] = `${current.replace(/\.+$/, '')}...`;
+      }
+    });
+
+    return lines.slice(0, maxLines);
+  };
+
   const renderMapBoard = () => {
     const kit = selectedAdventure.kit;
     const palette = kit.palette;
@@ -371,11 +444,15 @@ if (adventureApp) {
     const cards = kit.cards.map((card, index) => {
       const y = 36 + index * 108;
       const dotColor = index % 2 === 0 ? palette.route : palette.accent;
+      const lines = cardTextLines(card);
+      const textLines = lines.map((line, lineIndex) => (
+        `<tspan x="24" dy="${lineIndex === 0 ? 0 : 16}">${escapeHtml(line)}</tspan>`
+      )).join('');
       return `
         <rect y="${y}" width="164" height="82" rx="10" fill="#fff7e5" stroke="${escapeHtml(palette.stroke)}" stroke-width="2"/>
         <circle cx="28" cy="${y + 22}" r="7" fill="${escapeHtml(dotColor)}"/>
-        <path d="M24 ${y + 48}h116" stroke="${escapeHtml(palette.accent)}" stroke-width="8" stroke-linecap="round"/>
-        <text x="24" y="${y + 64}" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="850">${escapeHtml(card)}</text>
+        <path d="M24 ${y + 40}h116" stroke="${escapeHtml(palette.accent)}" stroke-width="8" stroke-linecap="round"/>
+        <text x="24" y="${y + 56}" fill="#473520" font-size="12" font-family="Inter, Arial, sans-serif" font-weight="850">${textLines}</text>
       `;
     }).join('');
 
