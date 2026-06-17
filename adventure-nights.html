@@ -95,37 +95,7 @@
               <div class="stage-meta"><span data-selected-time>60 min</span><span>2 players</span></div>
             </div>
 
-            <div class="map-board" aria-label="Adventure map and storyboard preview">
-              <svg viewBox="0 0 760 430" role="img" aria-labelledby="map-title map-desc">
-                <title id="map-title">Gilded Archive adventure map</title>
-                <desc id="map-desc">A stylized parchment map with rooms, player tokens, clues, and storyboard panels.</desc>
-                <defs>
-                  <pattern id="map-grid" width="38" height="38" patternUnits="userSpaceOnUse">
-                    <path d="M38 0H0v38" fill="none" stroke="#c4a873" stroke-width="1" opacity=".45"/>
-                  </pattern>
-                </defs>
-                <rect width="760" height="430" rx="18" fill="#efe1bd"/>
-                <rect x="28" y="28" width="504" height="374" rx="12" fill="url(#map-grid)" stroke="#8d6d3d" stroke-width="3"/>
-                <path d="M84 96h156v108H84zM292 70h182v128H292zM126 246h166v94H126zM342 250h122v112H342z" fill="#ddc994" stroke="#6f5631" stroke-width="3"/>
-                <path d="M240 152h52M238 292h104M402 198v52" fill="none" stroke="#6f5631" stroke-width="8" stroke-linecap="round"/>
-                <path d="M465 306c52-14 40-64 4-76-44-14-82 28-66 70" fill="none" stroke="#0d7774" stroke-width="5" stroke-dasharray="10 10"/>
-                <circle cx="154" cy="146" r="16" fill="#bf6b35"/><circle cx="388" cy="302" r="16" fill="#0d7774"/>
-                <path d="M442 112l14 24 28 6-19 21 3 29-26-12-26 12 3-29-19-21 28-6z" fill="#bf6b35" opacity=".9"/>
-                <g fill="#473520" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">
-                  <text x="105" y="130">Reading Room</text><text x="316" y="116">Vault Antechamber</text><text x="151" y="300">Hidden Passage</text><text x="356" y="294">Clue Deck</text>
-                </g>
-                <g transform="translate(562 36)">
-                  <rect width="164" height="82" rx="10" fill="#f7ecd0" stroke="#8d6d3d" stroke-width="2"/>
-                  <rect y="108" width="164" height="82" rx="10" fill="#f7ecd0" stroke="#8d6d3d" stroke-width="2"/>
-                  <rect y="216" width="164" height="82" rx="10" fill="#f7ecd0" stroke="#8d6d3d" stroke-width="2"/>
-                  <path d="M24 46h116M24 154h116M24 262h116" stroke="#c08b4f" stroke-width="8" stroke-linecap="round"/>
-                  <circle cx="32" cy="24" r="7" fill="#0d7774"/><circle cx="32" cy="132" r="7" fill="#bf6b35"/><circle cx="32" cy="240" r="7" fill="#0d7774"/>
-                  <text x="24" y="60" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="800">Opening clue</text>
-                  <text x="24" y="168" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="800">Choice point</text>
-                  <text x="24" y="276" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="800">Final reveal</text>
-                </g>
-              </svg>
-            </div>
+            <div class="map-board" data-map-board aria-label="Adventure map, tokens, cards, and storyboard preview"></div>
 
             <div class="story-strip" id="included">
               <article><span>01</span><strong>Open the story</strong><p data-story-one>Read the first scene together and place both tokens in the reading room.</p></article>

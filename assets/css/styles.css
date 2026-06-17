@@ -600,6 +600,21 @@ textarea { min-height: 145px; resize: vertical; }
   width: 100%;
   height: auto;
 }
+.adventure-kit-svg {
+  min-height: 260px;
+}
+.adventure-kit-svg text {
+  paint-order: stroke;
+  stroke: rgba(255, 246, 220, .42);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.adventure-kit-svg.meridian text {
+  stroke: rgba(232, 246, 250, .55);
+}
+.adventure-kit-svg.ember text {
+  stroke: rgba(255, 236, 202, .5);
+}
 .story-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
