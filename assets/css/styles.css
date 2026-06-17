@@ -17,6 +17,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -452,6 +453,67 @@ textarea { min-height: 145px; resize: vertical; }
   font-size: .78rem;
 }
 .account-strip strong { color: var(--adv-ink); }
+.adventure-login,
+.adventure-account {
+  display: grid;
+  gap: .7rem;
+  margin: 1rem 0;
+  padding: .85rem;
+  background: #fff7e5;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+}
+.adventure-login strong,
+.adventure-account strong {
+  display: block;
+  color: var(--adv-ink);
+  line-height: 1.25;
+}
+.adventure-login label {
+  margin: .15rem 0 -.45rem;
+  color: var(--adv-ink);
+  font-size: .76rem;
+}
+.adventure-login input {
+  padding: .68rem .72rem;
+  background: #fffaf0;
+  border-color: var(--adv-line);
+  border-radius: 8px;
+  font-size: .86rem;
+}
+.adventure-login-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .55rem;
+}
+.adventure-login-actions .button {
+  min-height: 42px;
+  padding: .62rem .7rem;
+  font-size: .8rem;
+}
+.adventure-login p {
+  margin: 0;
+  color: var(--adv-muted);
+  font-size: .76rem;
+  line-height: 1.4;
+}
+.adventure-login p.error { color: #9d2d20; }
+.adventure-reset-button,
+.adventure-account .admin-link-button {
+  justify-self: start;
+  padding: 0;
+  color: var(--adv-copper-dark);
+  background: transparent;
+  border: 0;
+  font-size: .78rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+.adventure-account {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  background: #f4e7c8;
+}
 .adventure-list {
   display: grid;
   gap: .65rem;
@@ -470,6 +532,9 @@ textarea { min-height: 145px; resize: vertical; }
 .adventure-choice[aria-selected="true"] {
   background: #f1dfb7;
   border-color: var(--adv-copper);
+}
+.adventure-choice.locked {
+  opacity: .72;
 }
 .adventure-choice strong {
   display: block;
@@ -634,6 +699,19 @@ textarea { min-height: 145px; resize: vertical; }
 }
 .resource-item.unlocked .resource-icon { background: var(--adv-teal); }
 .resource-item.unlocked .resource-state { color: var(--adv-teal); }
+.resource-action {
+  padding: 0;
+  color: var(--adv-teal);
+  background: transparent;
+  border: 0;
+  font-size: .75rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+.resource-action:disabled {
+  color: var(--adv-copper-dark);
+  cursor: default;
+}
 .access-actions {
   display: grid;
   gap: .6rem;
@@ -683,6 +761,8 @@ textarea { min-height: 145px; resize: vertical; }
   .app-panel-head,
   .stage-topline { display: grid; }
   .stage-meta { justify-content: start; }
+  .adventure-login-actions,
+  .adventure-account { grid-template-columns: 1fr; }
   .invite-row { display: grid; }
   .resource-item { grid-template-columns: 34px minmax(0, 1fr); }
   .resource-state { grid-column: 2; }

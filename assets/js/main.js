@@ -83,6 +83,8 @@ if (adventureApp) {
     }
   ];
 
+  const previewOwnedAdventureIds = adventures.filter((adventure) => adventure.purchased).map((adventure) => adventure.id);
+  const defaultSubscriptionUrl = 'https://www.j2crafts.com/products/adventure-nights-monthly-library';
   const resources = [
     ['MAP', 'Adventure map', 'Printable table map'],
     ['TOK', 'Player tokens', 'Cutout token sheet'],
@@ -91,6 +93,16 @@ if (adventureApp) {
   ];
 
   let selectedAdventure = adventures[0];
+  let currentUser = null;
+  let accessState = {
+    loaded: false,
+    signedIn: false,
+    subscriptionActive: true,
+    subscriptionStatus: 'preview',
+    activeUntil: null,
+    checkoutUrl: defaultSubscriptionUrl,
+    ownedAdventureIds: previewOwnedAdventureIds
+  };
 
   const list = adventureApp.querySelector('[data-adventure-list]');
   const title = adventureApp.querySelector('[data-selected-title]');
@@ -109,24 +121,106 @@ if (adventureApp) {
   const purchaseButton = adventureApp.querySelector('[data-purchase-adventure]');
   const startButton = adventureApp.querySelector('[data-start-adventure]');
   const toggleMode = adventureApp.querySelector('[data-toggle-mode]');
+  const loginForm = adventureApp.querySelector('[data-adventure-login-form]');
+  const loginMessage = adventureApp.querySelector('[data-login-message]');
+  const loginButton = adventureApp.querySelector('[data-login-button]');
+  const createAccountButton = adventureApp.querySelector('[data-create-account]');
+  const resetPasswordButton = adventureApp.querySelector('[data-reset-password]');
+  const accountPanel = adventureApp.querySelector('[data-adventure-account]');
+  const accountTitle = adventureApp.querySelector('[data-account-title]');
+  const signedInEmail = adventureApp.querySelector('[data-signed-in-email]');
+  const signOutButton = adventureApp.querySelector('[data-sign-out]');
+  const planLabel = adventureApp.querySelector('[data-plan-label]');
+  const subscribeNow = adventureApp.querySelector('[data-subscribe-now]');
+
+  let auth = null;
+  let functions = null;
+
+  const escapeHtml = (value) => String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+
+  const formatDate = (value) => {
+    const date = value ? new Date(value) : null;
+    if (!date || Number.isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat('en-US', {dateStyle: 'medium'}).format(date);
+  };
+
+  const readableError = (error) => {
+    if (error?.code === 'auth/invalid-credential') return 'The email or password is incorrect.';
+    if (error?.code === 'auth/email-already-in-use') return 'That email already has an account. Sign in or reset the password.';
+    if (error?.code === 'auth/weak-password') return 'Use a password with at least 6 characters.';
+    if (error?.code === 'auth/too-many-requests') return 'Too many attempts. Wait a moment and try again.';
+    if (['unauthenticated', 'functions/unauthenticated'].includes(error?.code)) return 'Sign in to load Adventure Nights access.';
+    console.error(error);
+    return error?.message || 'Something went wrong. Please try again.';
+  };
+
+  const setLoginMessage = (message, isError = false) => {
+    loginMessage.textContent = message;
+    loginMessage.classList.toggle('error', isError);
+  };
+
+  const setAuthBusy = (isBusy) => {
+    loginButton.disabled = isBusy;
+    createAccountButton.disabled = isBusy;
+    resetPasswordButton.disabled = isBusy;
+  };
+
+  const adventureIsOwned = (adventure) => accessState.ownedAdventureIds.includes(adventure.id);
+  const adventureCanPlay = (adventure) => adventureIsOwned(adventure) || accessState.subscriptionActive;
+  const hasAnyAccess = () => accessState.subscriptionActive || accessState.ownedAdventureIds.length > 0;
+
+  const applyAccessToAdventures = () => {
+    adventures.forEach((adventure) => {
+      adventure.purchased = adventureIsOwned(adventure);
+    });
+  };
+
+  const updateAccountUI = () => {
+    loginForm.hidden = accessState.signedIn;
+    accountPanel.hidden = !accessState.signedIn;
+    accountTitle.textContent = accessState.signedIn ? 'Account ready' : 'Sign in to play';
+    signedInEmail.textContent = currentUser?.email || '';
+    subscribeNow.hidden = hasAnyAccess();
+    subscribeNow.href = accessState.checkoutUrl || defaultSubscriptionUrl;
+
+    if (!accessState.signedIn) {
+      planLabel.textContent = 'Preview mode';
+      return;
+    }
+
+    if (accessState.subscriptionActive) {
+      const activeUntil = formatDate(accessState.activeUntil);
+      planLabel.textContent = activeUntil ? `Subscribed through ${activeUntil}` : 'Subscription active';
+    } else if (accessState.ownedAdventureIds.length > 0) {
+      planLabel.textContent = 'Purchased access';
+    } else {
+      planLabel.textContent = 'No active adventures';
+    }
+  };
 
   const renderAdventureList = () => {
     list.innerHTML = adventures.map((adventure) => `
-      <button class="adventure-choice" type="button" data-adventure-id="${adventure.id}" aria-selected="${adventure.id === selectedAdventure.id}">
-        <strong>${adventure.title}</strong>
-        <span><em>${adventure.type}</em><b>${adventure.purchased ? 'Owned' : 'Subscription'}</b></span>
+      <button class="adventure-choice ${adventureCanPlay(adventure) ? '' : 'locked'}" type="button" data-adventure-id="${escapeHtml(adventure.id)}" aria-selected="${adventure.id === selectedAdventure.id}">
+        <strong>${escapeHtml(adventure.title)}</strong>
+        <span><em>${escapeHtml(adventure.type)}</em><b>${adventureIsOwned(adventure) ? 'Owned' : adventureCanPlay(adventure) ? 'Subscription' : 'Locked'}</b></span>
       </button>
     `).join('');
-    modeLabel.textContent = `${adventures.filter((adventure) => adventure.purchased).length} purchased`;
+    const purchasedCount = accessState.ownedAdventureIds.length;
+    modeLabel.textContent = accessState.signedIn ? `${purchasedCount} purchased` : `${purchasedCount} preview owned`;
   };
 
   const renderResources = () => {
-    const unlocked = selectedAdventure.purchased;
+    const unlocked = adventureIsOwned(selectedAdventure);
     resourceList.innerHTML = resources.map(([icon, name, detail]) => `
       <div class="resource-item ${unlocked ? 'unlocked' : ''}">
-        <span class="resource-icon">${icon}</span>
-        <div><strong>${name}</strong><span>${detail}</span></div>
-        <span class="resource-state">${unlocked ? 'Download' : 'Locked'}</span>
+        <span class="resource-icon">${escapeHtml(icon)}</span>
+        <div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(detail)}</span></div>
+        <button class="resource-action" type="button" ${unlocked ? '' : 'disabled'} data-download-resource="${escapeHtml(name)}">${unlocked ? 'Download' : 'Locked'}</button>
       </div>
     `).join('');
   };
@@ -135,18 +229,151 @@ if (adventureApp) {
     title.textContent = selectedAdventure.title;
     type.textContent = selectedAdventure.type;
     time.textContent = selectedAdventure.time;
-    accessTitle.textContent = selectedAdventure.purchased ? 'Purchased' : 'Subscribed';
-    accessCopy.textContent = selectedAdventure.summary;
-    accessLight.classList.toggle('unlocked', selectedAdventure.purchased);
+    const owned = adventureIsOwned(selectedAdventure);
+    const canPlay = adventureCanPlay(selectedAdventure);
+    accessTitle.textContent = owned ? 'Purchased' : canPlay ? 'Subscribed' : 'Subscribe to Play';
+    accessCopy.textContent = owned
+      ? 'Permanent access is active. Downloads and replay access are unlocked.'
+      : canPlay
+        ? 'Play this adventure while your subscription is active. Permanent downloads unlock when this adventure is purchased.'
+        : 'Create an account or subscribe to unlock this adventure for browser play.';
+    accessLight.classList.toggle('unlocked', owned || canPlay);
     inviteInput.value = selectedAdventure.invite;
     storyOne.textContent = selectedAdventure.beats[0];
     storyTwo.textContent = selectedAdventure.beats[1];
     storyThree.textContent = selectedAdventure.beats[2];
-    purchaseButton.textContent = selectedAdventure.purchased ? 'Permanent Access Active' : 'Buy Permanent Access';
-    purchaseButton.disabled = selectedAdventure.purchased;
+    startButton.disabled = !canPlay;
+    startButton.textContent = canPlay ? 'Start Adventure' : 'Subscribe to Start';
+    purchaseButton.textContent = owned ? 'Permanent Access Active' : 'Buy Permanent Access';
+    purchaseButton.disabled = owned;
     copyStatus.textContent = 'Ready for player two.';
+    updateAccountUI();
     renderAdventureList();
     renderResources();
+  };
+
+  const loadAdventureAccess = async () => {
+    if (!functions || !currentUser) return;
+    setLoginMessage('Loading Adventure Nights access...');
+    try {
+      const result = await functions.httpsCallable('getAdventureAccess')();
+      const subscription = result.data?.subscription || {};
+      accessState = {
+        loaded: true,
+        signedIn: true,
+        subscriptionActive: subscription.active === true,
+        subscriptionStatus: subscription.status || 'none',
+        activeUntil: subscription.activeUntil || null,
+        checkoutUrl: subscription.checkoutUrl || defaultSubscriptionUrl,
+        ownedAdventureIds: result.data?.ownedAdventureIds || []
+      };
+      applyAccessToAdventures();
+      setLoginMessage('Access loaded.');
+      renderSelectedAdventure();
+    } catch (error) {
+      accessState = {
+        ...accessState,
+        loaded: false,
+        signedIn: true,
+        subscriptionActive: false,
+        ownedAdventureIds: []
+      };
+      applyAccessToAdventures();
+      setLoginMessage(readableError(error), true);
+      renderSelectedAdventure();
+    }
+  };
+
+  const resetToPreviewAccess = () => {
+    currentUser = null;
+    accessState = {
+      loaded: false,
+      signedIn: false,
+      subscriptionActive: true,
+      subscriptionStatus: 'preview',
+      activeUntil: null,
+      checkoutUrl: defaultSubscriptionUrl,
+      ownedAdventureIds: previewOwnedAdventureIds
+    };
+    applyAccessToAdventures();
+    renderSelectedAdventure();
+  };
+
+  const initializeAdventureAuth = () => {
+    const config = window.HIGH_TECH_STL_FIREBASE_CONFIG;
+    const configReady = window.firebase && config && config.apiKey && !config.apiKey.includes('REPLACE_ME');
+
+    if (!configReady) {
+      setLoginMessage('Firebase is not configured yet. Preview mode is available.', true);
+      setAuthBusy(true);
+      return;
+    }
+
+    if (!firebase.apps.length) firebase.initializeApp(config);
+    auth = firebase.auth();
+    functions = firebase.app().functions('us-central1');
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setAuthBusy(true);
+      setLoginMessage('Signing in...');
+      try {
+        await auth.signInWithEmailAndPassword(
+          loginForm.email.value.trim(),
+          loginForm.password.value
+        );
+        loginForm.reset();
+      } catch (error) {
+        setLoginMessage(readableError(error), true);
+      } finally {
+        setAuthBusy(false);
+      }
+    });
+
+    createAccountButton.addEventListener('click', async () => {
+      setAuthBusy(true);
+      setLoginMessage('Creating account...');
+      try {
+        await auth.createUserWithEmailAndPassword(
+          loginForm.email.value.trim(),
+          loginForm.password.value
+        );
+        loginForm.reset();
+      } catch (error) {
+        setLoginMessage(readableError(error), true);
+      } finally {
+        setAuthBusy(false);
+      }
+    });
+
+    resetPasswordButton.addEventListener('click', async () => {
+      const email = loginForm.email.value.trim();
+      if (!email) {
+        setLoginMessage('Enter your email first, then reset the password.', true);
+        return;
+      }
+      setAuthBusy(true);
+      try {
+        await auth.sendPasswordResetEmail(email);
+        setLoginMessage('Password reset email sent.');
+      } catch (error) {
+        setLoginMessage(readableError(error), true);
+      } finally {
+        setAuthBusy(false);
+      }
+    });
+
+    signOutButton.addEventListener('click', () => auth.signOut());
+
+    auth.onAuthStateChanged(async (user) => {
+      currentUser = user;
+      if (!user) {
+        resetToPreviewAccess();
+        return;
+      }
+      signedInEmail.textContent = user.email || user.uid;
+      await loadAdventureAccess();
+    });
   };
 
   list.addEventListener('click', (event) => {
@@ -167,20 +394,29 @@ if (adventureApp) {
   });
 
   purchaseButton.addEventListener('click', () => {
-    selectedAdventure.purchased = true;
-    selectedAdventure.summary = 'Permanent access is now active. Downloads and replay access are unlocked.';
-    renderSelectedAdventure();
+    copyStatus.textContent = 'Permanent purchase checkout is coming next.';
   });
 
   startButton.addEventListener('click', () => {
+    if (!adventureCanPlay(selectedAdventure)) {
+      copyStatus.textContent = 'Subscribe to start this adventure.';
+      return;
+    }
     copyStatus.textContent = `Starting ${selectedAdventure.title}.`;
   });
 
+  resourceList.addEventListener('click', (event) => {
+    const resourceButton = event.target.closest('[data-download-resource]');
+    if (!resourceButton || resourceButton.disabled) return;
+    copyStatus.textContent = `${resourceButton.dataset.downloadResource} download will be attached to the purchased adventure package.`;
+  });
+
   toggleMode.addEventListener('click', () => {
-    const firstSubscriptionAdventure = adventures.find((adventure) => !adventure.purchased);
+    const firstSubscriptionAdventure = adventures.find((adventure) => !adventureIsOwned(adventure) && adventureCanPlay(adventure));
     selectedAdventure = firstSubscriptionAdventure || adventures[0];
     renderSelectedAdventure();
   });
 
+  initializeAdventureAuth();
   renderSelectedAdventure();
 }

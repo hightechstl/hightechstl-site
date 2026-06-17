@@ -57,6 +57,29 @@
               <div><span class="app-label">Adventure Nights</span><h2>Library</h2></div>
               <button class="icon-button" type="button" data-toggle-mode aria-label="Toggle purchased access">◆</button>
             </div>
+            <form class="adventure-login" data-adventure-login-form>
+              <div>
+                <span class="app-label">Account</span>
+                <strong data-account-title>Sign in to play</strong>
+              </div>
+              <label for="adventure-email">Email</label>
+              <input id="adventure-email" name="email" type="email" autocomplete="email" required>
+              <label for="adventure-password">Password</label>
+              <input id="adventure-password" name="password" type="password" autocomplete="current-password" required>
+              <div class="adventure-login-actions">
+                <button class="button button-primary" type="submit" data-login-button>Sign In</button>
+                <button class="button button-secondary" type="button" data-create-account>Create Account</button>
+              </div>
+              <button class="admin-link-button adventure-reset-button" type="button" data-reset-password>Reset password</button>
+              <p data-login-message>Use your Adventure Nights account to unlock subscribed play and purchased downloads.</p>
+            </form>
+            <div class="adventure-account" data-adventure-account hidden>
+              <div>
+                <span class="app-label">Signed In</span>
+                <strong data-signed-in-email></strong>
+              </div>
+              <button class="admin-link-button" type="button" data-sign-out>Sign out</button>
+            </div>
             <div class="account-strip">
               <span data-plan-label>Subscription access</span>
               <strong data-mode-label>2 purchased</strong>
@@ -126,6 +149,7 @@
 
             <div class="access-actions">
               <button class="button button-primary" type="button" data-start-adventure>Start Adventure</button>
+              <a class="button button-blue" href="#subscribe" data-subscribe-now hidden>Subscribe Now</a>
               <button class="button button-secondary" type="button" data-purchase-adventure>Buy Permanent Access</button>
             </div>
           </aside>
@@ -157,6 +181,10 @@
   </main>
 
   <footer class="site-footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html" style="color:white"><span class="brand-mark">HT</span><span>High Tech STL</span></a><p>Adventure Nights is a browser-based campaign product concept from High Tech STL.</p></div><div><h3>Adventure Nights</h3><ul class="footer-links"><li><a href="#library">Library</a></li><li><a href="#access">Access Model</a></li><li><a href="#subscribe">Plans</a></li></ul></div><div><h3>High Tech STL</h3><ul class="footer-links"><li><a href="index.html">IT Services</a></li><li><a href="flowslot.html">Innovation Lab</a></li></ul></div><div><h3>Contact</h3><ul class="footer-links"><li><a href="mailto:contact@j2crafts.com">contact@j2crafts.com</a></li><li>St. Louis, Missouri</li></ul></div></div><div class="footer-bottom"><span>© <span data-year></span> High Tech STL.</span><span>Adventure Nights</span></div></div></footer>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
   <script src="assets/js/main.js" defer></script>
 </body>
 </html>
