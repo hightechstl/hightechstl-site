@@ -16,6 +16,31 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /adventureAccounts/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /pendingAdventureEntitlements/{email} {
+      allow read, write: if false;
+    }
+
+    match /shopifyCustomers/{customerId} {
+      allow read, write: if false;
+    }
+
+    match /shopifySubscriptionContracts/{contractId} {
+      allow read, write: if false;
+    }
+
+    match /shopifyBillingAttempts/{attemptId} {
+      allow read, write: if false;
+    }
+
+    match /shopifyWebhookEvents/{eventId} {
+      allow read, write: if false;
+    }
+
     match /clients/{clientId} {
       allow read, create, update: if isActiveAdmin();
       allow delete: if false;

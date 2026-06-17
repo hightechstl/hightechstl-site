@@ -11,6 +11,7 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `about.html` - Joshua Hancock's IT operations and leadership background
 - `contact.html` - Free technology assessment form
 - `flowslot.html` - Standalone FlowSlot Innovation Lab project page
+- `adventure-nights.html` - Static interactive product prototype for two-player one-night campaign packages
 - `app/` - Existing compiled FlowSlot web application, preserved at `/app`
 - `images/flowslot/` - Existing product screenshots used on the FlowSlot page
 - `assets/css/styles.css` - Shared responsive design system
@@ -19,6 +20,8 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `admin.html` - Private Firebase-backed client and trouble-ticket dashboard
 - `assets/js/admin.js`, `assets/css/admin.css` - Service desk application
 - `firestore.rules`, `firestore.indexes.json`, `functions/` - Service desk data security and owner-only account creation
+- `docs/adventure-nights-shopify.md` - Shopify subscription and entitlement setup notes
+- `scripts/register-shopify-adventure-webhooks.mjs` - Helper for registering Adventure Nights Shopify webhooks after function deployment
 - `robots.txt`, `sitemap.xml`, `.nojekyll` - GitHub Pages and SEO support
 
 ## Local Preview
@@ -41,6 +44,12 @@ The private dashboard at `/admin.html` tracks clients, trouble tickets, and
 ticket activity using Firebase Authentication and Firestore. Follow
 `docs/service-desk-setup.md` before using it. A separate Firebase project from
 FlowSlot is recommended.
+
+## Adventure Nights Access
+
+The Adventure Nights prototype includes Firebase Cloud Functions for Shopify
+webhooks, subscription renewal handling, and account entitlement checks. Follow
+`docs/adventure-nights-shopify.md` before enabling live Shopify checkout links.
 
 ## SEO Recommendations
 

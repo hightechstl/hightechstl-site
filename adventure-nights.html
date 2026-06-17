@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adventure Nights | One-Night Campaigns by High Tech STL</title>
+  <meta name="description" content="A browser-based adventure night app for couples and friends. Subscribe for a rotating library, invite a second player, or purchase adventures for permanent access and downloads.">
+  <link rel="canonical" href="https://hightechstl.com/adventure-nights.html">
+  <meta property="og:title" content="Adventure Nights | High Tech STL">
+  <meta property="og:description" content="Choose a one-hour two-player adventure, invite a friend, and play from a mobile or tablet browser.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="adventure-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="topbar"><div class="container"><span>One-night browser adventures for two players</span><a href="index.html">High Tech STL</a></div></div>
+  <header class="site-header adventure-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="High Tech STL home"><span class="brand-mark">HT</span><span>High Tech STL</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="#library">Library</a><a href="#access">Access</a><a href="#included">Included</a><a href="flowslot.html">Innovation Lab</a><a href="#subscribe" class="nav-cta">Start Playing</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="adventure-hero">
+      <div class="container adventure-hero-grid">
+        <div class="adventure-copy">
+          <h1>One-night campaigns for two players.</h1>
+          <p class="lead">Choose a complete adventure, invite your partner or friend, and play from a shared mobile or tablet browser session. Every package includes the map, tokens, story beats, clues, and a steady one-hour path.</p>
+          <div class="button-row"><a class="button button-primary" href="#subscribe">Choose a Plan</a><a class="button button-secondary" href="#library">Preview Adventures</a></div>
+          <div class="adventure-proof" aria-label="Adventure features">
+            <span>2 players</span><span>About 60 minutes</span><span>Up to 10 adventures</span><span>Invite link co-op</span>
+          </div>
+        </div>
+        <div class="phone-demo" aria-label="Mobile adventure session preview">
+          <div class="phone-bar"><span></span><strong>Session ready</strong><span></span></div>
+          <div class="phone-scene">
+            <div class="mini-map">
+              <i style="left:18%;top:24%"></i><i style="left:63%;top:38%"></i><i style="left:42%;top:70%"></i>
+            </div>
+            <h2>Gilded Archive</h2>
+            <p>Act II · The hidden passage is open.</p>
+            <div class="phone-actions"><button type="button">Clue</button><button type="button">Token</button><button type="button">Map</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="adventure-app-section" id="library" aria-label="Adventure Nights app prototype">
+      <div class="container">
+        <div class="app-shell" data-adventure-app>
+          <aside class="library-panel" aria-label="Adventure library">
+            <div class="app-panel-head">
+              <div><span class="app-label">Adventure Nights</span><h2>Library</h2></div>
+              <button class="icon-button" type="button" data-toggle-mode aria-label="Toggle purchased access">◆</button>
+            </div>
+            <div class="account-strip">
+              <span data-plan-label>Subscription access</span>
+              <strong data-mode-label>2 purchased</strong>
+            </div>
+            <div class="adventure-list" data-adventure-list></div>
+          </aside>
+
+          <section class="adventure-stage" aria-live="polite">
+            <div class="stage-topline">
+              <div><span data-selected-type>Mystery</span><h2 data-selected-title>Whispers in the Gilded Archive</h2></div>
+              <div class="stage-meta"><span data-selected-time>60 min</span><span>2 players</span></div>
+            </div>
+
+            <div class="map-board" aria-label="Adventure map and storyboard preview">
+              <svg viewBox="0 0 760 430" role="img" aria-labelledby="map-title map-desc">
+                <title id="map-title">Gilded Archive adventure map</title>
+                <desc id="map-desc">A stylized parchment map with rooms, player tokens, clues, and storyboard panels.</desc>
+                <defs>
+                  <pattern id="map-grid" width="38" height="38" patternUnits="userSpaceOnUse">
+                    <path d="M38 0H0v38" fill="none" stroke="#c4a873" stroke-width="1" opacity=".45"/>
+                  </pattern>
+                </defs>
+                <rect width="760" height="430" rx="18" fill="#efe1bd"/>
+                <rect x="28" y="28" width="504" height="374" rx="12" fill="url(#map-grid)" stroke="#8d6d3d" stroke-width="3"/>
+                <path d="M84 96h156v108H84zM292 70h182v128H292zM126 246h166v94H126zM342 250h122v112H342z" fill="#ddc994" stroke="#6f5631" stroke-width="3"/>
+                <path d="M240 152h52M238 292h104M402 198v52" fill="none" stroke="#6f5631" stroke-width="8" stroke-linecap="round"/>
+                <path d="M465 306c52-14 40-64 4-76-44-14-82 28-66 70" fill="none" stroke="#0d7774" stroke-width="5" stroke-dasharray="10 10"/>
+                <circle cx="154" cy="146" r="16" fill="#bf6b35"/><circle cx="388" cy="302" r="16" fill="#0d7774"/>
+                <path d="M442 112l14 24 28 6-19 21 3 29-26-12-26 12 3-29-19-21 28-6z" fill="#bf6b35" opacity=".9"/>
+                <g fill="#473520" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">
+                  <text x="105" y="130">Reading Room</text><text x="316" y="116">Vault Antechamber</text><text x="151" y="300">Hidden Passage</text><text x="356" y="294">Clue Deck</text>
+                </g>
+                <g transform="translate(562 36)">
+                  <rect width="164" height="82" rx="10" fill="#f7ecd0" stroke="#8d6d3d" stroke-width="2"/>
+                  <rect y="108" width="164" height="82" rx="10" fill="#f7ecd0" stroke="#8d6d3d" stroke-width="2"/>
+                  <rect y="216" width="164" height="82" rx="10" fill="#f7ecd0" stroke="#8d6d3d" stroke-width="2"/>
+                  <path d="M24 46h116M24 154h116M24 262h116" stroke="#c08b4f" stroke-width="8" stroke-linecap="round"/>
+                  <circle cx="32" cy="24" r="7" fill="#0d7774"/><circle cx="32" cy="132" r="7" fill="#bf6b35"/><circle cx="32" cy="240" r="7" fill="#0d7774"/>
+                  <text x="24" y="60" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="800">Opening clue</text>
+                  <text x="24" y="168" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="800">Choice point</text>
+                  <text x="24" y="276" fill="#473520" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="800">Final reveal</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="story-strip" id="included">
+              <article><span>01</span><strong>Open the story</strong><p data-story-one>Read the first scene together and place both tokens in the reading room.</p></article>
+              <article><span>02</span><strong>Split the clues</strong><p data-story-two>Each player receives private prompts that unlock when both are ready.</p></article>
+              <article><span>03</span><strong>Resolve the finale</strong><p data-story-three>Use the shared map, clues, and final choice to close the mystery.</p></article>
+            </div>
+          </section>
+
+          <aside class="access-panel" id="access" aria-label="Access and resources">
+            <div class="app-panel-head">
+              <div><span class="app-label">Current Access</span><h2 data-access-title>Subscribed</h2></div>
+              <span class="access-light" data-access-light></span>
+            </div>
+            <p data-access-copy>Play this adventure while your subscription is active. Permanent downloads unlock when this adventure is purchased.</p>
+
+            <div class="invite-box">
+              <label for="invite-link">Invite link</label>
+              <div class="invite-row"><input id="invite-link" value="https://hightechstl.com/play/gilded-archive?seat=2" readonly><button type="button" data-copy-invite>Copy</button></div>
+              <span data-copy-status>Ready for player two.</span>
+            </div>
+
+            <div class="resource-list" data-resource-list></div>
+
+            <div class="access-actions">
+              <button class="button button-primary" type="button" data-start-adventure>Start Adventure</button>
+              <button class="button button-secondary" type="button" data-purchase-adventure>Buy Permanent Access</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="subscribe">
+      <div class="container">
+        <div class="section-heading"><div><h2>Two ways to play.</h2></div><p>Subscriptions are for flexible date-night access. Purchases are for people who want to own, replay, print, and download the full adventure package.</p></div>
+        <div class="adventure-pricing">
+          <article class="plan-card">
+            <h3>Monthly Library</h3>
+            <div class="price">$12<small>/month</small></div>
+            <p>Access up to 10 rotating one-night adventures and send a live invite link to a second player.</p>
+            <ul class="check-list"><li>Browser play on mobile or tablet</li><li>Shared story state</li><li>Adventure resources available in-app</li><li>Downloads stay locked</li></ul>
+            <a class="button button-blue" href="mailto:contact@j2crafts.com?subject=Adventure%20Nights%20Subscription">Request Subscription Setup</a>
+          </article>
+          <article class="plan-card featured-plan">
+            <h3>Own an Adventure</h3>
+            <div class="price">$19<small>/adventure</small></div>
+            <p>Permanent access to one adventure with printable/downloadable maps, tokens, storyboard, and clue resources.</p>
+            <ul class="check-list"><li>Lifetime browser access</li><li>Downloadable PDF and print assets</li><li>Replay and host again</li><li>Works with or without subscription</li></ul>
+            <a class="button button-primary" href="mailto:contact@j2crafts.com?subject=Adventure%20Nights%20Purchase">Request Purchase Flow</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html" style="color:white"><span class="brand-mark">HT</span><span>High Tech STL</span></a><p>Adventure Nights is a browser-based campaign product concept from High Tech STL.</p></div><div><h3>Adventure Nights</h3><ul class="footer-links"><li><a href="#library">Library</a></li><li><a href="#access">Access Model</a></li><li><a href="#subscribe">Plans</a></li></ul></div><div><h3>High Tech STL</h3><ul class="footer-links"><li><a href="index.html">IT Services</a></li><li><a href="flowslot.html">Innovation Lab</a></li></ul></div><div><h3>Contact</h3><ul class="footer-links"><li><a href="mailto:contact@j2crafts.com">contact@j2crafts.com</a></li><li>St. Louis, Missouri</li></ul></div></div><div class="footer-bottom"><span>© <span data-year></span> High Tech STL.</span><span>Adventure Nights</span></div></div></footer>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
