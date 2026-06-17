@@ -36,21 +36,43 @@ firebase functions:secrets:set SHOPIFY_WEBHOOK_SECRET
 firebase functions:secrets:set SHOPIFY_ADMIN_ACCESS_TOKEN
 ```
 
+`SHOPIFY_WEBHOOK_SECRET` must be the Shopify app client secret for the same app
+that creates the webhook subscriptions. Shopify signs HTTPS webhook deliveries
+with that app client secret, so a webhook created by a different app will fail
+HMAC verification.
+
+The deployed webhook also accepts a private `?token=...` URL token that matches
+`SHOPIFY_WEBHOOK_SECRET`. This is useful when webhook creation is done outside
+the same Shopify app that owns the client secret. Do not publish or commit the
+tokenized webhook URL.
+
 Set Firebase Functions v2 params in your deploy environment or answer the
 Firebase CLI prompts during deploy:
 
 ```sh
-SHOPIFY_SHOP_DOMAIN="your-store.myshopify.com"
+SHOPIFY_SHOP_DOMAIN="www.j2crafts.com"
 SHOPIFY_API_VERSION="2026-04"
-ADVENTURE_SUBSCRIPTION_VARIANT_IDS="1234567890,gid://shopify/ProductVariant/1234567890"
+ADVENTURE_SUBSCRIPTION_VARIANT_IDS="48324069458161,gid://shopify/ProductVariant/48324069458161"
 ADVENTURE_PURCHASE_VARIANT_MAP='{"gid://shopify/ProductVariant/111":"gilded-archive","gid://shopify/ProductVariant/222":"ember-house"}'
-ADVENTURE_SUBSCRIPTION_CHECKOUT_URL="https://your-store.myshopify.com/products/adventure-nights-membership"
+ADVENTURE_SUBSCRIPTION_CHECKOUT_URL="https://www.j2crafts.com/products/adventure-nights-monthly-library"
 ADVENTURE_SUBSCRIPTION_GRACE_DAYS="30"
 ```
 
 `ADVENTURE_SUBSCRIPTION_VARIANT_IDS` can contain numeric REST variant IDs,
 GraphQL variant GIDs, or both. `ADVENTURE_PURCHASE_VARIANT_MAP` maps Shopify
 variant IDs to the internal adventure IDs used by the app.
+
+Current Shopify draft subscription product:
+
+- Store: J2 Crafts (`www.j2crafts.com`)
+- Product: Adventure Nights Monthly Library
+- Product handle: `adventure-nights-monthly-library`
+- Product ID: `gid://shopify/Product/9638009569521`
+- Product REST ID: `9638009569521`
+- Variant ID: `gid://shopify/ProductVariant/48324069458161`
+- Variant REST ID: `48324069458161`
+- Variant SKU: `ADV-NIGHTS-MONTHLY`
+- Draft price: `$12.00`
 
 ## Deploy
 
@@ -63,6 +85,15 @@ After deployment, the webhook URL will be:
 ```text
 https://us-central1-YOUR_PROJECT_ID.cloudfunctions.net/shopifyAdventureWebhook
 ```
+
+For this Firebase project, use:
+
+```text
+https://us-central1-hightechstl-operations.cloudfunctions.net/shopifyAdventureWebhook
+```
+
+If using the temporary token fallback, register the same URL with the private
+`?token=...` query string from the Firebase secret setup session.
 
 ## Shopify webhook topics
 

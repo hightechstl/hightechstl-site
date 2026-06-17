@@ -213,15 +213,21 @@ async function claimPendingAdventureEntitlements(uid, email) {
 }
 
 function verifyShopifyWebhook(request, secretValue) {
+  const configuredSecret = String(secretValue || '');
+  const urlToken = String(request.query.token || '');
+  if (configuredSecret && urlToken && urlToken === configuredSecret) {
+    return true;
+  }
+
   const hmacHeader = request.get('x-shopify-hmac-sha256') || '';
   const rawBody = request.rawBody;
 
-  if (!hmacHeader || !rawBody?.length) {
+  if (!configuredSecret || !hmacHeader || !rawBody?.length) {
     return false;
   }
 
   const digest = crypto
-    .createHmac('sha256', secretValue)
+    .createHmac('sha256', configuredSecret)
     .update(rawBody)
     .digest('base64');
 
