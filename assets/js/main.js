@@ -121,15 +121,15 @@ if (adventureApp) {
   const purchaseButton = adventureApp.querySelector('[data-purchase-adventure]');
   const startButton = adventureApp.querySelector('[data-start-adventure]');
   const toggleMode = adventureApp.querySelector('[data-toggle-mode]');
-  const loginForm = adventureApp.querySelector('[data-adventure-login-form]');
-  const loginMessage = adventureApp.querySelector('[data-login-message]');
-  const loginButton = adventureApp.querySelector('[data-login-button]');
-  const createAccountButton = adventureApp.querySelector('[data-create-account]');
-  const resetPasswordButton = adventureApp.querySelector('[data-reset-password]');
-  const accountPanel = adventureApp.querySelector('[data-adventure-account]');
-  const accountTitle = adventureApp.querySelector('[data-account-title]');
-  const signedInEmail = adventureApp.querySelector('[data-signed-in-email]');
-  const signOutButton = adventureApp.querySelector('[data-sign-out]');
+  const loginForm = document.querySelector('[data-adventure-login-form]');
+  const loginMessage = document.querySelector('[data-login-message]');
+  const loginButton = document.querySelector('[data-login-button]');
+  const createAccountButton = document.querySelector('[data-create-account]');
+  const resetPasswordButton = document.querySelector('[data-reset-password]');
+  const accountPanel = document.querySelector('[data-adventure-account]');
+  const accountTitle = document.querySelector('[data-account-title]');
+  const signedInEmail = document.querySelector('[data-signed-in-email]');
+  const signOutButton = document.querySelector('[data-sign-out]');
   const planLabel = adventureApp.querySelector('[data-plan-label]');
   const subscribeNow = adventureApp.querySelector('[data-subscribe-now]');
 

@@ -300,6 +300,30 @@ textarea { min-height: 145px; resize: vertical; }
   font-size: .82rem;
   font-weight: 850;
 }
+.hero-account-panel {
+  display: grid;
+  justify-self: end;
+  width: min(100%, 360px);
+  gap: 1rem;
+}
+.hero-account-panel .adventure-login,
+.hero-account-panel .adventure-account {
+  margin: 0;
+  background: rgba(255, 250, 240, .96);
+  box-shadow: 0 18px 45px rgba(39, 30, 23, .13);
+}
+.hero-account-panel .phone-demo {
+  width: 100%;
+}
+.hero-login {
+  width: min(100%, 460px);
+  margin-top: 1.35rem;
+  background: rgba(255, 250, 240, .96);
+  box-shadow: 0 18px 45px rgba(39, 30, 23, .13);
+}
+.hero-login + .button-row {
+  margin-top: 1.2rem;
+}
 .phone-demo {
   justify-self: end;
   width: min(100%, 330px);
@@ -750,6 +774,7 @@ textarea { min-height: 145px; resize: vertical; }
   .adventure-hero-grid,
   .app-shell,
   .adventure-pricing { grid-template-columns: 1fr; }
+  .hero-account-panel,
   .phone-demo { justify-self: start; }
   .story-strip { grid-template-columns: 1fr; }
   .adventure-app-section { padding: 1rem 0 4rem; }

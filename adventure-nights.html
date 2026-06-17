@@ -30,20 +30,45 @@
         <div class="adventure-copy">
           <h1>One-night campaigns for two players.</h1>
           <p class="lead">Choose a complete adventure, invite your partner or friend, and play from a shared mobile or tablet browser session. Every package includes the map, tokens, story beats, clues, and a steady one-hour path.</p>
-          <div class="button-row"><a class="button button-primary" href="#subscribe">Choose a Plan</a><a class="button button-secondary" href="#library">Preview Adventures</a></div>
+          <form class="adventure-login hero-login" id="player-login" data-adventure-login-form>
+            <div>
+              <span class="app-label">Player Login</span>
+              <strong data-account-title>Sign in to play</strong>
+            </div>
+            <label for="adventure-email">Email</label>
+            <input id="adventure-email" name="email" type="email" autocomplete="email" required>
+            <label for="adventure-password">Password</label>
+            <input id="adventure-password" name="password" type="password" autocomplete="current-password" required>
+            <div class="adventure-login-actions">
+              <button class="button button-primary" type="submit" data-login-button>Sign In</button>
+              <button class="button button-secondary" type="button" data-create-account>Create Account</button>
+            </div>
+            <button class="admin-link-button adventure-reset-button" type="button" data-reset-password>Reset password</button>
+            <p data-login-message>Use your Adventure Nights account to unlock subscribed play and purchased downloads.</p>
+          </form>
+          <div class="adventure-account hero-login" data-adventure-account hidden>
+            <div>
+              <span class="app-label">Signed In</span>
+              <strong data-signed-in-email></strong>
+            </div>
+            <button class="admin-link-button" type="button" data-sign-out>Sign out</button>
+          </div>
+          <div class="button-row"><a class="button button-primary" href="#player-login">Login / Create Account</a><a class="button button-secondary" href="#library">Preview Adventures</a></div>
           <div class="adventure-proof" aria-label="Adventure features">
             <span>2 players</span><span>About 60 minutes</span><span>Up to 10 adventures</span><span>Invite link co-op</span>
           </div>
         </div>
-        <div class="phone-demo" aria-label="Mobile adventure session preview">
-          <div class="phone-bar"><span></span><strong>Session ready</strong><span></span></div>
-          <div class="phone-scene">
-            <div class="mini-map">
-              <i style="left:18%;top:24%"></i><i style="left:63%;top:38%"></i><i style="left:42%;top:70%"></i>
+        <div class="hero-account-panel">
+          <div class="phone-demo" aria-label="Mobile adventure session preview">
+            <div class="phone-bar"><span></span><strong>Session ready</strong><span></span></div>
+            <div class="phone-scene">
+              <div class="mini-map">
+                <i style="left:18%;top:24%"></i><i style="left:63%;top:38%"></i><i style="left:42%;top:70%"></i>
+              </div>
+              <h2>Gilded Archive</h2>
+              <p>Act II · The hidden passage is open.</p>
+              <div class="phone-actions"><button type="button">Clue</button><button type="button">Token</button><button type="button">Map</button></div>
             </div>
-            <h2>Gilded Archive</h2>
-            <p>Act II · The hidden passage is open.</p>
-            <div class="phone-actions"><button type="button">Clue</button><button type="button">Token</button><button type="button">Map</button></div>
           </div>
         </div>
       </div>
@@ -56,29 +81,6 @@
             <div class="app-panel-head">
               <div><span class="app-label">Adventure Nights</span><h2>Library</h2></div>
               <button class="icon-button" type="button" data-toggle-mode aria-label="Toggle purchased access">◆</button>
-            </div>
-            <form class="adventure-login" data-adventure-login-form>
-              <div>
-                <span class="app-label">Account</span>
-                <strong data-account-title>Sign in to play</strong>
-              </div>
-              <label for="adventure-email">Email</label>
-              <input id="adventure-email" name="email" type="email" autocomplete="email" required>
-              <label for="adventure-password">Password</label>
-              <input id="adventure-password" name="password" type="password" autocomplete="current-password" required>
-              <div class="adventure-login-actions">
-                <button class="button button-primary" type="submit" data-login-button>Sign In</button>
-                <button class="button button-secondary" type="button" data-create-account>Create Account</button>
-              </div>
-              <button class="admin-link-button adventure-reset-button" type="button" data-reset-password>Reset password</button>
-              <p data-login-message>Use your Adventure Nights account to unlock subscribed play and purchased downloads.</p>
-            </form>
-            <div class="adventure-account" data-adventure-account hidden>
-              <div>
-                <span class="app-label">Signed In</span>
-                <strong data-signed-in-email></strong>
-              </div>
-              <button class="admin-link-button" type="button" data-sign-out>Sign out</button>
             </div>
             <div class="account-strip">
               <span data-plan-label>Subscription access</span>
