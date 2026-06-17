@@ -1,0 +1,32 @@
+{
+  "packageName": "AdventureNights_LanternsBelow_MarrowHill",
+  "version": "1.1.0",
+  "format": "browser-first bundle",
+  "description": "Complete two-player Adventure Nights package with browser content, scene art, marketplace thumbnail, and printable companion assets.",
+  "files": [
+    "README.md",
+    "assets/cover.html",
+    "assets/library-thumbnail.png",
+    "assets/map.svg",
+    "assets/scene-art/scene-1-entry-stair.png",
+    "assets/scene-art/scene-2-candle-hall.png",
+    "assets/scene-art/scene-3-mirror-pool.png",
+    "assets/scene-art/scene-4-lantern-heart.png",
+    "assets/tokens.svg",
+    "content/adventure-app-bundle.json",
+    "content/adventure.json",
+    "content/browser-preview.json",
+    "content/clues.json",
+    "content/endings.json",
+    "content/hints.json",
+    "manifest.json",
+    "print/clue-deck.html",
+    "print/endings.html",
+    "print/quickstart.html",
+    "print/quickstart.md",
+    "print/role-sheet-stone-listener.html",
+    "print/role-sheet-wickbearer.html",
+    "print/storyboard.html",
+    "print/storyboard.md"
+  ]
+}

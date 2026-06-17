@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="760" height="430" role="img" aria-labelledby="title desc">
+  <title id="title">Marrow Hill Shrine Map</title>
+  <desc id="desc">Six-room shrine map for Lanterns Below Marrow Hill with story panel on the right side, two player tokens, and three clue markers.</desc>
+
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0H0V20" fill="none" stroke="#D7C8A6" stroke-width="1"/>
+    </pattern>
+    <style><![CDATA[
+      .label { font-family: Georgia, serif; font-size: 14px; fill: #2a241d; font-weight: 600; }
+      .small { font-family: Georgia, serif; font-size: 12px; fill: #5a4b39; }
+    ]]></style>
+  </defs>
+
+  <rect x="0" y="0" width="760" height="430" fill="#F6EEDC"/>
+  <rect x="24" y="24" width="512" height="382" rx="14" fill="url(#grid)" stroke="#3D3428" stroke-width="2.5"/>
+  <rect x="560" y="24" width="176" height="382" rx="14" fill="#FFF8E7" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="582" y="52" class="label">Story / Cards</text>
+  <text x="582" y="78" class="small">Use this space in-browser</text>
+  <text x="582" y="96" class="small">for scene prompts,</text>
+  <text x="582" y="114" class="small">clue reveals, and endings.</text>
+
+  <!-- Rooms -->
+  <rect x="48" y="64" width="130" height="76" rx="12" fill="#E8D6AA" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="73" y="108" class="label">Entry Stair</text>
+
+  <rect x="220" y="58" width="150" height="88" rx="12" fill="#E8D6AA" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="253" y="106" class="label">Candle Hall</text>
+
+  <rect x="402" y="72" width="104" height="74" rx="12" fill="#E8D6AA" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="420" y="114" class="label">Oath Room</text>
+
+  <rect x="82" y="230" width="132" height="86" rx="12" fill="#E8D6AA" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="106" y="278" class="label">Mirror Pool</text>
+
+  <rect x="260" y="218" width="138" height="92" rx="12" fill="#E8D6AA" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="288" y="268" class="label">Root Vault</text>
+
+  <rect x="418" y="268" width="94" height="88" rx="12" fill="#E8D6AA" stroke="#3D3428" stroke-width="2.5"/>
+  <text x="431" y="316" class="label">Lantern</text>
+  <text x="442" y="334" class="label">Heart</text>
+
+  <!-- Routes -->
+  <path d="M178 102h42" fill="none" stroke="#7A5C32" stroke-width="6" stroke-linecap="round"/>
+  <path d="M370 102h32" fill="none" stroke="#7A5C32" stroke-width="6" stroke-linecap="round"/>
+  <path d="M142 140v90" fill="none" stroke="#7A5C32" stroke-width="6" stroke-linecap="round"/>
+  <path d="M214 272h46" fill="none" stroke="#7A5C32" stroke-width="6" stroke-linecap="round"/>
+  <path d="M398 264h20" fill="none" stroke="#7A5C32" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Tokens -->
+  <circle cx="112" cy="102" r="16" fill="#2F5D62" stroke="#ffffff" stroke-width="3"/>
+  <text x="106.8" y="107.8" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#ffffff">A</text>
+  <circle cx="144" cy="102" r="16" fill="#8A3FFC" stroke="#ffffff" stroke-width="3"/>
+  <text x="138.8" y="107.8" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#ffffff">B</text>
+
+  <!-- Clues -->
+  <!-- Lantern -->
+  <g transform="translate(300 102)">
+    <circle r="14" fill="#FFF8E7" stroke="#D9822B" stroke-width="3"/>
+    <path d="M-5 -2h10v8a5 5 0 1 1 -10 0zM-2 -8h4v6h-4z" fill="#D9822B"/>
+  </g>
+
+  <!-- Seal -->
+  <g transform="translate(454 112)">
+    <circle r="14" fill="#FFF8E7" stroke="#D9822B" stroke-width="3"/>
+    <circle r="5.5" fill="none" stroke="#D9822B" stroke-width="2.2"/>
+    <path d="M0 6l-4 8 4-2 4 2-4-8z" fill="#D9822B"/>
+  </g>
+
+  <!-- Key -->
+  <g transform="translate(466 312)">
+    <circle r="14" fill="#FFF8E7" stroke="#D9822B" stroke-width="3"/>
+    <circle cx="-4" cy="-1" r="4.2" fill="none" stroke="#D9822B" stroke-width="2.2"/>
+    <path d="M0 -1h8m-2 0v4m4-4v3" stroke="#D9822B" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <text x="36" y="42" class="label">Marrow Hill Shrine</text>
+</svg>

@@ -1,0 +1,249 @@
+{
+  "id": "lanterns-below-marrow-hill",
+  "title": "Lanterns Below Marrow Hill",
+  "type": "Mystery / Light Fantasy",
+  "time": "55 min",
+  "summary": "Two companions descend into an old hill shrine to recover a vanished village lantern before the road goes dark for good.",
+  "invitePath": "/play/lanterns-below-marrow-hill?seat=2",
+  "mood": "Quiet, mysterious, warm, and slightly haunted.",
+  "players": 2,
+  "mobileFirst": true,
+  "beats": [
+    "Both players arrive at Marrow Hill as the village lantern flickers out and the sealed stair opens beneath it.",
+    "Each player receives a different clue trail: one follows lantern symbols while the other deciphers hidden vows carved into stone.",
+    "Together, the players choose whether to restore the lantern\u2019s light, free the spirit bound inside it, or split the power between both."
+  ],
+  "kit": {
+    "theme": "hill-lantern",
+    "mapTitle": "Marrow Hill Shrine",
+    "mapDesc": "A compact underground shrine with six connected areas: Entry Stair, Candle Hall, Oath Room, Mirror Pool, Root Vault, and Lantern Heart. The right side is reserved for story cards.",
+    "palette": {
+      "paper": "#F6EEDC",
+      "grid": "#D7C8A6",
+      "stroke": "#3D3428",
+      "room": "#E8D6AA",
+      "route": "#7A5C32",
+      "accent": "#D9822B"
+    },
+    "rooms": [
+      [
+        48,
+        64,
+        130,
+        76,
+        "Entry Stair"
+      ],
+      [
+        220,
+        58,
+        150,
+        88,
+        "Candle Hall"
+      ],
+      [
+        402,
+        72,
+        104,
+        74,
+        "Oath Room"
+      ],
+      [
+        82,
+        230,
+        132,
+        86,
+        "Mirror Pool"
+      ],
+      [
+        260,
+        218,
+        138,
+        92,
+        "Root Vault"
+      ],
+      [
+        418,
+        268,
+        94,
+        88,
+        "Lantern Heart"
+      ]
+    ],
+    "routes": [
+      "M178 102h42",
+      "M370 102h32",
+      "M142 140v90",
+      "M214 272h46",
+      "M398 264h20"
+    ],
+    "tokens": [
+      {
+        "x": 112,
+        "y": 102,
+        "color": "#2F5D62",
+        "label": "A"
+      },
+      {
+        "x": 144,
+        "y": 102,
+        "color": "#8A3FFC",
+        "label": "B"
+      }
+    ],
+    "clues": [
+      {
+        "x": 300,
+        "y": 102,
+        "type": "lantern"
+      },
+      {
+        "x": 454,
+        "y": 112,
+        "type": "seal"
+      },
+      {
+        "x": 466,
+        "y": 312,
+        "type": "key"
+      }
+    ],
+    "cards": [
+      "The stair opens only after both players describe what their character fears losing.",
+      "The lantern symbols and oath carvings disagree; one tells where the lantern is, the other tells why it was hidden.",
+      "The final light can save the road, free the bound keeper, or reveal a secret path no one in the village remembers."
+    ],
+    "resources": {
+      "MAP": [
+        "Marrow Hill Shrine Map",
+        "Illustrated SVG map with clue markers and a story preview panel."
+      ],
+      "TOK": [
+        "Lantern Seeker Tokens",
+        "Printable and digital tokens for the two player roles."
+      ],
+      "STY": [
+        "Lanterns Below Storyboard",
+        "Scene-by-scene guide with setup, prompts, and pacing."
+      ],
+      "CLU": [
+        "Lantern, Seal, and Key Clue Deck",
+        "Clue cards that split information between the players."
+      ]
+    }
+  },
+  "playerRoles": [
+    {
+      "id": "wickbearer",
+      "name": "The Wickbearer",
+      "privateGoal": "Restore the village lantern before anyone learns your family once helped hide it.",
+      "startingPrompt": "You carry the last ember from the village hearth. It warms when someone nearby tells the truth."
+    },
+    {
+      "id": "stone-listener",
+      "name": "The Stone Listener",
+      "privateGoal": "Learn why the shrine was sealed, even if the truth makes restoration dangerous.",
+      "startingPrompt": "You hear whispers through old stone. The hill is not empty; it is waiting to be asked the right question."
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene-1",
+      "title": "The Stair Beneath the Lantern",
+      "durationMinutes": 12,
+      "sharedPrompt": "The village lantern dies at dusk, and a stone stair opens below it. The road beyond town is already filling with fog.",
+      "playerOnePrompt": "Your ember pulls toward the Candle Hall. You sense the lantern can be restored, but not without a cost.",
+      "playerTwoPrompt": "The stair stones whisper: 'Light remembers debt.' You know this place was sealed by choice, not by accident.",
+      "mechanic": "Each player states one fear and one reason they entered. Then move both tokens into the shrine.",
+      "successState": "The Entry Stair opens into the Candle Hall and the first clue is revealed.",
+      "unlocks": [
+        "clue-lantern-1",
+        "clue-lantern-2"
+      ]
+    },
+    {
+      "id": "scene-2",
+      "title": "The Hall of Failing Candles",
+      "durationMinutes": 15,
+      "sharedPrompt": "Dozens of candles burn with blue-orange flames. Three are bright, but each casts a different shadow.",
+      "playerOnePrompt": "The bright candles form a lantern symbol pointing toward the Root Vault.",
+      "playerTwoPrompt": "The carved oath says the lantern was built to hold back something that once wore a human voice.",
+      "mechanic": "Players compare private clues and choose whether to follow the lantern symbol or investigate the oath first.",
+      "successState": "The players uncover both the Seal clue and the route toward the Mirror Pool.",
+      "unlocks": [
+        "clue-seal-1",
+        "clue-seal-2"
+      ]
+    },
+    {
+      "id": "scene-3",
+      "title": "The Mirror Pool Oath",
+      "durationMinutes": 13,
+      "sharedPrompt": "A still pool reflects the players as older, tired, and carrying the lantern between them.",
+      "playerOnePrompt": "Your reflection mouths: 'A restored light still casts a prison shadow.'",
+      "playerTwoPrompt": "The stone whispers that the keeper inside the lantern volunteered, but was never given a way to leave.",
+      "mechanic": "Each player asks the pool one question. The other player answers as the reflection, using what they know.",
+      "successState": "The Key clue appears in the reflection, unlocking the Lantern Heart.",
+      "unlocks": [
+        "clue-key-1",
+        "clue-key-2"
+      ]
+    },
+    {
+      "id": "scene-4",
+      "title": "The Lantern Heart",
+      "durationMinutes": 15,
+      "sharedPrompt": "At the shrine\u2019s deepest point, a brass lantern hangs from living roots. A quiet voice inside asks what kind of mercy the players believe in.",
+      "playerOnePrompt": "Restoring the lantern protects the village road tonight. Freeing the keeper may leave the road unsafe until another solution is found.",
+      "playerTwoPrompt": "The keeper knows a hidden root path through the hill, but revealing it may change the village forever.",
+      "mechanic": "Players debate the final choice, then each gives one sentence of testimony before choosing together.",
+      "successState": "The campaign ends with the chosen outcome and a short epilogue from each player.",
+      "unlocks": [
+        "ending-restore",
+        "ending-free",
+        "ending-split"
+      ]
+    }
+  ],
+  "finalChoice": {
+    "prompt": "What do you do with the lantern\u2019s final light?",
+    "options": [
+      {
+        "id": "restore",
+        "label": "Restore the Lantern",
+        "outcome": "The village road is safe by dawn, but the keeper remains bound. The players are honored, though one hears the lantern whisper at night."
+      },
+      {
+        "id": "free",
+        "label": "Free the Keeper",
+        "outcome": "The bound spirit steps into the fog and thanks the players. The road stays dangerous, but the village must finally face the truth."
+      },
+      {
+        "id": "split",
+        "label": "Split the Flame",
+        "outcome": "Half the light protects the road while half becomes a guide through the hidden root path. The village gains a harder, more honest future."
+      }
+    ]
+  },
+  "browserFlow": [
+    "Subscription gate",
+    "Adventure library tile",
+    "Role select screen",
+    "Shared intro screen",
+    "Private prompt reveal per player",
+    "Map/clue screen",
+    "Scene progression",
+    "Final choice screen",
+    "Ending screen",
+    "Downloadables panel"
+  ],
+  "downloads": [
+    "print/quickstart.html",
+    "print/storyboard.html",
+    "print/role-sheet-wickbearer.html",
+    "print/role-sheet-stone-listener.html",
+    "print/clue-deck.html",
+    "print/endings.html",
+    "assets/map.svg",
+    "assets/tokens.svg"
+  ]
+}
