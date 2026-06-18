@@ -11,7 +11,9 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `about.html` - Joshua Hancock's IT operations and leadership background
 - `contact.html` - Free technology assessment form
 - `flowslot.html` - Standalone FlowSlot Innovation Lab project page
-- `adventure-nights.html` - Static interactive product prototype for two-player one-night campaign packages
+- `adventure-nights/` - Static Adventure Nights library page
+- `adventure-nights/lanterns-below-marrow-hill/` - Browser-playable adventure route loaded from the bundled JSON package
+- `adventure-nights.html` - Legacy interactive product prototype for two-player one-night campaign packages
 - `app/` - Existing compiled FlowSlot web application, preserved at `/app`
 - `images/flowslot/` - Existing product screenshots used on the FlowSlot page
 - `assets/css/styles.css` - Shared responsive design system
@@ -20,7 +22,7 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `admin.html` - Private Firebase-backed client and trouble-ticket dashboard
 - `assets/js/admin.js`, `assets/css/admin.css` - Service desk application
 - `firestore.rules`, `firestore.indexes.json`, `functions/` - Service desk data security and owner-only account creation
-- `docs/adventure-nights-shopify.md` - Shopify subscription and entitlement setup notes
+- `docs/adventure-nights-shopify.md` - Shopify purchase entitlement setup notes
 - `scripts/register-shopify-adventure-webhooks.mjs` - Helper for registering Adventure Nights Shopify webhooks after function deployment
 - `robots.txt`, `sitemap.xml`, `.nojekyll` - GitHub Pages and SEO support
 
@@ -47,9 +49,18 @@ FlowSlot is recommended.
 
 ## Adventure Nights Access
 
-The Adventure Nights prototype includes Firebase Cloud Functions for Shopify
-webhooks, subscription renewal handling, and account entitlement checks. Follow
-`docs/adventure-nights-shopify.md` before enabling live Shopify checkout links.
+The Adventure Nights platform is loaded from
+`public/adventure-nights/lanterns-below-marrow-hill/content/adventure-app-bundle.json`
+and uses Firebase Authentication plus `ownedAdventureIds` to decide which
+adventures appear in a signed-in account. Customers buy individual adventures
+on J2 Crafts; Shopify webhooks add the purchased adventure IDs to the matching
+Firebase account, or hold them as pending entitlements by email until the
+customer creates an account.
+
+The static bundle files remain publicly reachable in this GitHub Pages build.
+The current UI hides play/download access unless the account owns the adventure,
+but true private content delivery requires backend-protected files or signed
+download URLs before production launch.
 
 ## SEO Recommendations
 

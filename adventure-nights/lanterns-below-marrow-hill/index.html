@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lanterns Below Marrow Hill | Adventure Nights</title>
+  <meta name="description" content="Play Lanterns Below Marrow Hill after logging in with an account that owns the adventure.">
+  <link rel="canonical" href="https://hightechstl.com/adventure-nights/lanterns-below-marrow-hill/">
+  <meta property="og:title" content="Lanterns Below Marrow Hill | Adventure Nights">
+  <meta property="og:description" content="A mobile-friendly two-player mystery with role selection, private prompts, clues, final choice, and printable resources.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body class="adventure-page adventure-live-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="topbar"><div class="container"><span>Adventure Nights purchased adventure</span><a href="../">Adventure Nights Library</a></div></div>
+  <header class="site-header adventure-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="../../index.html" aria-label="High Tech STL home"><span class="brand-mark">HT</span><span>High Tech STL</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="../">Library</a><a href="#play">Play</a><a href="#downloads">Downloads</a><a href="../../flowslot.html">Innovation Lab</a><a href="../../contact.html" class="nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" data-adventure-player>
+    <section class="live-player-hero" data-live-cover>
+      <div class="container live-player-hero-grid">
+        <div>
+          <p class="live-kicker">Adventure Nights</p>
+          <h1 data-live-title>Lanterns Below Marrow Hill</h1>
+          <p class="lead" data-live-summary>Loading adventure...</p>
+          <div class="adventure-proof">
+            <span data-live-genre>Mystery</span><span data-live-time>55 min</span><span data-live-players>2 players</span>
+          </div>
+          <div class="button-row"><a class="button button-primary" href="#play">Start Adventure</a><a class="button button-secondary" href="../">Back to Library</a></div>
+        </div>
+        <figure class="live-cover-art">
+          <img data-live-thumbnail alt="">
+        </figure>
+      </div>
+    </section>
+
+    <section class="live-play-shell" id="play" aria-label="Playable adventure">
+      <div class="container">
+        <div class="live-progress" data-flow-nav aria-label="Adventure progress"></div>
+        <div class="live-stage" data-live-stage>
+          <p class="live-loading">Loading playable preview...</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="downloads" aria-labelledby="downloads-title">
+      <div class="container">
+        <div class="section-heading"><div><h2 id="downloads-title">Printable Pack</h2></div><p>Downloads are shown for accounts that own this adventure.</p></div>
+        <div class="download-grid" data-downloads></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="../../index.html" style="color:white"><span class="brand-mark">HT</span><span>High Tech STL</span></a><p>Lanterns Below Marrow Hill is an Adventure Nights package loaded from your purchased library.</p></div><div><h3>Adventure Nights</h3><ul class="footer-links"><li><a href="../">Library</a></li><li><a href="#play">Play</a></li><li><a href="#downloads">Downloads</a></li></ul></div><div><h3>High Tech STL</h3><ul class="footer-links"><li><a href="../../index.html">IT Services</a></li><li><a href="../../flowslot.html">Innovation Lab</a></li></ul></div><div><h3>Contact</h3><ul class="footer-links"><li><a href="mailto:contact@j2crafts.com">contact@j2crafts.com</a></li><li>St. Louis, Missouri</li></ul></div></div><div class="footer-bottom"><span>© <span data-year></span> High Tech STL.</span><span>Adventure Nights</span></div></div></footer>
+  <script>
+    window.ADVENTURE_NIGHTS_CONFIG = {
+      mode: 'player',
+      bundleUrl: '../../public/adventure-nights/lanterns-below-marrow-hill/content/adventure-app-bundle.json',
+      assetBaseUrl: '../../public/adventure-nights/lanterns-below-marrow-hill/',
+      libraryUrl: '../',
+      buyUrl: 'https://www.j2crafts.com/search?q=Lanterns%20Below%20Marrow%20Hill',
+      requireOwnership: true,
+      firebaseRegion: 'us-central1'
+    };
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
+  <script src="../../assets/js/firebase-config.js"></script>
+  <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/adventure-nights-live.js" defer></script>
+</body>
+</html>

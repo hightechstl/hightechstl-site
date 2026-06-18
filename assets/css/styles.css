@@ -615,6 +615,275 @@ textarea { min-height: 145px; resize: vertical; }
 .adventure-kit-svg.ember text {
   stroke: rgba(255, 236, 202, .5);
 }
+
+/* Adventure Nights live bundle pages */
+.adventure-live-page {
+  --live-night: #18110d;
+  --live-amber: #d9822b;
+  --live-gold: #f6eedc;
+  --live-smoke: #5d5145;
+}
+.adventure-live-hero,
+.live-player-hero {
+  padding: 4.8rem 0 3.4rem;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(217,130,43,.22), transparent 34%),
+    linear-gradient(135deg, #fbf5e7, #ead8b4);
+}
+.adventure-live-hero-grid,
+.live-player-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: center;
+}
+.live-kicker {
+  margin: 0 0 .55rem;
+  color: var(--adv-copper-dark);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.live-note,
+.live-panel,
+.live-adventure-card {
+  background: rgba(255,250,240,.95);
+  border: 1px solid var(--adv-line);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(39,30,23,.1);
+}
+.live-note { padding: 1.1rem; }
+.live-note p,
+.live-panel p,
+.live-adventure-card p {
+  color: var(--adv-muted);
+}
+.platform-account-grid {
+  display: grid;
+  gap: 1rem;
+}
+.platform-login,
+.platform-account {
+  margin: 0;
+}
+.platform-account p {
+  margin: .25rem 0 0;
+  color: var(--adv-muted);
+}
+.live-library-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+.live-adventure-card {
+  overflow: hidden;
+}
+.live-adventure-card img,
+.live-cover-art img,
+.scene-art {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.live-adventure-card-body {
+  display: grid;
+  gap: .8rem;
+  padding: 1.1rem;
+}
+.live-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+.live-card-meta span,
+.live-progress button,
+.owned-pill,
+.locked-pill {
+  padding: .4rem .58rem;
+  color: var(--adv-ink);
+  background: #f4e7c8;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+  font-size: .78rem;
+  font-weight: 850;
+}
+.owned-pill {
+  color: #fff;
+  background: var(--adv-teal);
+  border-color: var(--adv-teal);
+}
+.locked-pill {
+  color: var(--adv-copper-dark);
+  background: #fff7e5;
+}
+.platform-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  align-items: center;
+}
+.platform-gate {
+  max-width: 760px;
+}
+.live-cover-art {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--adv-line);
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(39,30,23,.13);
+}
+.live-play-shell {
+  padding: 1.2rem 0 4.5rem;
+  background: var(--adv-paper);
+}
+.live-progress {
+  display: flex;
+  gap: .45rem;
+  overflow-x: auto;
+  padding: .25rem 0 1rem;
+  scrollbar-width: thin;
+}
+.live-progress button {
+  min-width: max-content;
+  min-height: 44px;
+  cursor: pointer;
+}
+.live-progress button.active {
+  color: white;
+  background: var(--live-night);
+  border-color: var(--live-night);
+}
+.live-progress button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+.live-panel {
+  padding: 1rem;
+}
+.live-intro-panel,
+.live-scene-layout {
+  display: grid;
+  gap: 1rem;
+}
+.live-beats {
+  display: grid;
+  gap: .65rem;
+  margin: 1rem 0;
+}
+.live-beats p,
+.scene-task,
+.private-prompt,
+.clue-card,
+.epilogue-grid article {
+  margin: 0;
+  padding: .85rem;
+  background: #fff7e5;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+}
+.live-map-stack {
+  display: grid;
+  gap: .8rem;
+}
+.live-map-stack img,
+.live-map {
+  width: 100%;
+  background: #2b2117;
+  border: 1px solid var(--adv-line);
+  border-radius: 10px;
+}
+.role-grid,
+.prompt-grid,
+.choice-grid,
+.clue-grid,
+.epilogue-grid,
+.download-grid {
+  display: grid;
+  gap: .8rem;
+}
+.role-card,
+.choice-card,
+.download-card {
+  width: 100%;
+  min-height: 56px;
+  padding: 1rem;
+  color: var(--adv-ink);
+  background: #fff7e5;
+  border: 1px solid var(--adv-line);
+  border-radius: 10px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.role-card.selected,
+.choice-card:hover,
+.download-card:hover {
+  border-color: var(--live-amber);
+  box-shadow: inset 0 0 0 2px rgba(217,130,43,.18);
+}
+.role-card span,
+.clue-card span,
+.download-card span {
+  display: block;
+  color: var(--adv-copper-dark);
+  font-size: .74rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.role-card strong,
+.choice-card strong,
+.download-card strong {
+  display: block;
+  margin: .2rem 0;
+  color: var(--adv-ink);
+}
+.role-card small,
+.role-card em,
+.choice-card span {
+  display: block;
+  color: var(--adv-muted);
+  font-size: .92rem;
+  line-height: 1.45;
+}
+.private-prompt .button {
+  width: 100%;
+  min-height: 52px;
+}
+.scene-task {
+  display: grid;
+  gap: .35rem;
+  margin-top: 1rem;
+}
+.scene-task p { margin: 0; }
+.live-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  margin-top: 1rem;
+}
+.live-actions .button {
+  min-height: 52px;
+}
+.clue-card details summary {
+  min-height: 44px;
+  padding-top: .5rem;
+  color: var(--adv-copper-dark);
+  font-weight: 850;
+  cursor: pointer;
+}
+.clue-card.seat-one { border-left: 4px solid #2f5d62; }
+.clue-card.seat-two { border-left: 4px solid #8a3ffc; }
+.live-empty,
+.live-loading,
+.live-error {
+  padding: 1rem;
+  color: var(--adv-muted);
+  background: #fff7e5;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+}
+.live-error { color: #9d2d20; }
 .story-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -783,6 +1052,34 @@ textarea { min-height: 145px; resize: vertical; }
 @media (max-width: 1100px) {
   .app-shell { grid-template-columns: 250px minmax(0, 1fr); }
   .access-panel { grid-column: 1 / -1; }
+}
+
+@media (min-width: 760px) {
+  .adventure-live-hero-grid,
+  .live-player-hero-grid,
+  .live-intro-panel,
+  .live-scene-layout {
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr);
+  }
+  .live-adventure-card {
+    display: grid;
+    grid-template-columns: minmax(260px, .72fr) minmax(0, 1fr);
+  }
+  .role-grid,
+  .prompt-grid,
+  .choice-grid,
+  .download-grid,
+  .platform-account-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .scene-main {
+    min-width: 0;
+  }
+  .live-side-panel {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
 }
 
 @media (max-width: 860px) {

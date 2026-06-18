@@ -2,17 +2,13 @@
 
 Adventure Nights uses Shopify for payment and Firebase for account access.
 Shopify remains the billing source of truth. Firestore stores the app-facing
-entitlements that decide whether a signed-in user can play subscribed
-adventures or download purchased resources.
+entitlements that decide whether a signed-in user owns an adventure and can
+play or download its resources.
 
 ## Access model
 
 - Users create or sign in to a Firebase account before checkout.
-- A successful subscription purchase grants 30 days of play access.
-- A successful recurring billing attempt extends access by another 30 days.
-- A failed or challenged billing attempt does not immediately remove access;
-  the existing `activeUntil` date is allowed to run out.
-- A permanent adventure purchase adds that adventure ID to
+- A successful adventure purchase adds that adventure ID to
   `ownedAdventureIds` and does not expire.
 - If a Shopify webhook arrives before the Firebase account exists, the
   entitlement is held in `pendingAdventureEntitlements/{email}` and claimed on
@@ -20,11 +16,9 @@ adventures or download purchased resources.
 
 ## Firestore collections
 
-- `adventureAccounts/{uid}`: user-facing subscription and owned adventure state.
+- `adventureAccounts/{uid}`: user-facing owned adventure state.
 - `pendingAdventureEntitlements/{email}`: paid access waiting for account creation.
-- `shopifyCustomers/{customerId}`: Shopify customer to Firebase UID mapping.
-- `shopifySubscriptionContracts/{contractId}`: contract status cache.
-- `shopifyBillingAttempts/{attemptId}`: failed or challenged billing attempts.
+- `shopifyCustomers/{encodedCustomerId}`: Shopify customer to Firebase UID mapping.
 - `shopifyWebhookEvents/{webhookId}`: webhook idempotency guard.
 
 ## Firebase configuration
@@ -52,27 +46,22 @@ Firebase CLI prompts during deploy:
 ```sh
 SHOPIFY_SHOP_DOMAIN="www.j2crafts.com"
 SHOPIFY_API_VERSION="2026-04"
-ADVENTURE_SUBSCRIPTION_VARIANT_IDS="48324069458161,gid://shopify/ProductVariant/48324069458161"
-ADVENTURE_PURCHASE_VARIANT_MAP='{"gid://shopify/ProductVariant/111":"gilded-archive","gid://shopify/ProductVariant/222":"ember-house"}'
-ADVENTURE_SUBSCRIPTION_CHECKOUT_URL="https://www.j2crafts.com/products/adventure-nights-monthly-library"
-ADVENTURE_SUBSCRIPTION_GRACE_DAYS="30"
+ADVENTURE_PURCHASE_VARIANT_MAP='{"gid://shopify/ProductVariant/111":"lanterns-below-marrow-hill"}'
 ```
 
-`ADVENTURE_SUBSCRIPTION_VARIANT_IDS` can contain numeric REST variant IDs,
-GraphQL variant GIDs, or both. `ADVENTURE_PURCHASE_VARIANT_MAP` maps Shopify
-variant IDs to the internal adventure IDs used by the app.
+`ADVENTURE_PURCHASE_VARIANT_MAP` maps Shopify variant IDs to the internal
+adventure IDs used by the app. Include both the numeric REST variant ID and the
+GraphQL variant GID if your webhook payloads may use either form.
 
-Current Shopify draft subscription product:
+Legacy subscription params and functions may still exist in the codebase, but
+the recommended Adventure Nights model is now one-time adventure purchases.
+
+Current/next Shopify adventure product:
 
 - Store: J2 Crafts (`www.j2crafts.com`)
-- Product: Adventure Nights Monthly Library
-- Product handle: `adventure-nights-monthly-library`
-- Product ID: `gid://shopify/Product/9638009569521`
-- Product REST ID: `9638009569521`
-- Variant ID: `gid://shopify/ProductVariant/48324069458161`
-- Variant REST ID: `48324069458161`
-- Variant SKU: `ADV-NIGHTS-MONTHLY`
-- Draft price: `$12.00`
+- Product: Lanterns Below Marrow Hill
+- Internal adventure ID: `lanterns-below-marrow-hill`
+- Add the product variant ID to `ADVENTURE_PURCHASE_VARIANT_MAP`.
 
 ## Deploy
 
@@ -100,20 +89,9 @@ If using the temporary token fallback, register the same URL with the private
 Create Admin API webhook subscriptions for this URL:
 
 - `orders/paid`
-- `subscription_contracts/create`
-- `subscription_contracts/update`
-- `subscription_contracts/activate`
-- `subscription_contracts/pause`
-- `subscription_contracts/cancel`
-- `subscription_contracts/fail`
-- `subscription_contracts/expire`
-- `subscription_billing_attempts/success`
-- `subscription_billing_attempts/failure`
-- `subscription_billing_attempts/challenged`
 
-These topics cover the first paid checkout, contract creation/update, contract
-lifecycle changes, renewal success, failed renewal, and 3D Secure challenge
-states.
+This topic is enough for one-time adventure purchases. Subscription contract
+and billing attempt topics are only needed for the legacy monthly-library model.
 
 ## GraphQL mutation shape
 

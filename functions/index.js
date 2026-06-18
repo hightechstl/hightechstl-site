@@ -59,6 +59,10 @@ function timestampToDate(value) {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+function firestoreId(value = '') {
+  return Buffer.from(String(value), 'utf8').toString('base64url');
+}
+
 function getOrderEmail(order = {}) {
   return normalizeEmail(
     order.email ||
@@ -110,7 +114,7 @@ async function resolveAdventureUid({email, customerId, hintedUid}) {
   }
 
   if (customerId) {
-    const customerSnapshot = await db.collection('shopifyCustomers').doc(customerId).get();
+    const customerSnapshot = await db.collection('shopifyCustomers').doc(firestoreId(customerId)).get();
     if (customerSnapshot.exists && customerSnapshot.data()?.uid) {
       return customerSnapshot.data().uid;
     }
@@ -132,7 +136,8 @@ async function resolveAdventureUid({email, customerId, hintedUid}) {
 
 async function rememberShopifyCustomer({uid, email, customerId}) {
   if (!uid || !customerId) return;
-  await db.collection('shopifyCustomers').doc(customerId).set({
+  await db.collection('shopifyCustomers').doc(firestoreId(customerId)).set({
+    customerId,
     uid,
     email: email || '',
     updatedAt: FieldValue.serverTimestamp()

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adventure Nights | High Tech STL</title>
+  <meta name="description" content="Log in to Adventure Nights and play the one-night adventures you purchased from J2 Crafts.">
+  <link rel="canonical" href="https://hightechstl.com/adventure-nights/">
+  <meta property="og:title" content="Adventure Nights | High Tech STL">
+  <meta property="og:description" content="Load purchased one-night adventures and play them from a mobile or tablet browser.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="adventure-page adventure-live-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="topbar"><div class="container"><span>One-night browser adventures for two players</span><a href="../index.html">High Tech STL</a></div></div>
+  <header class="site-header adventure-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html" aria-label="High Tech STL home"><span class="brand-mark">HT</span><span>High Tech STL</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="../services.html">Services</a><a href="../pricing.html">Pricing</a><a href="../flowslot.html">Innovation Lab</a><a href="./" aria-current="page">Adventure Nights</a><a href="../contact.html" class="nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="adventure-live-hero">
+      <div class="container adventure-live-hero-grid">
+        <div>
+          <h1>Adventure Nights</h1>
+          <p class="lead">Log in to load the Adventure Nights campaigns you purchased from J2 Crafts. Pick a story, choose seats, reveal private prompts, share clues, and reach a final choice together.</p>
+          <div class="adventure-proof" aria-label="Adventure Nights features">
+            <span>2 players</span><span>45-60 minutes</span><span>Mobile and tablet</span><span>Printable pack</span>
+          </div>
+        </div>
+        <div class="live-note">
+          <strong>Purchased adventures</strong>
+          <p>Adventure Nights no longer uses a monthly subscription. Buy an adventure once on J2 Crafts, then log in here to play and download it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-sm" aria-label="Adventure Nights account">
+      <div class="container">
+        <div class="platform-account-grid">
+          <form class="adventure-login platform-login" data-platform-login>
+            <div>
+              <span class="app-label">Account</span>
+              <strong>Log in to load purchases</strong>
+            </div>
+            <label for="platform-email">Email</label>
+            <input id="platform-email" name="email" type="email" autocomplete="email" required>
+            <label for="platform-password">Password</label>
+            <input id="platform-password" name="password" type="password" autocomplete="current-password" required>
+            <div class="adventure-login-actions">
+              <button class="button button-primary" type="submit" data-platform-sign-in>Sign In</button>
+              <button class="button button-secondary" type="button" data-platform-create>Create Account</button>
+            </div>
+            <button class="admin-link-button adventure-reset-button" type="button" data-platform-reset>Reset password</button>
+            <p data-platform-message>Use the same email you used at checkout so purchases can attach to your account.</p>
+          </form>
+          <div class="adventure-account platform-account" data-platform-account hidden>
+            <div>
+              <span class="app-label">Signed In</span>
+              <strong data-platform-email></strong>
+              <p data-platform-owned-count></p>
+            </div>
+            <button class="admin-link-button" type="button" data-platform-sign-out>Sign out</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="library-title">
+      <div class="container">
+        <div class="section-heading"><div><h2 id="library-title">Your Adventure Library</h2></div><p>Owned adventures unlock browser play and the printable pack. Adventures you have not purchased link back to J2 Crafts.</p></div>
+        <div class="live-library-grid" data-adventure-library>
+          <p class="live-loading">Loading Adventure Nights library...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="../index.html" style="color:white"><span class="brand-mark">HT</span><span>High Tech STL</span></a><p>Adventure Nights is a browser-playable one-night campaign product from High Tech STL.</p></div><div><h3>Adventure Nights</h3><ul class="footer-links"><li><a href="./">Library</a></li><li><a href="lanterns-below-marrow-hill/">Lanterns Below Marrow Hill</a></li></ul></div><div><h3>High Tech STL</h3><ul class="footer-links"><li><a href="../index.html">IT Services</a></li><li><a href="../flowslot.html">Innovation Lab</a></li></ul></div><div><h3>Contact</h3><ul class="footer-links"><li><a href="mailto:contact@j2crafts.com">contact@j2crafts.com</a></li><li>St. Louis, Missouri</li></ul></div></div><div class="footer-bottom"><span>© <span data-year></span> High Tech STL.</span><span>Adventure Nights</span></div></div></footer>
+  <script>
+    window.ADVENTURE_NIGHTS_CONFIG = {
+      mode: 'library',
+      bundleUrl: '../public/adventure-nights/lanterns-below-marrow-hill/content/adventure-app-bundle.json',
+      assetBaseUrl: '../public/adventure-nights/lanterns-below-marrow-hill/',
+      playUrl: 'lanterns-below-marrow-hill/',
+      buyUrl: 'https://www.j2crafts.com/search?q=Lanterns%20Below%20Marrow%20Hill',
+      firebaseRegion: 'us-central1'
+    };
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
+  <script src="../assets/js/firebase-config.js"></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/adventure-nights-live.js" defer></script>
+</body>
+</html>
