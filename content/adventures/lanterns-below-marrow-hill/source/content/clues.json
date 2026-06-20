@@ -1,0 +1,50 @@
+[
+  {
+    "id": "clue-lantern-1",
+    "type": "lantern",
+    "title": "Lantern Clue A",
+    "owner": "The Wickbearer",
+    "front": "Wax trails descend toward the Root Vault.",
+    "back": "The lantern was not lost. It was hidden below, on purpose."
+  },
+  {
+    "id": "clue-lantern-2",
+    "type": "lantern",
+    "title": "Lantern Clue B",
+    "owner": "The Stone Listener",
+    "front": "The candle pattern omits a final vow.",
+    "back": "The shrine\u2019s light is incomplete because one promise was never released."
+  },
+  {
+    "id": "clue-seal-1",
+    "type": "seal",
+    "title": "Seal Clue A",
+    "owner": "The Wickbearer",
+    "front": "The seal inscription reads: Bound by request, not punishment.",
+    "back": "Whoever entered the lantern chose duty once. They may not choose it still."
+  },
+  {
+    "id": "clue-seal-2",
+    "type": "seal",
+    "title": "Seal Clue B",
+    "owner": "The Stone Listener",
+    "front": "A second line warns: Unbind without witness and the road forgets its way.",
+    "back": "If the keeper is freed, the village will need a new path or a shared flame."
+  },
+  {
+    "id": "clue-key-1",
+    "type": "key",
+    "title": "Key Clue A",
+    "owner": "The Wickbearer",
+    "front": "The lantern latch opens only when two voices answer together.",
+    "back": "The shrine demands agreement. No one player can decide alone."
+  },
+  {
+    "id": "clue-key-2",
+    "type": "key",
+    "title": "Key Clue B",
+    "owner": "The Stone Listener",
+    "front": "The keeper offers a third path: share the flame instead of hoarding it.",
+    "back": "A divided light can protect the road and reveal a hidden root path beneath the hill."
+  }
+]

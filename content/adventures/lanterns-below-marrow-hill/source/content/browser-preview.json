@@ -1,0 +1,52 @@
+{
+  "adventureId": "lanterns-below-marrow-hill",
+  "screenOrder": [
+    {
+      "id": "cover",
+      "title": "Cover / CTA"
+    },
+    {
+      "id": "role-select",
+      "title": "Choose Seat A or Seat B"
+    },
+    {
+      "id": "scene-1",
+      "title": "Scene 1: The Stair Beneath the Lantern"
+    },
+    {
+      "id": "scene-2",
+      "title": "Scene 2: The Hall of Failing Candles"
+    },
+    {
+      "id": "scene-3",
+      "title": "Scene 3: The Mirror Pool Oath"
+    },
+    {
+      "id": "scene-4",
+      "title": "Scene 4: The Lantern Heart"
+    },
+    {
+      "id": "final-choice",
+      "title": "Final Choice"
+    },
+    {
+      "id": "ending",
+      "title": "Ending"
+    },
+    {
+      "id": "downloads",
+      "title": "Download the Printable Pack"
+    }
+  ],
+  "uiNotes": {
+    "layout": "Two-column on tablet/desktop; stacked on phone.",
+    "privatePrompts": "Tap to reveal and hide per seat.",
+    "map": "Use the SVG map on the left; clue markers illuminate when unlocked.",
+    "accessibility": [
+      "Minimum 16px body text",
+      "High contrast text and buttons",
+      "Tap targets at least 44px",
+      "Optional read-aloud mode"
+    ]
+  }
+}

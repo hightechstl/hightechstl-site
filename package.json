@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build:adventure-products": "node scripts/build-adventure-products.mjs"
+  }
+}

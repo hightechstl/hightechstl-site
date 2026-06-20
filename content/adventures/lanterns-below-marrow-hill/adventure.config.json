@@ -1,0 +1,36 @@
+{
+  "id": "lanterns-below-marrow-hill",
+  "title": "Lanterns Below Marrow Hill",
+  "slug": "lanterns-below-marrow-hill",
+  "genre": "Mystery / Light Fantasy",
+  "players": 2,
+  "playTime": "45-60 minutes",
+  "summary": "Two companions descend into an old hill shrine to recover a vanished village lantern before the road goes dark for good.",
+  "supportEmail": "contact@j2crafts.com",
+  "browserPlayUrl": "https://hightechstl.com/adventure-nights/play/lanterns-below-marrow-hill/",
+  "redeemUrl": "https://hightechstl.com/adventure-nights/redeem/",
+  "buyLinks": {
+    "quickPlay": "https://j2crafts.com/products/lanterns-below-marrow-hill-quick-play",
+    "deluxe": "https://j2crafts.com/products/lanterns-below-marrow-hill-deluxe"
+  },
+  "skus": {
+    "quickPlay": "AN-LBMH-QUICK",
+    "deluxe": "AN-LBMH-DELUXE"
+  },
+  "editions": {
+    "quickPlay": {
+      "id": "quick-play",
+      "name": "Quick-Play Edition",
+      "priceSuggestion": "$2.99-$4.99",
+      "description": "A complete, low-cost printable/browser-ready version with simple assets.",
+      "includesPremiumArt": false
+    },
+    "deluxe": {
+      "id": "deluxe",
+      "name": "Deluxe Edition",
+      "priceSuggestion": "$7.99-$12.99",
+      "description": "Premium illustrated version with detailed maps, tokens, scene art, and enhanced browser play.",
+      "includesPremiumArt": true
+    }
+  }
+}

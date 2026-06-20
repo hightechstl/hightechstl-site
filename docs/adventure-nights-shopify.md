@@ -7,9 +7,13 @@ play or download its resources.
 
 ## Access model
 
-- Users create or sign in to a Firebase account before checkout.
-- A successful adventure purchase adds that adventure ID to
-  `ownedAdventureIds` and does not expire.
+- Customers can buy before creating an Adventure Nights account.
+- A successful adventure purchase creates an entitlement for the checkout email
+  and does not expire by default.
+- When a user creates or signs in with that same email, the entitlement attaches
+  to the account and adds the adventure to the playable library.
+- Backup redeem codes should be generated after purchase and delivered outside
+  the static Shopify ZIP.
 - If a Shopify webhook arrives before the Firebase account exists, the
   entitlement is held in `pendingAdventureEntitlements/{email}` and claimed on
   the first `getAdventureAccess` call from a matching signed-in account.
@@ -46,12 +50,13 @@ Firebase CLI prompts during deploy:
 ```sh
 SHOPIFY_SHOP_DOMAIN="www.j2crafts.com"
 SHOPIFY_API_VERSION="2026-04"
-ADVENTURE_PURCHASE_VARIANT_MAP='{"gid://shopify/ProductVariant/111":"lanterns-below-marrow-hill"}'
+ADVENTURE_PURCHASE_VARIANT_MAP='{"gid://shopify/ProductVariant/111":{"adventureId":"lanterns-below-marrow-hill","edition":"quick-play","sku":"AN-LBMH-QUICK"},"gid://shopify/ProductVariant/222":{"adventureId":"lanterns-below-marrow-hill","edition":"deluxe","sku":"AN-LBMH-DELUXE"}}'
 ```
 
 `ADVENTURE_PURCHASE_VARIANT_MAP` maps Shopify variant IDs to the internal
-adventure IDs used by the app. Include both the numeric REST variant ID and the
-GraphQL variant GID if your webhook payloads may use either form.
+adventure IDs and editions used by the app. Include both the numeric REST
+variant ID and the GraphQL variant GID if your webhook payloads may use either
+form.
 
 Legacy subscription params and functions may still exist in the codebase, but
 the recommended Adventure Nights model is now one-time adventure purchases.
@@ -61,7 +66,8 @@ Current/next Shopify adventure product:
 - Store: J2 Crafts (`www.j2crafts.com`)
 - Product: Lanterns Below Marrow Hill
 - Internal adventure ID: `lanterns-below-marrow-hill`
-- Add the product variant ID to `ADVENTURE_PURCHASE_VARIANT_MAP`.
+- SKUs: `AN-LBMH-QUICK`, `AN-LBMH-DELUXE`
+- Add both product variant IDs to `ADVENTURE_PURCHASE_VARIANT_MAP`.
 
 ## Deploy
 

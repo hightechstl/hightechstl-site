@@ -11,6 +11,7 @@
     endingId: '',
     user: null,
     ownedAdventureIds: [],
+    ownedAdventureEditions: {},
     authReady: false,
     accessLoaded: false
   };
@@ -87,6 +88,7 @@
   async function loadAccess() {
     if (!state.user || !firebaseReady()) {
       state.ownedAdventureIds = [];
+      state.ownedAdventureEditions = {};
       state.accessLoaded = true;
       return;
     }
@@ -95,6 +97,7 @@
     const getAdventureAccess = functions.httpsCallable('getAdventureAccess');
     const result = await getAdventureAccess();
     state.ownedAdventureIds = result.data?.ownedAdventureIds || [];
+    state.ownedAdventureEditions = result.data?.ownedAdventureEditions || {};
     state.accessLoaded = true;
   }
 
@@ -177,6 +180,7 @@
         setPlatformMessage(user ? 'Purchased adventures loaded.' : 'Sign in to load purchases.');
       } catch (error) {
         state.ownedAdventureIds = [];
+        state.ownedAdventureEditions = {};
         setPlatformMessage(readableError(error), true);
       }
       updatePlatformAccount();
@@ -195,8 +199,7 @@
     if (!library) return;
     const owned = isOwned();
     const signedIn = Boolean(state.user);
-    const primaryHref = owned ? config.playUrl : (config.buyUrl || '#');
-    const primaryLabel = owned ? 'Load Adventure' : 'Buy on J2 Crafts';
+    const detailHref = config.detailUrl || config.playUrl || '#';
     const secondary = owned
       ? '<span class="owned-pill">Purchased</span>'
       : signedIn
@@ -210,9 +213,16 @@
           <div class="live-kicker">${esc(tile.genre)} · ${esc(tile.duration)} · ${esc(tile.players)} players</div>
           <h3>${esc(tile.title)}</h3>
           <p>${esc(tile.summary || adventure.summary)}</p>
+          <div class="edition-mini-grid">
+            <div><strong>Quick-Play</strong><span>Complete, lower-cost, simple assets.</span></div>
+            <div><strong>Deluxe</strong><span>Premium scene art and collectible files.</span></div>
+          </div>
           <div class="live-card-meta"><span>${esc(tile.mood)}</span><span>${esc(tile.difficulty)}</span></div>
           <div class="platform-card-actions">
-            <a class="button ${owned ? 'button-primary' : 'button-blue'}" href="${esc(primaryHref)}">${primaryLabel}</a>
+            <a class="button button-secondary" href="${esc(detailHref)}">View Adventure</a>
+            ${owned ? `<a class="button button-primary" href="${esc(config.playUrl)}">Play Online</a>` : ''}
+            <a class="button button-primary" href="${esc(config.buyQuickUrl || config.buyUrl || '#')}">Buy Quick-Play</a>
+            <a class="button button-blue" href="${esc(config.buyDeluxeUrl || config.buyUrl || '#')}">Buy Deluxe</a>
             ${secondary}
           </div>
         </div>
@@ -220,7 +230,8 @@
       ${signedIn && !state.ownedAdventureIds.length ? `
         <div class="live-note">
           <strong>No purchases found yet</strong>
-          <p>Buy an adventure on J2 Crafts with this same email address. If you already purchased, make sure your checkout email matches this login.</p>
+          <p>Buy an adventure on J2 Crafts with this same email address. If you already purchased with a different email, use the redeem page.</p>
+          <a class="button button-secondary" href="${esc(config.redeemUrl || '#')}">Redeem Code</a>
         </div>
       ` : ''}
     `;
@@ -447,8 +458,10 @@
           <h2>Log in to load this adventure</h2>
           <p>${state.user ? 'This account does not own this adventure yet.' : 'Sign in from the Adventure Nights library to load purchased adventures.'}</p>
           <div class="live-actions">
-            <a class="button button-primary" href="${esc(config.libraryUrl || '../')}">Go to Library Login</a>
-            <a class="button button-blue" href="${esc(config.buyUrl || '#')}">Buy on J2 Crafts</a>
+            <a class="button button-primary" href="${esc(config.libraryUrl || '../')}">Sign In</a>
+            <a class="button button-secondary" href="${esc(config.redeemUrl || `${config.libraryUrl || '../'}redeem/`)}">Redeem Code</a>
+            <a class="button button-primary" href="${esc(config.buyQuickUrl || config.buyUrl || '#')}">Buy Quick-Play</a>
+            <a class="button button-blue" href="${esc(config.buyDeluxeUrl || config.buyUrl || '#')}">Buy Deluxe</a>
           </div>
         </article>
       `;

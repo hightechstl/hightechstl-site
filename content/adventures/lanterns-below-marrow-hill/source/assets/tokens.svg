@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Lantern Seeker Tokens</title>
+  <desc id="desc">Printable token sheet with repeated tokens for the Wickbearer and the Stone Listener.</desc>
+  <rect width="800" height="1000" fill="#F6EEDC"/>
+  <text x="60" y="70" font-family="Georgia, serif" font-size="34" font-weight="700" fill="#2a241d">Lantern Seeker Tokens</text>
+  <text x="60" y="105" font-family="Georgia, serif" font-size="18" fill="#5a4b39">Print and cut, or export individual tokens as PNG for the web portal.</text>
+
+  <g transform="translate(170 260)">
+    <circle r="90" fill="#2F5D62" stroke="#ffffff" stroke-width="8"/>
+    <text x="-24" y="18" font-family="Georgia, serif" font-size="70" font-weight="700" fill="#ffffff">A</text>
+    <text x="-72" y="130" font-family="Georgia, serif" font-size="22" fill="#2a241d">The Wickbearer</text>
+  </g>
+
+  <g transform="translate(430 260)">
+    <circle r="90" fill="#8A3FFC" stroke="#ffffff" stroke-width="8"/>
+    <text x="-24" y="18" font-family="Georgia, serif" font-size="70" font-weight="700" fill="#ffffff">B</text>
+    <text x="-86" y="130" font-family="Georgia, serif" font-size="22" fill="#2a241d">The Stone Listener</text>
+  </g>
+
+  <g transform="translate(170 620)">
+    <circle r="90" fill="#2F5D62" stroke="#ffffff" stroke-width="8"/>
+    <text x="-24" y="18" font-family="Georgia, serif" font-size="70" font-weight="700" fill="#ffffff">A</text>
+    <text x="-72" y="130" font-family="Georgia, serif" font-size="22" fill="#2a241d">The Wickbearer</text>
+  </g>
+
+  <g transform="translate(430 620)">
+    <circle r="90" fill="#8A3FFC" stroke="#ffffff" stroke-width="8"/>
+    <text x="-24" y="18" font-family="Georgia, serif" font-size="70" font-weight="700" fill="#ffffff">B</text>
+    <text x="-86" y="130" font-family="Georgia, serif" font-size="22" fill="#2a241d">The Stone Listener</text>
+  </g>
+
+  <rect x="540" y="170" width="200" height="560" rx="18" fill="#fff8e7" stroke="#7a5c32" stroke-width="3"/>
+  <text x="565" y="210" font-family="Georgia, serif" font-size="24" font-weight="700" fill="#2a241d">Usage</text>
+  <text x="565" y="250" font-family="Georgia, serif" font-size="18" fill="#2a241d">• Web portal</text>
+  <text x="565" y="278" font-family="Georgia, serif" font-size="18" fill="#2a241d">  Crop a single token</text>
+  <text x="565" y="300" font-family="Georgia, serif" font-size="18" fill="#2a241d">  as PNG.</text>
+  <text x="565" y="348" font-family="Georgia, serif" font-size="18" fill="#2a241d">• Print pack</text>
+  <text x="565" y="376" font-family="Georgia, serif" font-size="18" fill="#2a241d">  Cut out circles or</text>
+  <text x="565" y="398" font-family="Georgia, serif" font-size="18" fill="#2a241d">  fold as standees.</text>
+</svg>

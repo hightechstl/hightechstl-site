@@ -1048,6 +1048,99 @@ textarea { min-height: 145px; resize: vertical; }
 }
 .plan-card p { color: var(--adv-muted); }
 .plan-card .button { margin-top: auto; }
+.product-hero .button-row,
+.platform-card-actions {
+  align-items: center;
+}
+.product-detail-split {
+  align-items: center;
+}
+.edition-grid,
+.scene-preview-grid,
+.redeem-grid,
+.edition-mini-grid {
+  display: grid;
+  gap: 1rem;
+}
+.edition-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.edition-card {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  padding: 1.25rem;
+  background: #fffaf0;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(44,32,22,.08);
+}
+.edition-card-featured {
+  background: #fff4dc;
+  border-color: rgba(191,107,53,.55);
+}
+.edition-card h3,
+.sample-scene h3 {
+  margin: 0;
+  color: var(--adv-ink);
+}
+.edition-card p,
+.sample-scene p {
+  margin: 0;
+  color: var(--adv-muted);
+}
+.edition-card ul,
+.clean-steps {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--adv-muted);
+  line-height: 1.55;
+}
+.edition-card .button {
+  margin-top: auto;
+}
+.edition-mini-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: .35rem 0 .2rem;
+}
+.edition-mini-grid div {
+  padding: .7rem;
+  background: #fff7e5;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+}
+.edition-mini-grid strong,
+.edition-mini-grid span {
+  display: block;
+}
+.edition-mini-grid span {
+  color: var(--adv-muted);
+  font-size: .82rem;
+  line-height: 1.35;
+}
+.scene-preview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+.scene-preview-grid img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--adv-line);
+  border-radius: 8px;
+  box-shadow: 0 14px 28px rgba(34,26,20,.12);
+}
+.sample-scene {
+  margin-top: 1rem;
+}
+.redeem-grid {
+  grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr);
+  align-items: start;
+}
+.redeem-form {
+  position: sticky;
+  top: 92px;
+}
 
 @media (max-width: 1100px) {
   .app-shell { grid-template-columns: 250px minmax(0, 1fr); }
@@ -1085,12 +1178,16 @@ textarea { min-height: 145px; resize: vertical; }
 @media (max-width: 860px) {
   .adventure-hero-grid,
   .app-shell,
-  .adventure-pricing { grid-template-columns: 1fr; }
+  .adventure-pricing,
+  .edition-grid,
+  .scene-preview-grid,
+  .redeem-grid { grid-template-columns: 1fr; }
   .hero-account-panel,
   .phone-demo { justify-self: start; }
   .story-strip { grid-template-columns: 1fr; }
   .adventure-app-section { padding: 1rem 0 4rem; }
   .app-shell { min-height: auto; padding: .7rem; border-radius: 0; }
+  .redeem-form { position: static; }
 }
 
 @media (max-width: 520px) {
@@ -1103,4 +1200,5 @@ textarea { min-height: 145px; resize: vertical; }
   .invite-row { display: grid; }
   .resource-item { grid-template-columns: 34px minmax(0, 1fr); }
   .resource-state { grid-column: 2; }
+  .edition-mini-grid { grid-template-columns: 1fr; }
 }

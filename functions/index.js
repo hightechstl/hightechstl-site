@@ -144,7 +144,7 @@ async function rememberShopifyCustomer({uid, email, customerId}) {
   }, {merge: true});
 }
 
-async function grantAdventureEntitlement({uid, email, customerId, subscriptionActiveUntil, ownedAdventureIds = [], source = {}}) {
+async function grantAdventureEntitlement({uid, email, customerId, subscriptionActiveUntil, ownedAdventureIds = [], ownedAdventureEditions = {}, source = {}}) {
   const cleanEmail = normalizeEmail(email);
 
   if (!uid) {
@@ -164,6 +164,7 @@ async function grantAdventureEntitlement({uid, email, customerId, subscriptionAc
         email: cleanEmail,
         subscriptionActiveUntil: activeUntilDate ? Timestamp.fromDate(activeUntilDate) : existing.subscriptionActiveUntil || null,
         ownedAdventureIds: Array.from(new Set([...(existing.ownedAdventureIds || []), ...ownedAdventureIds])),
+        ownedAdventureEditions: {...(existing.ownedAdventureEditions || {}), ...ownedAdventureEditions},
         sources: FieldValue.arrayUnion(source),
         updatedAt: FieldValue.serverTimestamp()
       }, {merge: true});
@@ -191,7 +192,8 @@ async function grantAdventureEntitlement({uid, email, customerId, subscriptionAc
       email: cleanEmail || existing.email || '',
       updatedAt: FieldValue.serverTimestamp(),
       ...subscriptionPatch,
-      ...(ownedAdventureIds.length ? {ownedAdventureIds: Array.from(new Set([...(existing.ownedAdventureIds || []), ...ownedAdventureIds]))} : {})
+      ...(ownedAdventureIds.length ? {ownedAdventureIds: Array.from(new Set([...(existing.ownedAdventureIds || []), ...ownedAdventureIds]))} : {}),
+      ...(Object.keys(ownedAdventureEditions).length ? {ownedAdventureEditions: {...(existing.ownedAdventureEditions || {}), ...ownedAdventureEditions}} : {})
     }, {merge: true});
   });
 
@@ -212,6 +214,7 @@ async function claimPendingAdventureEntitlements(uid, email) {
     email: cleanEmail,
     subscriptionActiveUntil: timestampToDate(pending.subscriptionActiveUntil),
     ownedAdventureIds: pending.ownedAdventureIds || [],
+    ownedAdventureEditions: pending.ownedAdventureEditions || {},
     source: {type: 'pending-claim', email: cleanEmail}
   });
   await pendingRef.delete();
@@ -264,6 +267,7 @@ function orderEntitlements(order) {
   const subscriptionVariantIds = parseVariantSet(ADVENTURE_SUBSCRIPTION_VARIANT_IDS.value());
   const purchaseVariantMap = parsePurchaseVariantMap(ADVENTURE_PURCHASE_VARIANT_MAP.value());
   const adventureIds = new Set();
+  const adventureEditions = {};
   let hasSubscription = false;
 
   for (const line of order.line_items || []) {
@@ -274,14 +278,23 @@ function orderEntitlements(order) {
 
     for (const variantId of variantIds) {
       const mappedAdventure = purchaseVariantMap[variantId];
-      if (mappedAdventure) adventureIds.add(mappedAdventure);
+      if (typeof mappedAdventure === 'string') {
+        adventureIds.add(mappedAdventure);
+      } else if (mappedAdventure?.adventureId) {
+        adventureIds.add(mappedAdventure.adventureId);
+        if (mappedAdventure.edition) adventureEditions[mappedAdventure.adventureId] = mappedAdventure.edition;
+      }
     }
 
     const lineAdventureId = getLineProperty(line, ['adventure_id', 'adventure']);
-    if (lineAdventureId) adventureIds.add(lineAdventureId);
+    const lineEdition = getLineProperty(line, ['edition', 'adventure_edition']);
+    if (lineAdventureId) {
+      adventureIds.add(lineAdventureId);
+      if (lineEdition) adventureEditions[lineAdventureId] = lineEdition;
+    }
   }
 
-  return {hasSubscription, ownedAdventureIds: [...adventureIds]};
+  return {hasSubscription, ownedAdventureIds: [...adventureIds], ownedAdventureEditions: adventureEditions};
 }
 
 async function handleOrderPaid(order) {
@@ -289,7 +302,7 @@ async function handleOrderPaid(order) {
   const customerId = getOrderCustomerId(order);
   const hintedUid = getOrderNoteAttribute(order, ['firebase_uid', 'uid', 'adventure_uid']);
   const uid = await resolveAdventureUid({email, customerId, hintedUid});
-  const {hasSubscription, ownedAdventureIds} = orderEntitlements(order);
+  const {hasSubscription, ownedAdventureIds, ownedAdventureEditions} = orderEntitlements(order);
   const graceDays = Number.parseInt(ADVENTURE_SUBSCRIPTION_GRACE_DAYS.value(), 10) || 30;
 
   if (!hasSubscription && ownedAdventureIds.length === 0) {
@@ -305,6 +318,7 @@ async function handleOrderPaid(order) {
     customerId,
     subscriptionActiveUntil: hasSubscription ? addDays(new Date(), graceDays) : null,
     ownedAdventureIds,
+    ownedAdventureEditions,
     source: {
       type: 'orders/paid',
       orderId: order.admin_graphql_api_id || String(order.id || ''),
@@ -527,7 +541,8 @@ exports.getAdventureAccess = onCall({region: REGION, invoker: 'public'}, async (
       activeUntil: activeUntil ? activeUntil.toISOString() : null,
       checkoutUrl: ADVENTURE_SUBSCRIPTION_CHECKOUT_URL.value() || null
     },
-    ownedAdventureIds: account.ownedAdventureIds || []
+    ownedAdventureIds: account.ownedAdventureIds || [],
+    ownedAdventureEditions: account.ownedAdventureEditions || {}
   };
 });
 

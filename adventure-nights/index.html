@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Adventure Nights | High Tech STL</title>
-  <meta name="description" content="Log in to Adventure Nights and play the one-night adventures you purchased from J2 Crafts.">
+  <meta name="description" content="Buy individual Adventure Nights one-night campaigns on J2 Crafts, then redeem and play online through HighTechSTL.">
   <link rel="canonical" href="https://hightechstl.com/adventure-nights/">
   <meta property="og:title" content="Adventure Nights | High Tech STL">
-  <meta property="og:description" content="Load purchased one-night adventures and play them from a mobile or tablet browser.">
+  <meta property="og:description" content="Shop Quick-Play and Deluxe one-night adventures for exactly two players.">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
@@ -29,14 +29,14 @@
       <div class="container adventure-live-hero-grid">
         <div>
           <h1>Adventure Nights</h1>
-          <p class="lead">Log in to load the Adventure Nights campaigns you purchased from J2 Crafts. Pick a story, choose seats, reveal private prompts, share clues, and reach a final choice together.</p>
+          <p class="lead">Buy individual one-night campaigns on J2 Crafts, then log in here to redeem and play them online. Each adventure is built for exactly two players and one steady evening at the table.</p>
           <div class="adventure-proof" aria-label="Adventure Nights features">
             <span>2 players</span><span>45-60 minutes</span><span>Mobile and tablet</span><span>Printable pack</span>
           </div>
         </div>
         <div class="live-note">
-          <strong>Purchased adventures</strong>
-          <p>Adventure Nights no longer uses a monthly subscription. Buy an adventure once on J2 Crafts, then log in here to play and download it.</p>
+          <strong>No subscription required</strong>
+          <p>Choose a lower-cost Quick-Play edition or a premium Deluxe edition for each adventure. Purchased adventures stay tied to your account.</p>
         </div>
       </div>
     </section>
@@ -74,7 +74,7 @@
 
     <section class="section" aria-labelledby="library-title">
       <div class="container">
-        <div class="section-heading"><div><h2 id="library-title">Your Adventure Library</h2></div><p>Owned adventures unlock browser play and the printable pack. Adventures you have not purchased link back to J2 Crafts.</p></div>
+        <div class="section-heading"><div><h2 id="library-title">Adventure Library</h2></div><p>Browse available adventures, buy an edition on J2 Crafts, or sign in to load adventures you already own.</p></div>
         <div class="live-library-grid" data-adventure-library>
           <p class="live-loading">Loading Adventure Nights library...</p>
         </div>
@@ -88,8 +88,12 @@
       mode: 'library',
       bundleUrl: '../public/adventure-nights/lanterns-below-marrow-hill/content/adventure-app-bundle.json',
       assetBaseUrl: '../public/adventure-nights/lanterns-below-marrow-hill/',
-      playUrl: 'lanterns-below-marrow-hill/',
-      buyUrl: 'https://www.j2crafts.com/search?q=Lanterns%20Below%20Marrow%20Hill',
+      detailUrl: 'lanterns-below-marrow-hill/',
+      playUrl: 'play/lanterns-below-marrow-hill/',
+      buyUrl: 'https://j2crafts.com/products/lanterns-below-marrow-hill-quick-play',
+      buyQuickUrl: 'https://j2crafts.com/products/lanterns-below-marrow-hill-quick-play',
+      buyDeluxeUrl: 'https://j2crafts.com/products/lanterns-below-marrow-hill-deluxe',
+      redeemUrl: 'redeem/',
       firebaseRegion: 'us-central1'
     };
   </script>

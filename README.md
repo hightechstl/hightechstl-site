@@ -11,8 +11,11 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `about.html` - Joshua Hancock's IT operations and leadership background
 - `contact.html` - Free technology assessment form
 - `flowslot.html` - Standalone FlowSlot Innovation Lab project page
-- `adventure-nights/` - Static Adventure Nights library page
-- `adventure-nights/lanterns-below-marrow-hill/` - Browser-playable adventure route loaded from the bundled JSON package
+- `adventure-nights/` - Adventure Nights public library, purchase, and account entry page
+- `adventure-nights/lanterns-below-marrow-hill/` - Public product/detail page for Lanterns Below Marrow Hill
+- `adventure-nights/redeem/` - Redeem-code and purchase-email account flow scaffold
+- `adventure-nights/play/lanterns-below-marrow-hill/` - Future protected browser-play route loaded from the paid bundle
+- `content/adventures/` - Normalized Adventure Nights source content and edition configuration
 - `adventure-nights.html` - Legacy interactive product prototype for two-player one-night campaign packages
 - `app/` - Existing compiled FlowSlot web application, preserved at `/app`
 - `images/flowslot/` - Existing product screenshots used on the FlowSlot page
@@ -23,6 +26,9 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `assets/js/admin.js`, `assets/css/admin.css` - Service desk application
 - `firestore.rules`, `firestore.indexes.json`, `functions/` - Service desk data security and owner-only account creation
 - `docs/adventure-nights-shopify.md` - Shopify purchase entitlement setup notes
+- `docs/adventure-nights-entitlements.md` - Purchase email, redeem code, and entitlement model
+- `docs/shopify-adventure-nights-fulfillment.md` - J2 Crafts fulfillment and webhook flow
+- `scripts/build-adventure-products.mjs` - Builds Shopify-ready Quick-Play and Deluxe ZIP files
 - `scripts/register-shopify-adventure-webhooks.mjs` - Helper for registering Adventure Nights Shopify webhooks after function deployment
 - `robots.txt`, `sitemap.xml`, `.nojekyll` - GitHub Pages and SEO support
 
@@ -47,20 +53,32 @@ ticket activity using Firebase Authentication and Firestore. Follow
 `docs/service-desk-setup.md` before using it. A separate Firebase project from
 FlowSlot is recommended.
 
-## Adventure Nights Access
+## Adventure Nights Products
 
-The Adventure Nights platform is loaded from
-`public/adventure-nights/lanterns-below-marrow-hill/content/adventure-app-bundle.json`
-and uses Firebase Authentication plus `ownedAdventureIds` to decide which
-adventures appear in a signed-in account. Customers buy individual adventures
-on J2 Crafts; Shopify webhooks add the purchased adventure IDs to the matching
-Firebase account, or hold them as pending entitlements by email until the
-customer creates an account.
+Lanterns Below Marrow Hill is normalized under
+`content/adventures/lanterns-below-marrow-hill/` and can be packaged as two
+Shopify digital products:
 
-The static bundle files remain publicly reachable in this GitHub Pages build.
-The current UI hides play/download access unless the account owns the adventure,
-but true private content delivery requires backend-protected files or signed
-download URLs before production launch.
+```sh
+npm run build:adventure-products
+```
+
+The build creates:
+
+- `dist/shopify-digital-products/Lanterns_Below_Marrow_Hill_Quick_Play_Edition.zip`
+- `dist/shopify-digital-products/Lanterns_Below_Marrow_Hill_Deluxe_Edition.zip`
+
+The ZIPs intentionally do not contain unique unlock codes. Static Shopify
+digital files are shared for every customer, so purchase access should be
+created by webhook/order automation and tied to checkout email plus a separately
+generated redeem code when needed.
+
+The current browser play route uses Firebase Authentication plus
+`ownedAdventureIds`/`ownedAdventureEditions` to decide which adventures appear
+in a signed-in account. Because this is still a static GitHub Pages style site,
+files under `public/` remain directly reachable. True paid content protection
+requires backend-protected files, Firebase Storage rules, Cloud Functions, or
+signed download URLs before production launch.
 
 ## SEO Recommendations
 
