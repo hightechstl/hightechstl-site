@@ -15,13 +15,18 @@ play or download its resources.
 - Backup redeem codes should be generated after purchase and delivered outside
   the static Shopify ZIP.
 - If a Shopify webhook arrives before the Firebase account exists, the
-  entitlement is held in `pendingAdventureEntitlements/{email}` and claimed on
-  the first `getAdventureAccess` call from a matching signed-in account.
+  entitlement is recorded in `adventureEntitlements` by checkout email and
+  claimed on the first `getAdventureAccess` call from a matching signed-in
+  account.
 
 ## Firestore collections
 
 - `adventureAccounts/{uid}`: user-facing owned adventure state.
-- `pendingAdventureEntitlements/{email}`: paid access waiting for account creation.
+- `adventureEntitlements/{entitlementId}`: durable paid-access record per order
+  line item or manual redeem grant.
+- `adventureUnlockCodes/{codeHash}`: hashed backup redeem codes.
+- `pendingAdventureEntitlements/{email}`: compatibility aggregate for paid access
+  waiting for account creation.
 - `shopifyCustomers/{encodedCustomerId}`: Shopify customer to Firebase UID mapping.
 - `shopifyWebhookEvents/{webhookId}`: webhook idempotency guard.
 
@@ -32,6 +37,7 @@ Set secrets:
 ```sh
 firebase functions:secrets:set SHOPIFY_WEBHOOK_SECRET
 firebase functions:secrets:set SHOPIFY_ADMIN_ACCESS_TOKEN
+firebase functions:secrets:set REDEEM_CODE_PEPPER
 ```
 
 `SHOPIFY_WEBHOOK_SECRET` must be the Shopify app client secret for the same app
@@ -102,9 +108,12 @@ If using the temporary token fallback, register the same URL with the private
 Create Admin API webhook subscriptions for this URL:
 
 - `orders/paid`
+- `orders/cancelled`
+- `refunds/create`
 
-This topic is enough for one-time adventure purchases. Subscription contract
-and billing attempt topics are only needed for the legacy monthly-library model.
+These topics are the current one-time adventure purchase flow. Subscription
+contract and billing attempt topics are only needed for the legacy monthly
+library model.
 
 ## GraphQL mutation shape
 
@@ -139,7 +148,8 @@ Variables example:
 }
 ```
 
-Repeat with each topic enum that corresponds to the topic list above.
+Repeat with each topic enum that corresponds to the topic list above:
+`ORDERS_PAID`, `ORDERS_CANCELLED`, and `REFUNDS_CREATE`.
 
 Or use the included helper after deployment:
 

@@ -214,8 +214,8 @@
           <h3>${esc(tile.title)}</h3>
           <p>${esc(tile.summary || adventure.summary)}</p>
           <div class="edition-mini-grid">
-            <div><strong>Quick-Play</strong><span>Complete, lower-cost, simple assets.</span></div>
-            <div><strong>Deluxe</strong><span>Premium scene art and collectible files.</span></div>
+            <div><strong>Quick-Play</strong><span>Full Browser Story Mode plus simple Print & Play files.</span></div>
+            <div><strong>Deluxe</strong><span>Enhanced Browser Story Mode plus premium scene art.</span></div>
           </div>
           <div class="live-card-meta"><span>${esc(tile.mood)}</span><span>${esc(tile.difficulty)}</span></div>
           <div class="platform-card-actions">
@@ -293,7 +293,7 @@
         </div>
         <div class="live-map-stack">
           <img src="${esc(asset('assets/map.svg'))}" alt="${esc(adventure.kit.mapDesc)}">
-          <img src="${esc(asset('assets/tokens.svg'))}" alt="Printable player tokens for the two roles">
+          <img src="${esc(asset('assets/tokens.svg'))}" alt="Optional printable player tokens for Print & Play Mode">
         </div>
       </article>
     `;
@@ -305,7 +305,7 @@
       <article class="live-panel">
         <p class="live-kicker">Role Select</p>
         <h2>Choose Seat A or Seat B</h2>
-        <p>Pick a role for this device, or read both role cards together before starting Scene 1.</p>
+        <p>Pick a seat for this device, or read both roles together before starting Scene 1. Browser Story Mode keeps all prompts, clues, choices, and endings on screen.</p>
         <div class="role-grid">
           ${roles.map((role, index) => `
             <button type="button" class="role-card ${state.selectedRoleId === role.id ? 'selected' : ''}" data-role-id="${esc(role.id)}">
@@ -357,7 +357,7 @@
         <section class="live-panel scene-main">
           <p class="live-kicker">Scene ${sceneIndex + 1} · ${scene.durationMinutes} minutes</p>
           <h2>${esc(scene.title)}</h2>
-          ${art ? `<img class="scene-art" src="${esc(asset(art.asset))}" alt="${esc(art.alt)}">` : ''}
+          ${art ? `<img class="scene-art" src="${esc(asset(scene.sceneArt || art.asset))}" alt="${esc(art.alt)}">` : ''}
           <p>${esc(scene.sharedPrompt)}</p>
           <div class="prompt-grid">
             <div class="private-prompt">
@@ -369,14 +369,14 @@
               <p ${seatTwoRevealed ? '' : 'hidden'}>${esc(scene.playerTwoPrompt)}</p>
             </div>
           </div>
-          <div class="scene-task"><strong>Table action</strong><p>${esc(scene.mechanic)}</p><strong>Unlock</strong><p>${esc(scene.successState)}</p></div>
+          <div class="scene-task"><strong>Discussion / action prompt</strong><p>${esc(scene.discussionPrompt || scene.mechanic)}</p><strong>Browser result</strong><p>${esc(scene.browserChoices?.[0]?.result || scene.successState)}</p><strong>Print & Play note</strong><p>${esc(scene.printAndPlayNotes || 'Use the printable guide for table movement and physical cards.')}</p></div>
           <div class="live-actions">
             <button class="button button-secondary" type="button" data-next-step="${esc(previousStep)}">Back</button>
             <button class="button button-primary" type="button" data-next-step="${esc(nextStep)}">${nextStep === 'choice' ? 'Make Final Choice' : 'Continue'}</button>
           </div>
         </section>
         <aside class="live-panel live-side-panel">
-          <h3>Map</h3>
+          <h3>Optional Map</h3>
           <img class="live-map" src="${esc(asset('assets/map.svg'))}" alt="${esc(state.bundle.adventure.kit.mapDesc)}">
           <h3>Unlocked Clues</h3>
           <div class="clue-grid">${renderUnlockedClues()}</div>
@@ -391,7 +391,7 @@
       <article class="live-panel">
         <p class="live-kicker">Final Choice</p>
         <h2>${esc(choice.prompt)}</h2>
-        <p>Talk it through together. When you choose, the ending card will appear.</p>
+        <p>Talk it through together. When you choose, the ending text appears on screen. No printed ending card is required for Browser Story Mode.</p>
         <div class="choice-grid">
           ${choice.options.map((option) => `
             <button class="choice-card" type="button" data-ending-id="${esc(option.id)}">
@@ -418,7 +418,7 @@
         </div>
         <div class="live-actions">
           <button class="button button-secondary" type="button" data-next-step="choice">Choose Again</button>
-          <a class="button button-primary" href="#downloads">Download Print Pack</a>
+          <a class="button button-primary" href="#downloads">Open Printable Pack</a>
         </div>
       </article>
     `;
@@ -431,7 +431,7 @@
       downloads.innerHTML = `
         <div class="live-note">
           <strong>Downloads locked</strong>
-          <p>Log in with an account that owns this adventure to load the print-ready files.</p>
+          <p>Log in with an account that owns this adventure to load Print & Play files in a new tab.</p>
         </div>
       `;
       return;

@@ -35,15 +35,17 @@ If automatic unlock fails, customer redeems backup code
 
 ## Webhook events
 
-Listen for a paid order event:
+Listen for `orders/paid`:
 
 - Identify the adventure and edition from SKU or variant ID.
-- Create an entitlement for the checkout email.
-- Generate a unique unlock code outside the static ZIP.
-- Store only the code hash.
+- Create an `adventureEntitlements` document for the checkout email and paid
+  line item.
+- Store the edition so Deluxe can upgrade Quick-Play access.
+- Generate backup unlock codes outside the static ZIP only when needed.
+- Store only each code hash.
 - Email or reveal the code separately if needed.
 
-Listen for refund/cancel events:
+Listen for `refunds/create` and `orders/cancelled`:
 
 - Locate entitlement by Shopify order ID and line item.
 - Set status to `refunded` or `revoked`.

@@ -52,6 +52,15 @@ Unlock codes:
 }
 ```
 
+In Firestore, these live in:
+
+- `adventureEntitlements/{entitlementId}`: durable source of truth for paid
+  adventure access.
+- `adventureUnlockCodes/{codeHash}`: HMAC-SHA256 hashed backup codes. The
+  plaintext code is only returned once by the admin generator.
+- `pendingAdventureEntitlements/{email}`: compatibility aggregate for purchases
+  that arrive before an account exists.
+
 ## Statuses
 
 - `unclaimed`: purchase exists by email, but no user account has claimed it.
@@ -67,8 +76,29 @@ Unlock codes:
   that account.
 - If the customer uses a different email, they can redeem with a backup code.
 - Paid unlocks should not expire by default.
-- Refunds should revoke browser access and disable unused codes.
+- Shopify `orders/paid` creates entitlement docs by paid line item.
+- Deluxe purchases naturally upgrade account access because the app recomputes
+  each adventure from the highest active edition.
+- Shopify `refunds/create` revokes the refunded line item and disables linked
+  backup codes.
+- Shopify `orders/cancelled` revokes all Adventure Nights entitlement docs for
+  the cancelled order.
 - Store only hashed unlock codes. Never store plain codes after generation.
+
+## Firebase functions
+
+- `getAdventureAccess`: claims matching unclaimed entitlement docs and returns
+  owned adventure IDs/editions for the signed-in user.
+- `redeemAdventureCode`: validates a backup code against
+  `adventureUnlockCodes/{codeHash}` and claims the linked entitlement.
+- `createAdventureRedeemCode`: admin-only callable that creates a hashed code
+  and optionally an unclaimed manual entitlement.
+- `shopifyAdventureWebhook`: handles paid orders, refunds, cancellations, and
+  legacy subscription topics.
+
+Set `REDEEM_CODE_PEPPER` as a Firebase Functions secret. This pepper is used to
+HMAC submitted redeem codes before lookup, so code hashes are not reusable if
+Firestore data is exposed.
 
 ## Edition handling
 

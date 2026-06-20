@@ -15,6 +15,7 @@ const db = getFirestore();
 
 const SHOPIFY_WEBHOOK_SECRET = defineSecret('SHOPIFY_WEBHOOK_SECRET');
 const SHOPIFY_ADMIN_ACCESS_TOKEN = defineSecret('SHOPIFY_ADMIN_ACCESS_TOKEN');
+const REDEEM_CODE_PEPPER = defineSecret('REDEEM_CODE_PEPPER');
 const SHOPIFY_SHOP_DOMAIN = defineString('SHOPIFY_SHOP_DOMAIN', {default: ''});
 const SHOPIFY_API_VERSION = defineString('SHOPIFY_API_VERSION', {default: '2026-04'});
 const ADVENTURE_SUBSCRIPTION_VARIANT_IDS = defineString('ADVENTURE_SUBSCRIPTION_VARIANT_IDS', {default: ''});
@@ -38,6 +39,86 @@ function parsePurchaseVariantMap(value = '{}') {
     logger.error('Invalid ADVENTURE_PURCHASE_VARIANT_MAP JSON', error);
     return {};
   }
+}
+
+
+function normalizeRedeemCode(code = '') {
+  return String(code).trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+function hashRedeemCode(code, pepperValue) {
+  const normalized = normalizeRedeemCode(code);
+  const pepper = String(pepperValue || '');
+  if (!normalized || normalized.length < 8) {
+    throw new HttpsError('invalid-argument', 'Enter a valid redeem code.');
+  }
+  if (!pepper) {
+    throw new HttpsError('failed-precondition', 'Redeem code validation is not configured yet.');
+  }
+  return crypto.createHmac('sha256', pepper).update(normalized).digest('hex');
+}
+
+function generateRedeemCode() {
+  return `AN-${crypto.randomBytes(4).toString('hex').toUpperCase()}-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
+}
+
+function editionRank(edition = '') {
+  const normalized = String(edition || '').toLowerCase();
+  if (['deluxe', 'deluxe-edition'].includes(normalized)) return 2;
+  if (['quick-play', 'quickplay', 'quick'].includes(normalized)) return 1;
+  return 0;
+}
+
+function normalizeEdition(edition = '') {
+  const normalized = String(edition || '').trim().toLowerCase();
+  if (['deluxe', 'deluxe-edition'].includes(normalized)) return 'deluxe';
+  if (['quick-play', 'quickplay', 'quick'].includes(normalized)) return 'quick-play';
+  return normalized || 'quick-play';
+}
+
+function mergeAdventureEditions(existing = {}, incoming = {}) {
+  const merged = {...existing};
+  Object.entries(incoming || {}).forEach(([adventureId, edition]) => {
+    const cleanEdition = normalizeEdition(edition);
+    if (!merged[adventureId] || editionRank(cleanEdition) >= editionRank(merged[adventureId])) {
+      merged[adventureId] = cleanEdition;
+    }
+  });
+  return merged;
+}
+
+function getOrderIds(order = {}) {
+  return {
+    gid: String(order.admin_graphql_api_id || (order.id ? `gid://shopify/Order/${order.id}` : '') || ''),
+    numeric: String(order.id || order.order_id || '').trim()
+  };
+}
+
+function getRefundOrderIds(refund = {}) {
+  const numeric = String(refund.order_id || refund.order?.id || '').trim();
+  return {
+    gid: String(refund.admin_graphql_api_order_id || refund.order?.admin_graphql_api_id || (numeric ? `gid://shopify/Order/${numeric}` : '') || ''),
+    numeric
+  };
+}
+
+function getLineItemId(line = {}) {
+  return String(line.admin_graphql_api_id || (line.id ? `gid://shopify/LineItem/${line.id}` : '') || line.line_item_id || '').trim();
+}
+
+function lineItemIdCandidates(value = '') {
+  const raw = String(value || '').trim();
+  if (!raw) return [];
+
+  const ids = new Set([raw]);
+  const match = raw.match(/^gid:\/\/shopify\/LineItem\/(.+)$/);
+  if (match?.[1]) {
+    ids.add(match[1]);
+  } else if (/^\d+$/.test(raw)) {
+    ids.add(`gid://shopify/LineItem/${raw}`);
+  }
+
+  return [...ids];
 }
 
 function addDays(date, days) {
@@ -95,6 +176,21 @@ function getLineProperty(line = {}, names = []) {
   const properties = Array.isArray(line.properties) ? line.properties : [];
   const property = properties.find((item) => names.includes(String(item.name || '').toLowerCase()));
   return property?.value ? String(property.value).trim() : '';
+}
+
+function addRefundLineItemIds(ids, value) {
+  lineItemIdCandidates(value).forEach((id) => ids.add(id));
+}
+
+function getRefundLineItemIds(refund = {}) {
+  const ids = new Set();
+  for (const refundLine of refund.refund_line_items || []) {
+    addRefundLineItemIds(ids, refundLine.line_item_id);
+    addRefundLineItemIds(ids, refundLine.admin_graphql_api_line_item_id);
+    addRefundLineItemIds(ids, refundLine.line_item?.id);
+    addRefundLineItemIds(ids, refundLine.line_item?.admin_graphql_api_id);
+  }
+  return ids;
 }
 
 function getOrderNoteAttribute(order = {}, names = []) {
@@ -164,7 +260,7 @@ async function grantAdventureEntitlement({uid, email, customerId, subscriptionAc
         email: cleanEmail,
         subscriptionActiveUntil: activeUntilDate ? Timestamp.fromDate(activeUntilDate) : existing.subscriptionActiveUntil || null,
         ownedAdventureIds: Array.from(new Set([...(existing.ownedAdventureIds || []), ...ownedAdventureIds])),
-        ownedAdventureEditions: {...(existing.ownedAdventureEditions || {}), ...ownedAdventureEditions},
+        ownedAdventureEditions: mergeAdventureEditions(existing.ownedAdventureEditions || {}, ownedAdventureEditions),
         sources: FieldValue.arrayUnion(source),
         updatedAt: FieldValue.serverTimestamp()
       }, {merge: true});
@@ -193,7 +289,7 @@ async function grantAdventureEntitlement({uid, email, customerId, subscriptionAc
       updatedAt: FieldValue.serverTimestamp(),
       ...subscriptionPatch,
       ...(ownedAdventureIds.length ? {ownedAdventureIds: Array.from(new Set([...(existing.ownedAdventureIds || []), ...ownedAdventureIds]))} : {}),
-      ...(Object.keys(ownedAdventureEditions).length ? {ownedAdventureEditions: {...(existing.ownedAdventureEditions || {}), ...ownedAdventureEditions}} : {})
+      ...(Object.keys(ownedAdventureEditions).length ? {ownedAdventureEditions: mergeAdventureEditions(existing.ownedAdventureEditions || {}, ownedAdventureEditions)} : {})
     }, {merge: true});
   });
 
@@ -206,18 +302,42 @@ async function claimPendingAdventureEntitlements(uid, email) {
 
   const pendingRef = db.collection('pendingAdventureEntitlements').doc(cleanEmail);
   const pendingSnapshot = await pendingRef.get();
-  if (!pendingSnapshot.exists) return;
+  if (pendingSnapshot.exists) {
+    const pending = pendingSnapshot.data();
+    await grantAdventureEntitlement({
+      uid,
+      email: cleanEmail,
+      subscriptionActiveUntil: timestampToDate(pending.subscriptionActiveUntil),
+      ownedAdventureIds: pending.ownedAdventureIds || [],
+      ownedAdventureEditions: pending.ownedAdventureEditions || {},
+      source: {type: 'pending-claim', email: cleanEmail}
+    });
+    await pendingRef.delete();
+  }
 
-  const pending = pendingSnapshot.data();
-  await grantAdventureEntitlement({
-    uid,
-    email: cleanEmail,
-    subscriptionActiveUntil: timestampToDate(pending.subscriptionActiveUntil),
-    ownedAdventureIds: pending.ownedAdventureIds || [],
-    ownedAdventureEditions: pending.ownedAdventureEditions || {},
-    source: {type: 'pending-claim', email: cleanEmail}
+  const entitlementSnapshot = await db.collection('adventureEntitlements').where('email', '==', cleanEmail).get();
+  let claimedAny = false;
+  const batch = db.batch();
+
+  entitlementSnapshot.docs.forEach((document) => {
+    const entitlement = document.data();
+    if (!isActiveEntitlementStatus(entitlement.status)) return;
+    if (entitlement.userId && entitlement.userId !== uid) return;
+    if (entitlement.userId === uid && entitlement.status === 'claimed') return;
+
+    claimedAny = true;
+    batch.set(document.ref, {
+      userId: uid,
+      status: 'claimed',
+      claimedAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    }, {merge: true});
   });
-  await pendingRef.delete();
+
+  if (claimedAny) {
+    await batch.commit();
+    await recomputeAdventureAccess({uid, email: cleanEmail});
+  }
 }
 
 function verifyShopifyWebhook(request, secretValue) {
@@ -263,6 +383,237 @@ async function recordWebhookEvent(request, topic, payload) {
   return {duplicate: false, webhookId};
 }
 
+
+function lineEntitlements(order) {
+  const purchaseVariantMap = parsePurchaseVariantMap(ADVENTURE_PURCHASE_VARIANT_MAP.value());
+  const entitlements = [];
+
+  for (const line of order.line_items || []) {
+    const variantIds = getOrderLineVariantIds(line);
+    let adventureId = getLineProperty(line, ['adventure_id', 'adventure']);
+    let edition = getLineProperty(line, ['edition', 'adventure_edition']);
+    let sku = String(line.sku || line.variant?.sku || '').trim();
+
+    for (const variantId of variantIds) {
+      const mappedAdventure = purchaseVariantMap[variantId];
+      if (typeof mappedAdventure === 'string' && !adventureId) {
+        adventureId = mappedAdventure;
+      } else if (mappedAdventure?.adventureId) {
+        adventureId = mappedAdventure.adventureId;
+        edition = mappedAdventure.edition || edition;
+        sku = mappedAdventure.sku || sku;
+      }
+    }
+
+    if (!adventureId) continue;
+
+    entitlements.push({
+      adventureId,
+      edition: normalizeEdition(edition),
+      sku,
+      lineItemId: getLineItemId(line),
+      variantIds: [...variantIds],
+      quantity: Number(line.quantity || 1) || 1
+    });
+  }
+
+  return entitlements;
+}
+
+function entitlementDocumentId({orderId, lineItemId, adventureId}) {
+  return firestoreId(['shopify', orderId || 'order', lineItemId || 'line', adventureId].join(':'));
+}
+
+async function recordAdventureEntitlement({uid, email, customerId, order, lineEntitlement, source = {}}) {
+  const cleanEmail = normalizeEmail(email);
+  const orderIds = getOrderIds(order);
+  const docId = entitlementDocumentId({
+    orderId: orderIds.gid || orderIds.numeric,
+    lineItemId: lineEntitlement.lineItemId,
+    adventureId: lineEntitlement.adventureId
+  });
+  const entitlementRef = db.collection('adventureEntitlements').doc(docId);
+
+  await db.runTransaction(async (transaction) => {
+    const entitlementSnapshot = await transaction.get(entitlementRef);
+    const existing = entitlementSnapshot.exists ? entitlementSnapshot.data() : {};
+    const existingStatus = String(existing.status || '').toLowerCase();
+    const terminalStatus = ['refunded', 'revoked'].includes(existingStatus);
+    const mergedEdition = mergeAdventureEditions(
+      {[lineEntitlement.adventureId]: existing.edition || lineEntitlement.edition},
+      {[lineEntitlement.adventureId]: lineEntitlement.edition}
+    )[lineEntitlement.adventureId];
+
+    transaction.set(entitlementRef, {
+      email: cleanEmail || existing.email || '',
+      userId: uid || existing.userId || null,
+      customerId: customerId || existing.customerId || '',
+      adventureId: lineEntitlement.adventureId,
+      edition: normalizeEdition(mergedEdition),
+      source: 'shopify',
+      shopifyOrderId: orderIds.gid || existing.shopifyOrderId || '',
+      shopifyOrderNumericId: orderIds.numeric || existing.shopifyOrderNumericId || '',
+      shopifyLineItemId: lineEntitlement.lineItemId || existing.shopifyLineItemId || '',
+      shopifyVariantIds: lineEntitlement.variantIds || existing.shopifyVariantIds || [],
+      sku: lineEntitlement.sku || existing.sku || '',
+      quantity: lineEntitlement.quantity || existing.quantity || 1,
+      status: terminalStatus ? existing.status : (uid || existing.userId ? 'claimed' : existing.status || 'unclaimed'),
+      sourceEvent: source,
+      updatedAt: FieldValue.serverTimestamp(),
+      createdAt: existing.createdAt || FieldValue.serverTimestamp()
+    }, {merge: true});
+  });
+
+  return {docId, ref: entitlementRef};
+}
+
+function isActiveEntitlementStatus(status = '') {
+  return !['revoked', 'refunded'].includes(String(status || '').toLowerCase());
+}
+
+async function activeEntitlementsFor({uid, email}) {
+  const cleanEmail = normalizeEmail(email);
+  const byId = new Map();
+  if (uid) {
+    const snapshot = await db.collection('adventureEntitlements').where('userId', '==', uid).get();
+    snapshot.docs.forEach((document) => byId.set(document.id, document.data()));
+  }
+  if (cleanEmail) {
+    const snapshot = await db.collection('adventureEntitlements').where('email', '==', cleanEmail).get();
+    snapshot.docs.forEach((document) => byId.set(document.id, document.data()));
+  }
+  return [...byId.values()].filter((entitlement) => isActiveEntitlementStatus(entitlement.status));
+}
+
+async function recomputeAdventureAccess({uid, email}) {
+  const cleanEmail = normalizeEmail(email);
+  const entitlements = await activeEntitlementsFor({uid, email: cleanEmail});
+  const ownedAdventureIds = [];
+  const ownedAdventureEditions = {};
+
+  entitlements.forEach((entitlement) => {
+    if (!entitlement.adventureId) return;
+    if (!ownedAdventureIds.includes(entitlement.adventureId)) ownedAdventureIds.push(entitlement.adventureId);
+    Object.assign(ownedAdventureEditions, mergeAdventureEditions(ownedAdventureEditions, {
+      [entitlement.adventureId]: entitlement.edition || 'quick-play'
+    }));
+  });
+
+  if (uid) {
+    await db.collection('adventureAccounts').doc(uid).set({
+      email: cleanEmail,
+      ownedAdventureIds,
+      ownedAdventureEditions,
+      updatedAt: FieldValue.serverTimestamp()
+    }, {merge: true});
+  }
+
+  if (cleanEmail && !uid) {
+    const pendingRef = db.collection('pendingAdventureEntitlements').doc(cleanEmail);
+    if (ownedAdventureIds.length) {
+      await pendingRef.set({
+        email: cleanEmail,
+        ownedAdventureIds,
+        ownedAdventureEditions,
+        updatedAt: FieldValue.serverTimestamp()
+      }, {merge: true});
+    } else {
+      await pendingRef.delete().catch(() => {});
+    }
+  } else if (cleanEmail && uid) {
+    await db.collection('pendingAdventureEntitlements').doc(cleanEmail).delete().catch(() => {});
+  }
+}
+
+async function entitlementsForOrderIds(orderIds = {}) {
+  const byId = new Map();
+  const queries = [];
+  if (orderIds.gid) queries.push(db.collection('adventureEntitlements').where('shopifyOrderId', '==', orderIds.gid).get());
+  if (orderIds.numeric) queries.push(db.collection('adventureEntitlements').where('shopifyOrderNumericId', '==', orderIds.numeric).get());
+
+  const snapshots = await Promise.all(queries);
+  snapshots.forEach((snapshot) => {
+    snapshot.docs.forEach((document) => byId.set(document.id, document));
+  });
+
+  return [...byId.values()];
+}
+
+function entitlementMatchesLineItem(entitlement = {}, lineItemIds = null) {
+  if (!lineItemIds || lineItemIds.size === 0) return true;
+  return lineItemIdCandidates(entitlement.shopifyLineItemId).some((id) => lineItemIds.has(id));
+}
+
+function targetKeyForEntitlement(entitlement = {}) {
+  const uid = String(entitlement.userId || '').trim();
+  const email = normalizeEmail(entitlement.email || '');
+  if (!uid && !email) return '';
+  return `${uid}|${email}`;
+}
+
+async function disableUnlockCodesForEntitlements(entitlementDocs, status, reason) {
+  const snapshots = await Promise.all(entitlementDocs.map((document) => (
+    db.collection('adventureUnlockCodes').where('entitlementId', '==', document.id).get()
+  )));
+  const batch = db.batch();
+  let updateCount = 0;
+
+  snapshots.forEach((snapshot) => {
+    snapshot.docs.forEach((document) => {
+      const code = document.data();
+      if (['refunded', 'revoked'].includes(String(code.status || '').toLowerCase())) return;
+      updateCount += 1;
+      batch.set(document.ref, {
+        status,
+        disabledReason: reason,
+        disabledAt: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp()
+      }, {merge: true});
+    });
+  });
+
+  if (updateCount) await batch.commit();
+  return updateCount;
+}
+
+async function revokeAdventureEntitlementsForOrder({orderIds, status, reason, lineItemIds = null, source = {}}) {
+  const entitlementDocs = await entitlementsForOrderIds(orderIds);
+  const matchingDocs = entitlementDocs.filter((document) => {
+    const entitlement = document.data();
+    return isActiveEntitlementStatus(entitlement.status) && entitlementMatchesLineItem(entitlement, lineItemIds);
+  });
+
+  if (!matchingDocs.length) return {revoked: 0, disabledCodes: 0};
+
+  const targets = new Map();
+  const batch = db.batch();
+
+  matchingDocs.forEach((document) => {
+    const entitlement = document.data();
+    const key = targetKeyForEntitlement(entitlement);
+    if (key) {
+      targets.set(key, {
+        uid: entitlement.userId || '',
+        email: normalizeEmail(entitlement.email || '')
+      });
+    }
+
+    batch.set(document.ref, {
+      status,
+      revokeReason: reason,
+      revokedBy: source.type || '',
+      revokedAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    }, {merge: true});
+  });
+
+  await batch.commit();
+  const disabledCodes = await disableUnlockCodesForEntitlements(matchingDocs, status, reason);
+  await Promise.all([...targets.values()].map((target) => recomputeAdventureAccess(target)));
+
+  return {revoked: matchingDocs.length, disabledCodes};
+}
+
 function orderEntitlements(order) {
   const subscriptionVariantIds = parseVariantSet(ADVENTURE_SUBSCRIPTION_VARIANT_IDS.value());
   const purchaseVariantMap = parsePurchaseVariantMap(ADVENTURE_PURCHASE_VARIANT_MAP.value());
@@ -303,27 +654,112 @@ async function handleOrderPaid(order) {
   const hintedUid = getOrderNoteAttribute(order, ['firebase_uid', 'uid', 'adventure_uid']);
   const uid = await resolveAdventureUid({email, customerId, hintedUid});
   const {hasSubscription, ownedAdventureIds, ownedAdventureEditions} = orderEntitlements(order);
+  const paidLineEntitlements = lineEntitlements(order);
+  const paidAdventureIds = [];
+  const paidAdventureEditions = {};
   const graceDays = Number.parseInt(ADVENTURE_SUBSCRIPTION_GRACE_DAYS.value(), 10) || 30;
 
-  if (!hasSubscription && ownedAdventureIds.length === 0) {
+  paidLineEntitlements.forEach((lineEntitlement) => {
+    if (!paidAdventureIds.includes(lineEntitlement.adventureId)) {
+      paidAdventureIds.push(lineEntitlement.adventureId);
+    }
+    Object.assign(paidAdventureEditions, mergeAdventureEditions(paidAdventureEditions, {
+      [lineEntitlement.adventureId]: lineEntitlement.edition
+    }));
+  });
+
+  const aggregateAdventureIds = paidLineEntitlements.length ? paidAdventureIds : ownedAdventureIds;
+  const aggregateAdventureEditions = paidLineEntitlements.length ? paidAdventureEditions : ownedAdventureEditions;
+
+  if (!hasSubscription && aggregateAdventureIds.length === 0) {
     logger.info('Shopify order paid did not contain Adventure Nights products', {
       orderId: order.admin_graphql_api_id || order.id
     });
     return;
   }
 
-  await grantAdventureEntitlement({
+  await Promise.all(paidLineEntitlements.map((lineEntitlement) => recordAdventureEntitlement({
     uid,
     email,
     customerId,
-    subscriptionActiveUntil: hasSubscription ? addDays(new Date(), graceDays) : null,
-    ownedAdventureIds,
-    ownedAdventureEditions,
+    order,
+    lineEntitlement,
     source: {
       type: 'orders/paid',
       orderId: order.admin_graphql_api_id || String(order.id || ''),
       name: order.name || ''
     }
+  })));
+
+  await grantAdventureEntitlement({
+    uid,
+    email,
+    customerId,
+    subscriptionActiveUntil: hasSubscription ? addDays(new Date(), graceDays) : null,
+    ownedAdventureIds: aggregateAdventureIds,
+    ownedAdventureEditions: aggregateAdventureEditions,
+    source: {
+      type: 'orders/paid',
+      orderId: order.admin_graphql_api_id || String(order.id || ''),
+      name: order.name || ''
+    }
+  });
+
+  if (paidLineEntitlements.length) {
+    await recomputeAdventureAccess({uid, email});
+  }
+}
+
+async function handleOrderCancelled(order) {
+  const orderIds = getOrderIds(order);
+  const result = await revokeAdventureEntitlementsForOrder({
+    orderIds,
+    status: 'revoked',
+    reason: order.cancel_reason || 'Shopify order cancelled',
+    source: {
+      type: 'orders/cancelled',
+      orderId: orderIds.gid || orderIds.numeric,
+      name: order.name || ''
+    }
+  });
+
+  logger.info('Processed Adventure Nights order cancellation', {
+    orderId: orderIds.gid || orderIds.numeric,
+    revoked: result.revoked,
+    disabledCodes: result.disabledCodes
+  });
+}
+
+async function handleRefundCreated(refund) {
+  const orderIds = getRefundOrderIds(refund);
+  const lineItemIds = getRefundLineItemIds(refund);
+
+  if (!lineItemIds.size) {
+    logger.info('Shopify refund did not contain line items; Adventure Nights access unchanged.', {
+      refundId: refund.admin_graphql_api_id || refund.id || '',
+      orderId: orderIds.gid || orderIds.numeric
+    });
+    return;
+  }
+
+  const result = await revokeAdventureEntitlementsForOrder({
+    orderIds,
+    lineItemIds,
+    status: 'refunded',
+    reason: refund.note || 'Shopify refund created',
+    source: {
+      type: 'refunds/create',
+      refundId: refund.admin_graphql_api_id || String(refund.id || ''),
+      orderId: orderIds.gid || orderIds.numeric
+    }
+  });
+
+  logger.info('Processed Adventure Nights refund', {
+    refundId: refund.admin_graphql_api_id || refund.id || '',
+    orderId: orderIds.gid || orderIds.numeric,
+    refundedLineItems: lineItemIds.size,
+    revoked: result.revoked,
+    disabledCodes: result.disabledCodes
   });
 }
 
@@ -546,6 +982,198 @@ exports.getAdventureAccess = onCall({region: REGION, invoker: 'public'}, async (
   };
 });
 
+exports.redeemAdventureCode = onCall({
+  region: REGION,
+  invoker: 'public',
+  secrets: [REDEEM_CODE_PEPPER]
+}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Sign in or create an Adventure Nights account before redeeming a code.');
+  }
+
+  const codeHash = hashRedeemCode(request.data?.code, REDEEM_CODE_PEPPER.value());
+  const user = await getAuth().getUser(request.auth.uid);
+  const authEmail = normalizeEmail(user.email || request.auth.token.email || request.data?.email || '');
+  const codeRef = db.collection('adventureUnlockCodes').doc(codeHash);
+
+  const redeemed = await db.runTransaction(async (transaction) => {
+    const codeSnapshot = await transaction.get(codeRef);
+    if (!codeSnapshot.exists) {
+      throw new HttpsError('not-found', 'That redeem code was not found.');
+    }
+
+    const code = codeSnapshot.data();
+    const status = String(code.status || 'active').toLowerCase();
+    const usedByUserIds = new Set(Array.isArray(code.usedByUserIds) ? code.usedByUserIds : []);
+    if (code.usedByUserId) usedByUserIds.add(code.usedByUserId);
+
+    const alreadyRedeemedByUser = usedByUserIds.has(request.auth.uid);
+    if (['refunded', 'revoked', 'disabled'].includes(status)) {
+      throw new HttpsError('failed-precondition', 'That redeem code is no longer active.');
+    }
+    if (status === 'used' && !alreadyRedeemedByUser) {
+      throw new HttpsError('failed-precondition', 'That redeem code has already been used.');
+    }
+
+    const maxUses = Math.max(1, Number.parseInt(code.maxUses, 10) || 1);
+    const useCount = Number.parseInt(code.useCount, 10) || 0;
+    if (!alreadyRedeemedByUser && useCount >= maxUses) {
+      throw new HttpsError('failed-precondition', 'That redeem code has already been used.');
+    }
+
+    const entitlementId = String(code.entitlementId || firestoreId(['redeem-code', codeHash, request.auth.uid].join(':')));
+    const entitlementRef = db.collection('adventureEntitlements').doc(entitlementId);
+    const entitlementSnapshot = await transaction.get(entitlementRef);
+    const entitlement = entitlementSnapshot.exists ? entitlementSnapshot.data() : {};
+
+    if (!isActiveEntitlementStatus(entitlement.status)) {
+      throw new HttpsError('failed-precondition', 'The purchase attached to that code is no longer active.');
+    }
+    if (entitlement.userId && entitlement.userId !== request.auth.uid && !alreadyRedeemedByUser) {
+      throw new HttpsError('failed-precondition', 'That purchase has already been attached to another account.');
+    }
+
+    const adventureId = String(code.adventureId || entitlement.adventureId || '').trim();
+    if (!adventureId) {
+      throw new HttpsError('failed-precondition', 'That redeem code is missing an adventure assignment.');
+    }
+
+    const edition = normalizeEdition(code.edition || entitlement.edition || 'quick-play');
+    const entitlementEmail = normalizeEmail(entitlement.email || code.email || authEmail);
+    const nextUseCount = alreadyRedeemedByUser ? useCount : useCount + 1;
+    const nextStatus = nextUseCount >= maxUses ? 'used' : 'active';
+
+    transaction.set(entitlementRef, {
+      email: entitlementEmail || authEmail,
+      userId: request.auth.uid,
+      claimedEmail: authEmail,
+      adventureId,
+      edition,
+      source: entitlement.source || 'redeem-code',
+      status: 'claimed',
+      claimedAt: entitlement.claimedAt || FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+      createdAt: entitlement.createdAt || FieldValue.serverTimestamp()
+    }, {merge: true});
+
+    transaction.set(codeRef, {
+      entitlementId,
+      status: nextStatus,
+      useCount: nextUseCount,
+      usedByUserId: code.usedByUserId || request.auth.uid,
+      usedByUserIds: FieldValue.arrayUnion(request.auth.uid),
+      usedByEmail: authEmail,
+      redemptions: FieldValue.arrayUnion({
+        uid: request.auth.uid,
+        email: authEmail,
+        redeemedAt: new Date().toISOString()
+      }),
+      usedAt: code.usedAt || FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    }, {merge: true});
+
+    return {adventureId, edition, email: authEmail};
+  });
+
+  await recomputeAdventureAccess({uid: request.auth.uid, email: redeemed.email});
+
+  logger.info('Adventure Nights redeem code claimed', {
+    uid: request.auth.uid,
+    adventureId: redeemed.adventureId,
+    edition: redeemed.edition
+  });
+
+  return {
+    ok: true,
+    adventureId: redeemed.adventureId,
+    edition: redeemed.edition
+  };
+});
+
+exports.createAdventureRedeemCode = onCall({
+  region: REGION,
+  invoker: 'public',
+  secrets: [REDEEM_CODE_PEPPER]
+}, async (request) => {
+  await requireAccountManager(request);
+
+  const adventureId = String(request.data?.adventureId || '').trim();
+  if (!/^[a-z0-9-]{3,80}$/.test(adventureId)) {
+    throw new HttpsError('invalid-argument', 'Enter a valid adventure ID.');
+  }
+
+  const edition = normalizeEdition(request.data?.edition || 'quick-play');
+  const email = normalizeEmail(request.data?.email || '');
+  const maxUses = Math.max(1, Math.min(50, Number.parseInt(request.data?.maxUses, 10) || 1));
+  const plainCode = request.data?.code ? String(request.data.code).trim() : generateRedeemCode();
+  const codeHash = hashRedeemCode(plainCode, REDEEM_CODE_PEPPER.value());
+  const codeRef = db.collection('adventureUnlockCodes').doc(codeHash);
+  let entitlementId = String(request.data?.entitlementId || '').trim();
+  let entitlementRef = null;
+
+  if (!entitlementId && email) {
+    entitlementId = firestoreId(['manual-redeem-code', email, adventureId, edition].join(':'));
+  }
+  if (entitlementId) {
+    entitlementRef = db.collection('adventureEntitlements').doc(entitlementId);
+  }
+
+  await db.runTransaction(async (transaction) => {
+    const codeSnapshot = await transaction.get(codeRef);
+    if (codeSnapshot.exists) {
+      throw new HttpsError('already-exists', 'That redeem code already exists.');
+    }
+
+    if (entitlementRef) {
+      const entitlementSnapshot = await transaction.get(entitlementRef);
+      const existing = entitlementSnapshot.exists ? entitlementSnapshot.data() : {};
+      transaction.set(entitlementRef, {
+        email: email || existing.email || '',
+        userId: existing.userId || null,
+        adventureId,
+        edition: mergeAdventureEditions({[adventureId]: existing.edition || edition}, {[adventureId]: edition})[adventureId],
+        source: existing.source || 'manual-redeem-code',
+        status: existing.status || 'unclaimed',
+        sourceEvent: {
+          type: 'manual-redeem-code',
+          createdBy: request.auth.uid
+        },
+        updatedAt: FieldValue.serverTimestamp(),
+        createdAt: existing.createdAt || FieldValue.serverTimestamp()
+      }, {merge: true});
+    }
+
+    transaction.set(codeRef, {
+      codeHash,
+      adventureId,
+      edition,
+      email,
+      entitlementId,
+      maxUses,
+      useCount: 0,
+      status: 'active',
+      createdBy: request.auth.uid,
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+  });
+
+  logger.info('Adventure Nights redeem code created', {
+    createdBy: request.auth.uid,
+    adventureId,
+    edition,
+    hasEmail: Boolean(email)
+  });
+
+  return {
+    code: plainCode,
+    adventureId,
+    edition,
+    entitlementId: entitlementId || null,
+    maxUses
+  };
+});
+
 exports.shopifyAdventureWebhook = onRequest({
   region: REGION,
   invoker: 'public',
@@ -583,8 +1211,12 @@ exports.shopifyAdventureWebhook = onRequest({
       return;
     }
 
-    if (['orders/paid', 'orders/create'].includes(topic)) {
+    if (topic === 'orders/paid' || (topic === 'orders/create' && String(payload.financial_status || '').toLowerCase() === 'paid')) {
       await handleOrderPaid(payload);
+    } else if (topic === 'orders/cancelled') {
+      await handleOrderCancelled(payload);
+    } else if (topic === 'refunds/create') {
+      await handleRefundCreated(payload);
     } else if ([
       'subscription_contracts/create',
       'subscription_contracts/update',

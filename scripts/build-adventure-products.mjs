@@ -36,12 +36,14 @@ const editions = [
     key: 'quickPlay',
     id: 'quick-play',
     zipName: 'Lanterns_Below_Marrow_Hill_Quick_Play_Edition.zip',
+    folderName: 'Lanterns_Below_Marrow_Hill_Quick_Play_Edition',
     includePremiumArt: false
   },
   {
     key: 'deluxe',
     id: 'deluxe',
     zipName: 'Lanterns_Below_Marrow_Hill_Deluxe_Edition.zip',
+    folderName: 'Lanterns_Below_Marrow_Hill_Deluxe_Edition',
     includePremiumArt: true
   }
 ];
@@ -71,18 +73,20 @@ function readMeHtml(edition) {
   <div class="box">
     <h2>You can play two ways</h2>
     <ol>
-      <li><strong>Browser Play:</strong> go to <a href="${config.browserPlayUrl}">${config.browserPlayUrl}</a>.</li>
-      <li><strong>Print &amp; Play:</strong> open the files in <code>PRINT_AND_PLAY</code> and print them, or use your browser's Print -> Save as PDF option.</li>
+      <li><strong>Browser Story Mode:</strong> play on your phone, iPad, tablet, or computer as a read-along choice-driven adventure. No printing required.</li>
+      <li><strong>Print &amp; Play Mode:</strong> print the map, tokens, role sheets, clue cards, and endings for a tabletop-style experience.</li>
     </ol>
   </div>
-  <h2>Online access</h2>
-  <p>For browser play, sign in with the same email address you used at checkout. Purchases should unlock automatically once your Adventure Nights account uses that email.</p>
+  <h2>Browser Story Mode</h2>
+  <p>Go to <a href="${config.browserPlayUrl}">${config.browserPlayUrl}</a> and sign in with the same email address you used at checkout. Purchases should unlock automatically once your Adventure Nights account uses that email.</p>
   <p>If your adventure does not appear, use your redeem code from the order email at <a href="${config.redeemUrl}">${config.redeemUrl}</a> or contact <a href="mailto:${config.supportEmail}">${config.supportEmail}</a>.</p>
   <p>This ZIP itself does not contain a unique unlock code because unlocks are tied to purchase records. Static Shopify download files are the same for every customer.</p>
+  <h2>Print &amp; Play Mode</h2>
+  <p>Open the <code>PRINT_AND_PLAY</code> folder, print the files you want, and start with <code>quickstart.html</code>.</p>
   <h2>What's inside</h2>
   <ul>
-    <li><code>PRINT_AND_PLAY</code>: print-ready adventure sheets, map, and tokens.</li>
-    <li><code>BROWSER_PLAY</code>: browser content files and online play instructions.</li>
+    <li><code>BROWSER_PLAY</code>: browser story files and online play instructions.</li>
+    <li><code>PRINT_AND_PLAY</code>: print-ready map, tokens, role sheets, clue cards, endings, quickstart, and storyboard files.</li>
   </ul>
 </body>
 </html>
@@ -99,8 +103,8 @@ function browserInstructionsHtml(edition) {
   <title>Browser Play Instructions - ${escapeHtml(config.title)}</title>
 </head>
 <body>
-  <h1>Browser Play Instructions</h1>
-  <p>This ${escapeHtml(editionConfig.name)} ZIP includes browser-ready content, but the easiest way to play is through Adventure Nights online.</p>
+  <h1>Browser Story Mode Instructions</h1>
+  <p>This ${escapeHtml(editionConfig.name)} ZIP includes browser story content, but the easiest way to play is through Adventure Nights online. Browser Story Mode uses on-screen scene text, private prompt reveals, clue text, choices, and endings; no printing is required.</p>
   <ol>
     <li>Go to <a href="${config.browserPlayUrl}">${config.browserPlayUrl}</a>.</li>
     <li>Create or sign in to your Adventure Nights account.</li>
@@ -172,6 +176,9 @@ function createQuickPlayBundle() {
   if (bundle.portalPresentation) {
     bundle.portalPresentation.sceneArt = [];
   }
+  for (const scene of bundle.gameContent?.scenes || []) {
+    scene.sceneArt = '';
+  }
   if (bundle.downloadables?.visualAssets) {
     bundle.downloadables.visualAssets = bundle.downloadables.visualAssets.filter((asset) =>
       ['assets/map.svg', 'assets/tokens.svg'].includes(asset.file)
@@ -191,8 +198,9 @@ function createDeluxeBundle() {
 }
 
 async function stageEdition(edition) {
-  const stageDir = path.join(tempRoot, edition.id);
-  rmSync(stageDir, {recursive: true, force: true});
+  const stageRoot = path.join(tempRoot, edition.id);
+  const stageDir = path.join(stageRoot, edition.folderName);
+  rmSync(stageRoot, {recursive: true, force: true});
   ensureDir(stageDir);
   ensureDir(path.join(stageDir, 'PRINT_AND_PLAY'));
   ensureDir(path.join(stageDir, 'BROWSER_PLAY'));
@@ -221,7 +229,7 @@ async function stageEdition(edition) {
   }
 
   await assertCleanStage(stageDir);
-  return stageDir;
+  return stageRoot;
 }
 
 async function assertCleanStage(stageDir) {

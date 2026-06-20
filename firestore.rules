@@ -25,6 +25,14 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    match /adventureEntitlements/{entitlementId} {
+      allow read, write: if false;
+    }
+
+    match /adventureUnlockCodes/{codeHash} {
+      allow read, write: if false;
+    }
+
     match /shopifyCustomers/{customerId} {
       allow read, write: if false;
     }

@@ -9,10 +9,6 @@
   "supportEmail": "contact@j2crafts.com",
   "browserPlayUrl": "https://hightechstl.com/adventure-nights/play/lanterns-below-marrow-hill/",
   "redeemUrl": "https://hightechstl.com/adventure-nights/redeem/",
-  "buyLinks": {
-    "quickPlay": "https://j2crafts.com/products/lanterns-below-marrow-hill-quick-play-edition",
-    "deluxe": "https://j2crafts.com/products/lanterns-below-marrow-hill-deluxe-edition"
-  },
   "skus": {
     "quickPlay": "AN-LBMH-QUICK",
     "deluxe": "AN-LBMH-DELUXE"
@@ -22,15 +18,54 @@
       "id": "quick-play",
       "name": "Quick-Play Edition",
       "priceSuggestion": "$2.99-$4.99",
-      "description": "A complete, low-cost printable/browser-ready version with simple assets.",
-      "includesPremiumArt": false
+      "description": "A complete low-cost edition with browser story mode and simple print-and-play files.",
+      "includesPremiumArt": false,
+      "sku": "AN-LBMH-QUICK"
     },
     "deluxe": {
       "id": "deluxe",
       "name": "Deluxe Edition",
       "priceSuggestion": "$7.99-$12.99",
-      "description": "Premium illustrated version with detailed maps, tokens, scene art, and enhanced browser play.",
-      "includesPremiumArt": true
+      "description": "A premium edition with enhanced browser story mode, illustrated scene art, detailed maps, and deluxe printable files.",
+      "includesPremiumArt": true,
+      "sku": "AN-LBMH-DELUXE"
     }
+  },
+  "productType": "individual-purchase",
+  "playModes": {
+    "browserStory": {
+      "name": "Browser Story Mode",
+      "enabled": true,
+      "description": "Play on phone, iPad, tablet, or desktop as a read-along choice-driven adventure. No printing required.",
+      "requires": [
+        "scenePrompts",
+        "privatePromptReveals",
+        "clueText",
+        "choices",
+        "endings"
+      ],
+      "doesNotRequire": [
+        "printedTokens",
+        "printedCards",
+        "draggingTokens"
+      ]
+    },
+    "printAndPlay": {
+      "name": "Print & Play Mode",
+      "enabled": true,
+      "description": "Print maps, tokens, role sheets, clue cards, and ending cards for a tabletop-style experience.",
+      "requires": [
+        "map",
+        "tokens",
+        "roleSheets",
+        "clueCards",
+        "endingCards",
+        "quickstart"
+      ]
+    }
+  },
+  "shopifyLinks": {
+    "quickPlay": "https://j2crafts.com/products/lanterns-below-marrow-hill-quick-play-edition",
+    "deluxe": "https://j2crafts.com/products/lanterns-below-marrow-hill-deluxe-edition"
   }
 }

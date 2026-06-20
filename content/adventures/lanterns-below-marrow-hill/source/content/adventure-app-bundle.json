@@ -228,7 +228,7 @@
       ]
     },
     "browserFlow": [
-      "Subscription gate",
+      "Purchase or redeem gate",
       "Adventure library tile",
       "Role select screen",
       "Shared intro screen",
@@ -248,6 +248,11 @@
       "print/endings.html",
       "assets/map.svg",
       "assets/tokens.svg"
+    ],
+    "productType": "individual-purchase",
+    "playModes": [
+      "browserStory",
+      "printAndPlay"
     ]
   },
   "portalPresentation": {
@@ -372,7 +377,23 @@
         "unlocks": [
           "clue-lantern-1",
           "clue-lantern-2"
-        ]
+        ],
+        "sceneArt": "assets/scene-art/scene-1-entry-stair.png",
+        "seatOnePrompt": "Your ember pulls toward the Candle Hall. You sense the lantern can be restored, but not without a cost.",
+        "seatTwoPrompt": "The stair stones whisper: 'Light remembers debt.' You know this place was sealed by choice, not by accident.",
+        "discussionPrompt": "Each player states one fear and one reason they entered. Then move both tokens into the shrine.",
+        "browserChoices": [
+          {
+            "label": "Enter the stair together",
+            "result": "You descend together into the Candle Hall as the first lantern clues wake in the dark.",
+            "unlocks": [
+              "clue-lantern-1",
+              "clue-lantern-2"
+            ],
+            "nextScene": "scene-2"
+          }
+        ],
+        "printAndPlayNotes": "Move both tokens from Entry Stair to Candle Hall, then reveal Lantern Clue A and Lantern Clue B."
       },
       {
         "id": "scene-2",
@@ -386,7 +407,23 @@
         "unlocks": [
           "clue-seal-1",
           "clue-seal-2"
-        ]
+        ],
+        "sceneArt": "assets/scene-art/scene-2-candle-hall.png",
+        "seatOnePrompt": "The bright candles form a lantern symbol pointing toward the Root Vault.",
+        "seatTwoPrompt": "The carved oath says the lantern was built to hold back something that once wore a human voice.",
+        "discussionPrompt": "Players compare private clues and choose whether to follow the lantern symbol or investigate the oath first.",
+        "browserChoices": [
+          {
+            "label": "Compare the candle pattern and the carved oath",
+            "result": "The two clues fit together: the lantern was hidden in the Root Vault for a reason.",
+            "unlocks": [
+              "clue-seal-1",
+              "clue-seal-2"
+            ],
+            "nextScene": "scene-3"
+          }
+        ],
+        "printAndPlayNotes": "Use the printed map to choose Oath Room or Root Vault first, then reveal Seal Clue A and Seal Clue B."
       },
       {
         "id": "scene-3",
@@ -400,7 +437,23 @@
         "unlocks": [
           "clue-key-1",
           "clue-key-2"
-        ]
+        ],
+        "sceneArt": "assets/scene-art/scene-3-mirror-pool.png",
+        "seatOnePrompt": "Your reflection mouths: 'A restored light still casts a prison shadow.'",
+        "seatTwoPrompt": "The stone whispers that the keeper inside the lantern volunteered, but was never given a way to leave.",
+        "discussionPrompt": "Each player asks the pool one question. The other player answers as the reflection, using what they know.",
+        "browserChoices": [
+          {
+            "label": "Ask the pool what mercy costs",
+            "result": "The reflection gives up the key truth: opening the lantern is a moral choice, not a puzzle lock.",
+            "unlocks": [
+              "clue-key-1",
+              "clue-key-2"
+            ],
+            "nextScene": "scene-4"
+          }
+        ],
+        "printAndPlayNotes": "Keep the Mirror Pool on the table while each player asks one question, then reveal Key Clue A and Key Clue B."
       },
       {
         "id": "scene-4",
@@ -415,7 +468,24 @@
           "ending-restore",
           "ending-free",
           "ending-split"
-        ]
+        ],
+        "sceneArt": "assets/scene-art/scene-4-lantern-heart.png",
+        "seatOnePrompt": "Restoring the lantern protects the village road tonight. Freeing the keeper may leave the road unsafe until another solution is found.",
+        "seatTwoPrompt": "The keeper knows a hidden root path through the hill, but revealing it may change the village forever.",
+        "discussionPrompt": "Players debate the final choice, then each gives one sentence of testimony before choosing together.",
+        "browserChoices": [
+          {
+            "label": "Give testimony and face the lantern heart",
+            "result": "The keeper listens. The final light waits for your shared decision.",
+            "unlocks": [
+              "ending-restore",
+              "ending-free",
+              "ending-split"
+            ],
+            "nextScene": "choice"
+          }
+        ],
+        "printAndPlayNotes": "Place both tokens at Lantern Heart, read one sentence of testimony each, then choose and read the matching ending card."
       }
     ],
     "finalChoice": {
@@ -607,5 +677,33 @@
         "format": "png"
       }
     ]
+  },
+  "playModes": {
+    "printAndPlay": {
+      "enabled": true,
+      "requires": [
+        "map",
+        "tokens",
+        "roleSheets",
+        "clueCards",
+        "endingCards"
+      ],
+      "downloadFolder": "PRINT_AND_PLAY"
+    },
+    "browserStory": {
+      "enabled": true,
+      "requires": [
+        "scenePrompts",
+        "privatePrompts",
+        "choices",
+        "clueText",
+        "endings"
+      ],
+      "doesNotRequire": [
+        "printedTokens",
+        "printedCards",
+        "draggingTokens"
+      ]
+    }
   }
 }
