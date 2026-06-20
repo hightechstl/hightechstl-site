@@ -5,8 +5,8 @@ Each adventure is sold as an individual digital product with two editions.
 
 ## Product SKUs
 
-- `AN-LBMH-QUICK`: Lanterns Below Marrow Hill Quick-Play Edition
-- `AN-LBMH-DELUXE`: Lanterns Below Marrow Hill Deluxe Edition
+- `AN-LBMH-QUICK`: Lanterns Below Marrow Hill Quick-Play Edition, variant `gid://shopify/ProductVariant/48336556425457`
+- `AN-LBMH-DELUXE`: Lanterns Below Marrow Hill Deluxe Edition, variant `gid://shopify/ProductVariant/48336556458225`
 
 Where:
 

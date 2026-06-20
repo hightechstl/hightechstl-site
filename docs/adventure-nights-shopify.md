@@ -50,7 +50,7 @@ Firebase CLI prompts during deploy:
 ```sh
 SHOPIFY_SHOP_DOMAIN="www.j2crafts.com"
 SHOPIFY_API_VERSION="2026-04"
-ADVENTURE_PURCHASE_VARIANT_MAP='{"gid://shopify/ProductVariant/111":{"adventureId":"lanterns-below-marrow-hill","edition":"quick-play","sku":"AN-LBMH-QUICK"},"gid://shopify/ProductVariant/222":{"adventureId":"lanterns-below-marrow-hill","edition":"deluxe","sku":"AN-LBMH-DELUXE"}}'
+ADVENTURE_PURCHASE_VARIANT_MAP='{"48336556425457":{"adventureId":"lanterns-below-marrow-hill","edition":"quick-play","sku":"AN-LBMH-QUICK"},"gid://shopify/ProductVariant/48336556425457":{"adventureId":"lanterns-below-marrow-hill","edition":"quick-play","sku":"AN-LBMH-QUICK"},"48336556458225":{"adventureId":"lanterns-below-marrow-hill","edition":"deluxe","sku":"AN-LBMH-DELUXE"},"gid://shopify/ProductVariant/48336556458225":{"adventureId":"lanterns-below-marrow-hill","edition":"deluxe","sku":"AN-LBMH-DELUXE"}}'
 ```
 
 `ADVENTURE_PURCHASE_VARIANT_MAP` maps Shopify variant IDs to the internal
@@ -64,10 +64,17 @@ the recommended Adventure Nights model is now one-time adventure purchases.
 Current/next Shopify adventure product:
 
 - Store: J2 Crafts (`www.j2crafts.com`)
-- Product: Lanterns Below Marrow Hill
+- Product: Lanterns Below Marrow Hill - Quick-Play Edition
+- Product ID: `gid://shopify/Product/9645182058737`
+- Variant ID: `gid://shopify/ProductVariant/48336556425457`
+- SKU: `AN-LBMH-QUICK`
+- Draft URL: `https://j2crafts.com/products/lanterns-below-marrow-hill-quick-play-edition`
+- Product: Lanterns Below Marrow Hill - Deluxe Edition
+- Product ID: `gid://shopify/Product/9645182091505`
+- Variant ID: `gid://shopify/ProductVariant/48336556458225`
+- SKU: `AN-LBMH-DELUXE`
+- Draft URL: `https://j2crafts.com/products/lanterns-below-marrow-hill-deluxe-edition`
 - Internal adventure ID: `lanterns-below-marrow-hill`
-- SKUs: `AN-LBMH-QUICK`, `AN-LBMH-DELUXE`
-- Add both product variant IDs to `ADVENTURE_PURCHASE_VARIANT_MAP`.
 
 ## Deploy
 

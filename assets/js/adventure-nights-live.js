@@ -221,8 +221,8 @@
           <div class="platform-card-actions">
             <a class="button button-secondary" href="${esc(detailHref)}">View Adventure</a>
             ${owned ? `<a class="button button-primary" href="${esc(config.playUrl)}">Play Online</a>` : ''}
-            <a class="button button-primary" href="${esc(config.buyQuickUrl || config.buyUrl || '#')}">Buy Quick-Play</a>
-            <a class="button button-blue" href="${esc(config.buyDeluxeUrl || config.buyUrl || '#')}">Buy Deluxe</a>
+            <a class="button button-primary" href="${esc(config.buyQuickUrl || config.buyUrl || '#')}" target="_blank" rel="noopener">Buy Quick-Play</a>
+            <a class="button button-blue" href="${esc(config.buyDeluxeUrl || config.buyUrl || '#')}" target="_blank" rel="noopener">Buy Deluxe</a>
             ${secondary}
           </div>
         </div>
@@ -460,8 +460,8 @@
           <div class="live-actions">
             <a class="button button-primary" href="${esc(config.libraryUrl || '../')}">Sign In</a>
             <a class="button button-secondary" href="${esc(config.redeemUrl || `${config.libraryUrl || '../'}redeem/`)}">Redeem Code</a>
-            <a class="button button-primary" href="${esc(config.buyQuickUrl || config.buyUrl || '#')}">Buy Quick-Play</a>
-            <a class="button button-blue" href="${esc(config.buyDeluxeUrl || config.buyUrl || '#')}">Buy Deluxe</a>
+            <a class="button button-primary" href="${esc(config.buyQuickUrl || config.buyUrl || '#')}" target="_blank" rel="noopener">Buy Quick-Play</a>
+            <a class="button button-blue" href="${esc(config.buyDeluxeUrl || config.buyUrl || '#')}" target="_blank" rel="noopener">Buy Deluxe</a>
           </div>
         </article>
       `;
