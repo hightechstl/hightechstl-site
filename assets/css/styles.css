@@ -104,6 +104,8 @@ h3 { font-size: 1.42rem; }
 .metric { padding: 1.5rem; border-left: 3px solid var(--copper); }
 .metric strong { display: block; color: var(--navy); font-family: Georgia, serif; font-size: 2rem; }
 .metric span { color: var(--muted); font-size: .9rem; }
+.section-dark .metric strong { color: white; }
+.section-dark .metric span { color: #c6d5e5; }
 .check-list { display: grid; gap: .7rem; padding: 0; list-style: none; }
 .check-list li { position: relative; padding-left: 1.6rem; }
 .check-list li::before { position: absolute; left: 0; color: var(--success); font-weight: 900; content: "✓"; }
