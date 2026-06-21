@@ -83,8 +83,8 @@ h3 { font-size: 1.42rem; }
 .hero-grid { position: relative; display: grid; grid-template-columns: 1.3fr .7fr; align-items: center; gap: 4rem; }
 .trust-line { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; margin-top: 2rem; color: var(--muted); font-size: .9rem; font-weight: 700; }
 .trust-line span::before { margin-right: .4rem; color: var(--success); content: "✓"; }
-.hero-panel { position: relative; min-height: 420px; padding: 1.4rem; color: white; background: var(--navy); border-radius: 26px; box-shadow: var(--shadow); }
-.hero-panel::after { position: absolute; right: -30px; bottom: -30px; width: 150px; height: 150px; border: 24px solid rgba(212,122,58,.6); border-radius: 50%; content: ""; }
+.hero-panel { position: relative; isolation: isolate; min-height: 420px; overflow: hidden; padding: 1.4rem; color: white; background: var(--navy); border-radius: 26px; box-shadow: var(--shadow); }
+.hero-panel::after { position: absolute; right: 5px; bottom: -11px; z-index: -1; width: 150px; height: 150px; border: 24px solid rgba(212,122,58,.6); border-radius: 50%; content: ""; }
 .status-card { position: relative; z-index: 2; padding: 1.4rem; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); border-radius: 16px; backdrop-filter: blur(10px); }
 .status-card + .status-card { margin-top: 1rem; }
 .status-label { display: flex; align-items: center; justify-content: space-between; color: #bed2e4; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
@@ -216,6 +216,8 @@ textarea { min-height: 145px; resize: vertical; }
   .hero { padding: 4.4rem 0; }
   .hero-grid { gap: 2.5rem; }
   .hero-panel { min-height: auto; }
+  .hero-panel::after { right: 50%; transform: translateX(50%); }
+  .mini-grid { grid-template-columns: 1fr; }
   .grid-2, .grid-3, .grid-4, .pricing-grid, .field-grid, .service-meta, .industry-details { grid-template-columns: 1fr; }
   .section-heading { display: block; }
   .section-heading p { margin-top: 1rem; }
