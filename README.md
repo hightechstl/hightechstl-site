@@ -10,7 +10,8 @@ Static, responsive website for High Tech STL, a managed IT services and technolo
 - `industries.html` - Industry-specific technology challenges and outcomes
 - `about.html` - Joshua Hancock's IT operations and leadership background
 - `contact.html` - Free technology assessment form
-- `flowslot.html` - Standalone FlowSlot Innovation Lab project page
+- `innovation-lab.html` - Innovation Lab overview with active development project tiles
+- `flowslot.html` - Standalone FlowSlot project page
 - `adventure-nights/` - Adventure Nights public library, purchase, and account entry page
 - `adventure-nights/lanterns-below-marrow-hill/` - Public product/detail page for Lanterns Below Marrow Hill
 - `adventure-nights/redeem/` - Redeem-code and purchase-email account flow scaffold
